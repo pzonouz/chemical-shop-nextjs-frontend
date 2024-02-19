@@ -1,4 +1,4 @@
-#Technologies Used:
+# Technologies Used:
 - Nextjs
 - Tailwind
 - DaisyUi
