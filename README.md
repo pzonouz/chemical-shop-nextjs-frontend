@@ -2,3 +2,4 @@
 - Nextjs
 - Tailwind
 - DaisyUi
+- React-icons

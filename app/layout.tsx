@@ -1,8 +1,53 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import localFont from "next/font/local";
 
-const inter = Inter({ subsets: ["latin"] });
+import "./globals.css";
+import Drawer from "./components/drawer";
+
+const IranSans = localFont({
+  src: [
+    {
+      path: "../public/fonts/woff2/IRANSansX-Regular.woff2",
+      style: "normal",
+      weight: "",
+    },
+    {
+      path: "../public/fonts/woff2/IRANSansX-Bold.woff2",
+      style: "bold",
+      weight: "700",
+    },
+    {
+      path: "../public/fonts/woff2/IRANSansX-DemiBold.woff2",
+      style: "semibold",
+      weight: "600",
+    },
+    {
+      path: "../public/fonts/woff2/IRANSansX-ExtraBold.woff2",
+      style: "extrabold",
+      weight: "800",
+    },
+    {
+      path: "../public/fonts/woff2/IRANSansX-Medium.woff2",
+      style: "medium",
+      weight: "500",
+    },
+    {
+      path: "../public/fonts/woff2/IRANSansX-Light.woff2",
+      style: "light",
+      weight: "300",
+    },
+    {
+      path: "../public/fonts/woff2/IRANSansX-Thin.woff2",
+      style: "thin",
+      weight: "100",
+    },
+    {
+      path: "../public/fonts/woff2/IRANSansX-UltraLight.woff2",
+      style: "ultralight",
+      weight: "200",
+    },
+  ],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +60,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" dir="rtl">
+      <body className={IranSans.className}>
+        <Drawer>{children}</Drawer>
+      </body>
     </html>
   );
 }
