@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import Drawer from "./components/drawer";
+import AuthProvider from "./auth/provider";
 
 const IranSans = localFont({
   src: [
@@ -60,9 +61,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="rtl">
+    <html lang="en" dir="rtl" data-theme="light" className=" scroll-smooth">
       <body className={IranSans.className}>
-        <Drawer>{children}</Drawer>
+        <AuthProvider>
+          <Drawer>{children}</Drawer>
+        </AuthProvider>
       </body>
     </html>
   );

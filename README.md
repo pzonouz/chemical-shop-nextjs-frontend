@@ -3,3 +3,4 @@
 - Tailwind
 - DaisyUi
 - React-icons
+- [TailGrail](https://tailgrail.com/)

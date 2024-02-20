@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
 import { IoMenuSharp } from "react-icons/io5";
 import { BsSearch } from "react-icons/bs";
 import { BsCart } from "react-icons/bs";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { status, data: session } = useSession();
   return (
     <div>
       <div className="bg-base-100 navbar">
@@ -31,7 +35,7 @@ const Navbar = () => {
             >
               <div className="indicator">
                 <BsCart className="text-2xl" />
-                <span className="badge badge-sm indicator-item bg-secondary text-white font-extrabold">
+                <span className="badge badge-sm indicator-item bg-secondary text-white font-bold">
                   ۲
                 </span>
               </div>
@@ -41,11 +45,11 @@ const Navbar = () => {
               className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
             >
               <div className="card-body">
-                <span className="font-bold text-lg">8 Items</span>
-                <span className="text-info">Subtotal: $999</span>
+                <span className="font-bold text-lg">۲ مورد</span>
+                <span className="text-info">مجموع: ۱.۲۰۰.۰۰۰ تومان</span>
                 <div className="card-actions">
                   <button className="btn btn-primary btn-block">
-                    View cart
+                    مشاهده سبد
                   </button>
                 </div>
               </div>
@@ -58,28 +62,40 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  alt="Sample user image"
+                  src={
+                    status == "authenticated"
+                      ? session.user?.image!
+                      : "/images/Sample_User_Icon.png"
+                  }
                 />
               </div>
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-28 flex flex-col gap-3"
             >
-              <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
+              {status == "authenticated" ? (
+                <>
+                  <li>
+                    <Link href={"/auth"}>ناحیه کاربری</Link>
+                  </li>
+                  <li>
+                    <Link href={"/api/auth/signout"}>خروج</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link href={"/"}>ثبت نام</Link>
+                  </li>
+                  <li>
+                    <Link href={"/api/auth/signin"}>ورود</Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

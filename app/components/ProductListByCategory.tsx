@@ -2,7 +2,7 @@ import Card from "./card";
 
 const ProductListByCategory = () => {
   return (
-    <section className="pt-12 ">
+    <section className="pt-12 px-3 ">
       <div className="flex flex-row gap-2 items-center">
         <div className="flex-auto border-t-2 border-b-2 h-[6px] text-center align-middle"></div>
         <div>نانو ذرات</div>
