@@ -11,7 +11,9 @@ const Toast = ({ state, stateSetter, text, type }: Props) => {
   return (
     <>
       {state && (
-        <div className=" rounded-md bg-error text-base-200 fixed left-1/2 -translate-x-1/2 bottom-2 w-max flex flex-row items-center">
+        <div
+          className={`rounded-md bg-${type} text-base-200 mt-6 flex flex-row items-center`}
+        >
           <div
             className=" p-2 self-start cursor-pointer hover:text-neutral"
             onClick={() => {

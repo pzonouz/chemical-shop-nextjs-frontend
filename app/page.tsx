@@ -1,7 +1,7 @@
-import ProductListByCategory from "./components/ProductListByCategory";
-import Copyright from "./components/Copyright";
-import Footer from "./components/Footer";
-import ToTop from "./components/ToTop";
+import ProductListByCategory from "./components/data/ProductListByCategory";
+import Copyright from "./components/Navigation/Copyright";
+import Footer from "./components/Navigation/Footer";
+import ToTop from "./components/Navigation/ToTop";
 
 export default function Home() {
   return (

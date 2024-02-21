@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import "./globals.css";
-import Drawer from "./components/Drawer";
+import Drawer from "./components/Navigation/Drawer";
 import AuthProvider from "./auth/provider";
 
 const IranSans = localFont({

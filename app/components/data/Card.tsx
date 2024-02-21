@@ -1,6 +1,6 @@
 import React from "react";
 import { BsHeart } from "react-icons/bs";
-import Rating from "./Rating";
+import Rating from "../utils/Rating";
 import Image from "next/image";
 
 const Card = () => {

@@ -7,6 +7,8 @@ export interface User {
   email: string;
   password: string;
   confirmPassword: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -33,13 +35,14 @@ export async function POST(request: NextRequest) {
         hashedPassword: hashedPassword,
       },
     });
-    if (!user) {
-      return NextResponse.json(user);
+    if (user) {
+      return NextResponse.json({ status: 200 });
     }
+    return NextResponse.json(
+      { error: "مشکلی در ایجاد کاربر پیش آمده است" },
+      { status: 400 }
+    );
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: error }, { status: 400 });
   }
-
-  return NextResponse.json("hello");
 }

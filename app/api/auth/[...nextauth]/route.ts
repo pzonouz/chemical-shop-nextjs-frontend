@@ -2,11 +2,12 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-import { signIn } from "next-auth/react";
+import prisma from "../../../../prisma/prisma";
+import bcrypt, { compare } from "bcrypt";
+import { IoEllipseSharp } from "react-icons/io5";
 
-const prisma = new PrismaClient();
 export const authOptions: NextAuthOptions = {
+  session: { strategy: "jwt" },
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -14,12 +15,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         email: {
           label: "Email",
@@ -29,23 +25,28 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
-        console.log(credentials);
-
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
+        const user = await prisma.user.findUnique({
+          where: { email: credentials?.email },
+        });
+        console.log(user);
+        if (!user) {
+          return null;
+        }
+        const match = await bcrypt.compare(
+          credentials?.password!,
+          user.hashedPassword!
+        );
+        console.log(compare);
+        if (match) {
           return user;
         } else {
-          // If you return null then an error will be displayed advising the user to check their details.
           return null;
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
     }),
   ],
   pages: { signIn: "/api/auth/credential-signin" },
+  callbacks: {},
 };
 
 const handler = NextAuth(authOptions);
