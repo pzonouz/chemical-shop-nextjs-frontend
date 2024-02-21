@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../../prisma/prisma";
 import bcrypt, { compare } from "bcrypt";
 import { IoEllipseSharp } from "react-icons/io5";
+import { NextResponse } from "next/server";
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
@@ -25,21 +26,23 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const user = await prisma.user.findUnique({
-          where: { email: credentials?.email },
-        });
-        console.log(user);
-        if (!user) {
-          return null;
-        }
-        const match = await bcrypt.compare(
-          credentials?.password!,
-          user.hashedPassword!
-        );
-        console.log(compare);
-        if (match) {
-          return user;
-        } else {
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials?.email },
+          });
+          if (!user) {
+            return null;
+          }
+          const match = bcrypt.compareSync(
+            credentials?.password!,
+            user.hashedPassword!
+          );
+          if (match) {
+            return user;
+          } else {
+            return null;
+          }
+        } catch (error) {
           return null;
         }
       },

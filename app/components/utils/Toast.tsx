@@ -1,5 +1,5 @@
 import { IoMdClose } from "react-icons/io";
-import { string } from "zod";
+import classNames from "classnames";
 interface Props {
   state: any;
   stateSetter: any;
@@ -12,7 +12,11 @@ const Toast = ({ state, stateSetter, text, type }: Props) => {
     <>
       {state && (
         <div
-          className={`rounded-md bg-${type} text-base-200 mt-6 flex flex-row items-center`}
+          className={classNames({
+            "rounded-md bg-${type} text-base-200 mt-6 flex flex-row items-center":
+              true,
+            "bg-error": type === "error",
+          })}
         >
           <div
             className=" p-2 self-start cursor-pointer hover:text-neutral"
@@ -22,7 +26,14 @@ const Toast = ({ state, stateSetter, text, type }: Props) => {
           >
             <IoMdClose />
           </div>
-          <div className={`alert alert-${type} text-base-200 pl-8`}>{text}</div>
+          <div
+            className={classNames({
+              "alert text-base-200 pl-8": true,
+              "alert-error": type === "error",
+            })}
+          >
+            {text}
+          </div>
         </div>
       )}
     </>

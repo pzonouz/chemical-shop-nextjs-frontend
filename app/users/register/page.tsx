@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import Toast from "@/app/components/utils/Toast";
 import InputBox from "@/app/components/data/InputBox";
 import { signIn } from "next-auth/react";
-import { User } from "@/app/api/auth/register/route";
 
 const UserRegisterPage = () => {
   const [isLoading, setLoading] = useState(false);
