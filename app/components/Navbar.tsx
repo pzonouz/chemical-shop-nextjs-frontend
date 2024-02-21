@@ -89,7 +89,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <li>
-                    <Link href={"/"}>ثبت نام</Link>
+                    <Link href={"/users/register"}>ثبت نام</Link>
                   </li>
                   <li>
                     <Link href={"/api/auth/signin"}>ورود</Link>
