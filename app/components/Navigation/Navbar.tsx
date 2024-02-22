@@ -6,6 +6,7 @@ import { IoMenuSharp } from "react-icons/io5";
 import { BsSearch } from "react-icons/bs";
 import { BsCart } from "react-icons/bs";
 import { useSession } from "next-auth/react";
+import Email from "next-auth/providers/email";
 
 const Navbar = () => {
   const { status, data: session } = useSession();
@@ -80,7 +81,9 @@ const Navbar = () => {
               {status == "authenticated" ? (
                 <>
                   <li>
-                    <Link href={"/auth"}>ناحیه کاربری</Link>
+                    <Link href={`/users/${session?.user?.email}/dashboard`}>
+                      پنل کاربری
+                    </Link>
                   </li>
                   <li>
                     <Link href={"/api/auth/signout"}>خروج</Link>
