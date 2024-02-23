@@ -18,15 +18,13 @@ const InputBox = ({ name, errors, registerFn, type, text }: InputBoxProps) => {
         className={`input input-bordered flex items-center gap-2 w-full
         ${errors[name] ? "text-error border-error" : null}`}
       >
-        {/* {text} */}
-
         {name === "email" ? <MdAlternateEmail /> : null}
         {name === "password" ? <RiLockPasswordFill /> : null}
         {name === "confirmPassword" ? <RiLockPasswordFill /> : null}
         <input
           type={type}
           className=""
-          placeholder={`${text} را وارد نمایید`}
+          placeholder={text}
           {...registerFn(name)}
         />
       </label>

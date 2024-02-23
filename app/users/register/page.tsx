@@ -52,10 +52,10 @@ const UserRegisterPage = () => {
     }
   };
   return (
-    <div className=" flex flex-col items-center mt-6">
+    <div className=" flex flex-col items-center mt-12 gap-6 px-8">
       <div className=" text-xl font-bold">ایجاد کاربر جدید</div>
       <form
-        className=" flex flex-col gap-2 p-6"
+        className=" flex flex-col gap-2 w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
         <InputBox
@@ -63,6 +63,7 @@ const UserRegisterPage = () => {
           errors={errors}
           registerFn={register}
           type="text"
+          text="ایمیل را وارد نمایید"
         />
         {errors["email"]?.type === "too_small" && (
           <p className=" text-xs text-error">ایمیل وارد نمایید</p>
@@ -75,6 +76,7 @@ const UserRegisterPage = () => {
           errors={errors}
           registerFn={register}
           type="password"
+          text="پسورد را وارد نمایید"
         />
         {errors["password"]?.type === "too_small" && (
           <p className=" text-xs text-error">حداقل ۸ کاراکتر را وارد کنید </p>
@@ -84,6 +86,7 @@ const UserRegisterPage = () => {
           errors={errors}
           registerFn={register}
           type="password"
+          text="پسورد را تکرار نمایید"
         />
         {errors["confirmPassword"]?.type === "custom" && (
           <p className=" text-xs text-error">مقادیر پسورد منطبق نیست </p>

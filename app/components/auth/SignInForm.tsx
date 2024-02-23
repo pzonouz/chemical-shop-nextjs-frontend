@@ -42,7 +42,7 @@ const SignInForm = ({ providers }: { providers: any }) => {
     }
   };
   return (
-    <div className=" flex flex-col p-8 gap-8 mt-4">
+    <div className=" flex flex-col px-8 gap-8 mt-12">
       <button
         className="btn"
         onClick={() => {
@@ -60,6 +60,7 @@ const SignInForm = ({ providers }: { providers: any }) => {
           name="email"
           errors={errors}
           registerFn={register}
+          text="ایمیل را وارد نمایید"
         />
         {errors["email"]?.type === "too_small" && (
           <p className=" text-xs text-error">ایمیل وارد نمایید</p>
@@ -69,6 +70,7 @@ const SignInForm = ({ providers }: { providers: any }) => {
           name="password"
           errors={errors}
           registerFn={register}
+          text="پسورد را وارد نمایید"
         />
         {errors["password"]?.type === "too_small" && (
           <p className=" text-xs text-error"> پسورد را وارد کنید </p>
