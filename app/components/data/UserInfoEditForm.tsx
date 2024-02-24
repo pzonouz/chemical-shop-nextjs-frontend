@@ -20,11 +20,7 @@ const UserInfoEditForm = ({ user }: { user: User | null | undefined }) => {
   const userFormSubmit = async (data: any) => {
     try {
       setLoading(true);
-      const response = await fetchWithTokenClient(
-        "http://localhost:3000/api/users",
-        "PATCH",
-        data
-      );
+      const response = await fetchWithTokenClient(`/api/users`, "PATCH", data);
       setLoading(false);
       if (!response.ok) {
         const { error } = await response.json();
@@ -34,7 +30,6 @@ const UserInfoEditForm = ({ user }: { user: User | null | undefined }) => {
         setSuccessText("با موفقیت انجام شد");
       }
     } catch (error) {
-      console.log(error);
       setError(true);
       setErrorText(error?.message || "خطای ناشناخته");
     }

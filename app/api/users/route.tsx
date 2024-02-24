@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   });
+
   if (!token) {
     return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
   }

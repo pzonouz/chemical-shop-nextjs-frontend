@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
     const verification_token = crypto.randomBytes(16).toString("hex");
-    const emailVerificationAddress = `http://localhost:3000/api/auth/email/${verification_token}/verification`;
+    const emailVerificationAddress = `${request.nextUrl.origin}/api/auth/email/${verification_token}/verification`;
     const hashedPassword = await bcrypt.hash(password, 10);
     user = await prisma.user.create({
       data: {

@@ -10,7 +10,7 @@ export async function GET(
   try {
     const user = await prisma.user.findFirst({ where: { email: email } });
     const forgetPasswordToken = crypto.randomBytes(8).toString("hex");
-    const forgetPasswordLink = `http://localhost:3000/api/auth/forgetpassword/callback/${forgetPasswordToken}`;
+    const forgetPasswordLink = `${request.nextUrl.origin}/api/auth/forgetpassword/callback/${forgetPasswordToken}`;
     if (user) {
       const updatedUser = await prisma.user.update({
         where: { email: email },
