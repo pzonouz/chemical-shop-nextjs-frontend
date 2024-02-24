@@ -1,5 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { User } from "../auth/register/route";
 import prisma from "../../../prisma/prisma";
 
 export async function POST(request: NextRequest) {
@@ -12,10 +13,34 @@ export async function POST(request: NextRequest) {
   }
   try {
     const userEmail = token.email;
-    const user = await prisma.user.findUniqueOrThrow({
+    const user = await prisma.user.findFirst({
       where: { email: userEmail! },
+      select: {
+        firstName: true,
+        lastName: true,
+        email: true,
+        mobile: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
-    return NextResponse.json({ user: user }, { status: 200 });
+    return NextResponse.json(user, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: error }, { status: 400 });
+  }
+}
+export async function PATCH(request: NextRequest) {
+  const user: User = await request.json();
+  try {
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+    const updatedUser = await prisma.user.updateMany({
+      where: { email: token?.email },
+      data: user,
+    });
+    return NextResponse.json(updatedUser);
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 400 });
   }

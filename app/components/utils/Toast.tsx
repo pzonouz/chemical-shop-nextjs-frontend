@@ -13,9 +13,9 @@ const Toast = ({ state, stateSetter, text, type }: Props) => {
       {state && (
         <div
           className={classNames({
-            "rounded-md bg-${type} text-base-200 mt-6 flex flex-row items-center":
-              true,
+            "rounded-md text-base-200 mt-6 flex flex-row items-center": true,
             "bg-error": type === "error",
+            "bg-success": type === "success",
           })}
         >
           <div
@@ -30,6 +30,7 @@ const Toast = ({ state, stateSetter, text, type }: Props) => {
             className={classNames({
               "alert text-base-200 pl-8": true,
               "alert-error": type === "error",
+              "alert-success": type === "success",
             })}
           >
             {text}

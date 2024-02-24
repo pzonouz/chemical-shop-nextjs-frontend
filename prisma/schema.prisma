@@ -38,16 +38,53 @@ model Session {
 }
 
 model User {
-  id                     String    @id @default(cuid())
+  id                     String    @id @default(uuid())
   name                   String?
+  firstName              String?
+  lastName               String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime? @updatedAt
+  mobile                 String?
   email                  String?   @unique
   hashedPassword         String?
   emailVerified          DateTime?
   emailVerificationToken String?
   forgetPasswordToken    String?
   image                  String?
+  favorite               Favorite?
   accounts               Account[]
   sessions               Session[]
+  addresses              Address[]
+  favoriteId             String?
+}
+
+model Favorite {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Product {
+  id         String    @id @default(uuid())
+  name       String?
+  Favorite   Favorite? @relation(fields: [favoriteId], references: [id])
+  favoriteId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+}
+
+model Address {
+  id        String    @id @default(uuid())
+  state     String
+  city      String
+  address   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 model VerificationToken {

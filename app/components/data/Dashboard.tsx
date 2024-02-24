@@ -16,15 +16,16 @@ import UserInfoEditForm from "./UserInfoEditForm";
 import AddressEditForm from "./AddressEditForm";
 import Address from "./Address";
 import DashboardSideBar from "../Navigation/DashboardSideBar";
-import { getSession, useSession } from "next-auth/react";
+import { User } from "../../api/auth/register/route";
 
 export interface DashboardItem {
   icon: ReactNode;
   text: string;
   innerHTML: JSX.Element | undefined;
 }
-const Dashboard = () => {
+const Dashboard = ({ user }: { user: User | null | undefined }) => {
   const items: DashboardItem[] = [
+    // dashboard
     {
       icon: <RxDashboard />,
       text: "dashboard",
@@ -43,35 +44,35 @@ const Dashboard = () => {
           <div className=" flex flex-col gap-1 mt-3">
             <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
               <p>نام:</p>
-              <p>پیمان</p>
+              <p>{user?.firstName}</p>
             </div>
             <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
               <p>نام خانوادگی:</p>
-              <p>خلیلی زنوز</p>
+              <p> {user?.lastName}</p>
             </div>
             <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
               <p>ایمیل:</p>
-              <p>خلیلی زنوز</p>
-            </div>{" "}
+              <p> {user?.email}</p>
+            </div>
             <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
               <p>تاریخ عضویت:</p>
-              <p>خلیلی زنوز</p>
-            </div>{" "}
+              <p> {user?.createdAt?.toString()}</p>
+            </div>
             <div className=" flex flex-row gap-2 p-1 items-center justify-between">
               <p>آدرس:</p>
-              <p className=" text-sm">
-                چهار راه طالقانی به سمت بیمارستان ارتش.نرسیده به قنادی پاپا.
-                طبقه بالای گلفروشی لیلیوم. آموزشگاه جاویدان صنعت. آقای محمد نژاد
-              </p>
+              {user?.addresses && (
+                <p className=" text-sm">{user?.addresses[0].address}</p>
+              )}
             </div>
           </div>
         </>
       ),
     },
+    //account
     {
       icon: <FaRegUser />,
       text: "account",
-      innerHTML: <UserInfoEditForm />,
+      innerHTML: <UserInfoEditForm user={user} />,
     },
     {
       icon: <MdOutlineEditLocation />,

@@ -11,7 +11,11 @@ export interface User {
   confirmPassword: string;
   firstName?: string;
   lastName?: string;
+  mobile?: string;
   verification_token?: string;
+  createdAt: Date;
+  updatedAp: Date;
+  addresses?: any[];
 }
 
 export async function POST(request: NextRequest) {
