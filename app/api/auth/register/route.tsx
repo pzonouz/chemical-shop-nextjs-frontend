@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 import prisma from "../../../../prisma/prisma";
+import { Mailer } from "@/app/utils/Mailer";
 
 export interface User {
   email: string;
@@ -9,6 +11,7 @@ export interface User {
   confirmPassword: string;
   firstName?: string;
   lastName?: string;
+  verification_token?: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -28,14 +31,23 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    const verification_token = crypto.randomBytes(16).toString("hex");
+    const emailVerificationAddress = `http://localhost:3000/api/auth/email/${verification_token}/verification`;
     const hashedPassword = await bcrypt.hash(password, 10);
     user = await prisma.user.create({
       data: {
         email: email,
         hashedPassword: hashedPassword,
+        emailVerificationToken: verification_token,
       },
     });
     if (user) {
+      const emailResponse = await Mailer.sendMail({
+        from: "Nanoshop",
+        to: user.email!,
+        subject: "Email Verification",
+        html: `<p>Click this <a href=${emailVerificationAddress}>Link</a> to verify Email.</p>`,
+      });
       return NextResponse.json({ status: 200 });
     }
     return NextResponse.json(

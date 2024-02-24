@@ -81,9 +81,7 @@ const Navbar = () => {
               {status == "authenticated" ? (
                 <>
                   <li>
-                    <Link href={`/users/${session?.user?.email}/dashboard`}>
-                      پنل کاربری
-                    </Link>
+                    <Link href={`/users/dashboard`}>پنل کاربری</Link>
                   </li>
                   <li>
                     <Link href={"/api/auth/signout"}>خروج</Link>
@@ -92,7 +90,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <li>
-                    <Link href={"/users/register"}>ثبت نام</Link>
+                    <Link href={"/register"}>ثبت نام</Link>
                   </li>
                   <li>
                     <Link href={"/api/auth/signin"}>ورود</Link>

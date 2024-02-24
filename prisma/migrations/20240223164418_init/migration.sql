@@ -29,7 +29,10 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT,
     "email" TEXT,
+    "hashedPassword" TEXT,
     "emailVerified" DATETIME,
+    "emailVerificationToken" TEXT,
+    "forgetPasswordToken" TEXT,
     "image" TEXT
 );
 

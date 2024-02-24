@@ -7,9 +7,7 @@ const UserInfoEditForm = () => {
     register,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  const onSubmit = (data: any) => {};
   return (
     <form
       className=" w-full p-4 flex flex-col gap-4"

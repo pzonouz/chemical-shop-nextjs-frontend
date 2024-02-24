@@ -8,26 +8,20 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { PiWechatLogo } from "react-icons/pi";
 import { VscSignOut } from "react-icons/vsc";
 import { FaRegEdit } from "react-icons/fa";
-import { AiFillDelete } from "react-icons/ai";
-import { MdEdit } from "react-icons/md";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import classNames from "classnames";
-
-import InputBox from "./InputBox";
-import DashboardSideBar from "../Navigation/DashboardSideBar";
-import { IconType } from "react-icons";
 import { RxDashboard } from "react-icons/rx";
 import { ReactNode, useState } from "react";
+
 import DashboardMainItem from "./DashboardMainItem";
 import UserInfoEditForm from "./UserInfoEditForm";
 import AddressEditForm from "./AddressEditForm";
 import Address from "./Address";
+import DashboardSideBar from "../Navigation/DashboardSideBar";
+import { getSession, useSession } from "next-auth/react";
 
 export interface DashboardItem {
   icon: ReactNode;
   text: string;
-  innerHTML: any;
+  innerHTML: JSX.Element | undefined;
 }
 const Dashboard = () => {
   const items: DashboardItem[] = [
@@ -109,17 +103,17 @@ const Dashboard = () => {
         </>
       ),
     },
-    { icon: <LuWallet />, text: "wallet", innerHTML: null },
-    { icon: <RiHistoryFill />, text: "orders", innerHTML: null },
+    { icon: <LuWallet />, text: "wallet", innerHTML: undefined },
+    { icon: <RiHistoryFill />, text: "orders", innerHTML: undefined },
     ,
-    { icon: <LuShoppingCart />, text: "cart", innerHTML: null },
+    { icon: <LuShoppingCart />, text: "cart", innerHTML: undefined },
     ,
-    { icon: <MdFavoriteBorder />, text: "favorites", innerHTML: null },
+    { icon: <MdFavoriteBorder />, text: "favorites", innerHTML: undefined },
     ,
-    { icon: <PiWechatLogo />, text: "tickets", innerHTML: null },
+    { icon: <PiWechatLogo />, text: "tickets", innerHTML: undefined },
     ,
-    { icon: <VscSignOut />, text: "signOut", innerHTML: null },
-  ];
+    { icon: <VscSignOut />, text: "signOut", innerHTML: undefined },
+  ] as DashboardItem[];
   const [active, setActive] = useState("dashboard");
   return (
     <div className="mt-12 p-2 flex flex-row gap-2 ">

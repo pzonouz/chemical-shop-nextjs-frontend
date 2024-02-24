@@ -8,7 +8,7 @@ import Toast from "@/app/components/utils/Toast";
 import InputBox from "@/app/components/data/InputBox";
 import { signIn } from "next-auth/react";
 
-const UserRegisterPage = () => {
+const UserRegisterPage = (props:any) => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
