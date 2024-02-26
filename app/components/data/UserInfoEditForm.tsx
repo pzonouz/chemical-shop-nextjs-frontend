@@ -31,7 +31,7 @@ const UserInfoEditForm = ({ user }: { user: User | null | undefined }) => {
       }
     } catch (error) {
       setError(true);
-      setErrorText(error?.message || "خطای ناشناخته");
+      setErrorText((error as any).message || "خطای ناشناخته");
     }
   };
   return (

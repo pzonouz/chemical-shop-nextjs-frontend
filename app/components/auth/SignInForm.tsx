@@ -5,11 +5,14 @@ import { signIn, useSession } from "next-auth/react";
 import { FieldValues, useForm } from "react-hook-form";
 import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Toast from "@/app/components/utils/Toast";
+import { useAppDispatch } from "@/lib/hooks";
+import { loggedIn } from "@/lib/features/auth/auth";
 
-const SignInForm = ({ providers }: { providers: any }) => {
+const SignInForm = () => {
+  const dispatch = useAppDispatch();
   const [error, setError] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
@@ -36,6 +39,7 @@ const SignInForm = ({ providers }: { providers: any }) => {
     });
     setLoading(false);
     if (signInResponse?.ok) {
+      dispatch(loggedIn({ email: data.email }));
       router.push("/");
     } else {
       setError(signInResponse?.error!);

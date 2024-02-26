@@ -1,9 +1,7 @@
-import { NextRequest } from "next/server";
-
 import Dashboard from "@/app/components/data/Dashboard";
 import fetchWithTokenServer from "@/app/utils/FetchWithTokenServer";
 
-const DashboardPage = async (request: NextRequest) => {
+const DashboardPage = async () => {
   try {
     const response = await fetchWithTokenServer(
       `${process.env.BACKEND_URL}/api/users/`,

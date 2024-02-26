@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Drawer from "./components/Navigation/Drawer";
 import AuthProvider from "./auth/provider";
+import StoreProvider from "./StoreProvider";
 
 const IranSans = localFont({
   src: [
@@ -63,9 +64,11 @@ export default function RootLayout({
   return (
     <html lang="en" dir="rtl" data-theme="light" className=" scroll-smooth">
       <body className={IranSans.className}>
-        <AuthProvider>
-          <Drawer>{children}</Drawer>
-        </AuthProvider>
+        <StoreProvider>
+          <AuthProvider>
+            <Drawer>{children}</Drawer>
+          </AuthProvider>
+        </StoreProvider>
       </body>
     </html>
   );

@@ -5,7 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../../prisma/prisma";
 import bcrypt from "bcrypt";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
@@ -49,7 +49,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: { signIn: "/api/auth/credential-signin" },
-  callbacks: {},
 };
 
 const handler = NextAuth(authOptions);
