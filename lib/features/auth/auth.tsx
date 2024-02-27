@@ -1,20 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-interface IUser {
-  email: string | null;
-}
+import { IUser } from "../entities/user";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {},
   reducers: {
-    signedIn(user, action) {
+    loggedIn(user, action) {
       (user as IUser).email = action.payload.email;
     },
-    signedOut(user, action) {
+    loggedOut(user, action) {
       (user as IUser).email = null;
     },
   },
 });
-export const { signedIn: loggedIn } = authSlice.actions;
+export const { loggedIn, loggedOut } = authSlice.actions;
 export default authSlice.reducer;

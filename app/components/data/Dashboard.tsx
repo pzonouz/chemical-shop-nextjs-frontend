@@ -16,14 +16,18 @@ import UserInfoEditForm from "./UserInfoEditForm";
 import AddressEditForm from "./AddressEditForm";
 import Address from "./Address";
 import DashboardSideBar from "../Navigation/DashboardSideBar";
-import { User } from "../../api/auth/register/route";
+import { useAppSelector } from "@/lib/hooks";
+import { IUser } from "@/lib/features/entities/user";
+
+// import { createSelector } from "reselect";
 
 export interface DashboardItem {
   icon: ReactNode;
   text: string;
   innerHTML: JSX.Element | undefined;
 }
-const Dashboard = ({ user }: { user: User | null | undefined }) => {
+const Dashboard = () => {
+  const user: IUser = useAppSelector((state) => state.user as IUser);
   const items: DashboardItem[] = [
     // dashboard
     {
@@ -72,7 +76,7 @@ const Dashboard = ({ user }: { user: User | null | undefined }) => {
     {
       icon: <FaRegUser />,
       text: "account",
-      innerHTML: <UserInfoEditForm user={user} />,
+      innerHTML: <UserInfoEditForm />,
     },
     {
       icon: <MdOutlineEditLocation />,

@@ -1,15 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMenuSharp } from "react-icons/io5";
 import { BsSearch } from "react-icons/bs";
 import { BsCart } from "react-icons/bs";
+import { useAppDispatch } from "@/lib/hooks";
+import { getCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
-import Email from "next-auth/providers/email";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const { status, data: session } = useSession();
+  //get session by NextAuth
+  const { data: session, status } = useSession();
+  //Redux App(main) Dispatch
+  const dispatch = useAppDispatch();
+  //get token from browser
+  const token = getCookie("next-auth.session-token");
+  const state = useSelector((state) => state);
+  //Fetch user once
+  useEffect(() => {
+    dispatch({
+      type: "userApiFetchBegan",
+      payload: { url: "http://localhost:3000/api/users", token },
+    });
+  }, [token, dispatch]);
+
   return (
     <div>
       <div className="bg-base-100 navbar">

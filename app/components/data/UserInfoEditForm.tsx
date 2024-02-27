@@ -1,22 +1,37 @@
 "use client";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import InputBox from "./InputBox";
-import { User } from "@/app/api/auth/register/route";
 import fetchWithTokenClient from "@/app/utils/FetchWithTokenClient";
 import Toast from "../utils/Toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { IUser, userInfoUpdated } from "@/lib/features/entities/user";
+import { createSelector } from "reselect";
 
-const UserInfoEditForm = ({ user }: { user: User | null | undefined }) => {
+const UserInfoEditForm = () => {
+  const dispatch = useAppDispatch();
+  const userSelector = createSelector(
+    (state) => state,
+    (state: any) => state.user
+  );
+  const user: IUser = useAppSelector(userSelector);
+
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [successText, setSuccessText] = useState("");
   const [success, setSuccess] = useState(false);
   const [isLoading, setLoading] = useState(false);
+
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues: user! });
+  useEffect(() => {
+    //For updating form data after state update, default values caches at first render and must change by reset after state cha
+    reset(user);
+  }, [user, reset]);
   const userFormSubmit = async (data: any) => {
     try {
       setLoading(true);
@@ -27,6 +42,7 @@ const UserInfoEditForm = ({ user }: { user: User | null | undefined }) => {
         throw new Error(error?.name);
       } else {
         setSuccess(true);
+        dispatch(userInfoUpdated(data));
         setSuccessText("با موفقیت انجام شد");
       }
     } catch (error) {
