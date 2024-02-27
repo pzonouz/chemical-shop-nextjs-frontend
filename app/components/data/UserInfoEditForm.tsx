@@ -2,11 +2,11 @@
 import { useForm } from "react-hook-form";
 import InputBox from "./InputBox";
 import fetchWithTokenClient from "@/app/utils/FetchWithTokenClient";
-import Toast from "../utils/Toast";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { IUser, userInfoUpdated } from "@/lib/features/entities/user";
 import { createSelector } from "reselect";
+import { toast } from "react-toastify";
 
 const UserInfoEditForm = () => {
   const dispatch = useAppDispatch();
@@ -16,10 +16,6 @@ const UserInfoEditForm = () => {
   );
   const user: IUser = useAppSelector(userSelector);
 
-  const [error, setError] = useState(false);
-  const [errorText, setErrorText] = useState("");
-  const [successText, setSuccessText] = useState("");
-  const [success, setSuccess] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
   const {
@@ -41,13 +37,13 @@ const UserInfoEditForm = () => {
         const { error } = await response.json();
         throw new Error(error?.name);
       } else {
-        setSuccess(true);
         dispatch(userInfoUpdated(data));
-        setSuccessText("با موفقیت انجام شد");
+        toast.success("با موفقیت انجام شد", { position: "top-center" });
       }
     } catch (error) {
-      setError(true);
-      setErrorText((error as any).message || "خطای ناشناخته");
+      toast.error((error as any).message || "خطای ناشناخته", {
+        position: "top-center",
+      });
     }
   };
   return (
@@ -82,18 +78,6 @@ const UserInfoEditForm = () => {
           <span className=" loading loading-spinner absolute right-1/3"></span>
         )}
       </button>
-      <Toast
-        state={error}
-        stateSetter={setError}
-        text={errorText}
-        type="error"
-      />
-      <Toast
-        state={success}
-        stateSetter={setSuccess}
-        text={successText}
-        type="success"
-      />
     </form>
   );
 };
