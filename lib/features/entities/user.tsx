@@ -4,6 +4,7 @@ export interface IUser {
   firstName: string;
   lastName: string;
   createdAt: string;
+  mobile: string;
   addresses: { address: string }[];
 }
 
@@ -15,11 +16,12 @@ const userSlice = createSlice({
       (user as IUser).email = action.payload.email;
       (user as IUser).firstName = action.payload.firstName;
       (user as IUser).lastName = action.payload.lastName;
+      (user as IUser).mobile = action.payload.mobile;
     },
     userInfoUpdated(user, action) {
       (user as IUser).email = action.payload.email;
       (user as IUser).firstName = action.payload.firstName;
-      (user as IUser).lastName = action.payload.lastName;
+      (user as IUser).mobile = action.payload.mobile;
     },
   },
 });

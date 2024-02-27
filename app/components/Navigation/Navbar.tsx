@@ -17,12 +17,11 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   //get token from browser
   const token = getCookie("next-auth.session-token");
-  const state = useSelector((state) => state);
   //Fetch user once
   useEffect(() => {
     dispatch({
       type: "userApiFetchBegan",
-      payload: { url: "http://localhost:3000/api/users", token },
+      payload: { url: "/api/users", token },
     });
   }, [token, dispatch]);
 

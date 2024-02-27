@@ -57,6 +57,10 @@ const Dashboard = () => {
             <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
               <p>ایمیل:</p>
               <p> {user?.email}</p>
+            </div>{" "}
+            <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
+              <p>موبایل :</p>
+              <p> {user?.mobile}</p>
             </div>
             <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
               <p>تاریخ عضویت:</p>
