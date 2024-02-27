@@ -13,15 +13,14 @@ const userSlice = createSlice({
   initialState: {},
   reducers: {
     userInfoFetched(user, action) {
-      (user as IUser).email = action.payload.email;
-      (user as IUser).firstName = action.payload.firstName;
-      (user as IUser).lastName = action.payload.lastName;
-      (user as IUser).mobile = action.payload.mobile;
+      user = Object.keys(action.payload).map((key) => {
+        (user as any)[key] = action.payload[key];
+      });
     },
     userInfoUpdated(user, action) {
-      (user as IUser).email = action.payload.email;
-      (user as IUser).firstName = action.payload.firstName;
-      (user as IUser).mobile = action.payload.mobile;
+      user = Object.keys(action.payload).map((key) => {
+        (user as any)[key] = action.payload[key];
+      });
     },
   },
 });
