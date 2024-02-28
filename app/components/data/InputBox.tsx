@@ -13,22 +13,20 @@ interface InputBoxProps {
 
 const InputBox = ({ name, errors, registerFn, type, text }: InputBoxProps) => {
   return (
-    <div className="">
-      <label
-        className={`input input-bordered flex items-center gap-2 w-full
+    <label
+      className={`input input-bordered flex items-center gap-2 w-full
         ${errors[name] ? "text-error border-error" : null}`}
-      >
-        {name === "email" ? <MdAlternateEmail /> : null}
-        {name === "password" ? <RiLockPasswordFill /> : null}
-        {name === "confirmPassword" ? <RiLockPasswordFill /> : null}
-        <input
-          type={type}
-          className=""
-          placeholder={text}
-          {...registerFn(name)}
-        />
-      </label>
-    </div>
+    >
+      {name === "email" ? <MdAlternateEmail /> : null}
+      {name === "password" ? <RiLockPasswordFill /> : null}
+      {name === "confirmPassword" ? <RiLockPasswordFill /> : null}
+      <input
+        type={type}
+        className=""
+        placeholder={text}
+        {...registerFn(name)}
+      />
+    </label>
   );
 };
 
