@@ -11,18 +11,18 @@ export async function POST(request: NextRequest) {
     const file: File | null = data.get("file") as File;
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const images_path = "/public/images/";
+    const images_path = "/public/media/";
     const fileName = crypto.randomBytes(16).toString("hex");
     const extension = file.name.split(".")[1];
     const path = join(process.cwd() + images_path + fileName + "." + extension);
     await writeFile(path, buffer);
     return NextResponse.json(
       {
-        path: request.nextUrl.origin + "/images/" + fileName + "." + extension,
+        path: request.nextUrl.origin + "/media/" + fileName + "." + extension,
       },
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json( error , { status: 400 });
+    return NextResponse.json(error, { status: 400 });
   }
 }
