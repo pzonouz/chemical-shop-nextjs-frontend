@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { IoMenuSharp } from "react-icons/io5";
+import { FaBars } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
 import { BsCart } from "react-icons/bs";
 import { useAppDispatch } from "@/lib/hooks";
@@ -20,7 +20,7 @@ const Navbar = () => {
   //Fetch user once
   useEffect(() => {
     dispatch({
-      type: "userApiFetchBegan",
+      type: "apiFetchBegan",
       payload: { url: "/api/users", token },
     });
   }, [token, dispatch]);
@@ -28,12 +28,25 @@ const Navbar = () => {
   return (
     <div>
       <div className="bg-base-100 navbar">
-        <label
-          htmlFor="my-drawer-4"
-          className="text-2xl hover:text-primary cursor-pointer flex-auto"
-        >
-          <IoMenuSharp />
-        </label>
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <FaBars className="text-2xl" />
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li>
+              <a>Homepage</a>
+            </li>
+            <li>
+              <a>Portfolio</a>
+            </li>
+            <li>
+              <a>About</a>
+            </li>
+          </ul>
+        </div>
         <div className="flex-auto">
           <Link href="/" className="btn btn-ghost text-xl">
             نانو شاپ

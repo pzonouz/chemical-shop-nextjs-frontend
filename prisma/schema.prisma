@@ -54,7 +54,7 @@ model User {
   favorite               Favorite?
   accounts               Account[]
   sessions               Session[]
-  addresses              Address[]
+  address                String?
   favoriteId             String?
 }
 
@@ -76,16 +76,16 @@ model Product {
   updatedAt  DateTime? @updatedAt
 }
 
-model Address {
-  id        String    @id @default(uuid())
-  state     String
-  city      String
-  address   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  User      User?     @relation(fields: [userId], references: [id])
-  userId    String?
-}
+// model Address {
+//   id        String    @id @default(uuid())
+//   state     String
+//   city      String
+//   address   String
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime? @updatedAt
+//   User      User?     @relation(fields: [userId], references: [id])
+//   userId    String?
+// }
 
 model VerificationToken {
   identifier String

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { User } from "../auth/register/route";
 import prisma from "../../../prisma/prisma";
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         email: true,
         mobile: true,
         createdAt: true,
-        updatedAt: true,
+        address: true,
       },
     });
     return NextResponse.json(user, { status: 200 });

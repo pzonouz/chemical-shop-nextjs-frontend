@@ -13,7 +13,7 @@ import { ReactNode, useState } from "react";
 
 import DashboardMainItem from "./DashboardMainItem";
 import UserInfoEditForm from "./UserInfoEditForm";
-import AddressEditForm from "./AddressEditForm";
+import AddressInsertForm from "./AddressInsertForm";
 import Address from "./Address";
 import DashboardSideBar from "../Navigation/DashboardSideBar";
 import { useAppSelector } from "@/lib/hooks";
@@ -63,14 +63,12 @@ const Dashboard = () => {
               <p> {user?.mobile}</p>
             </div>
             <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
-              <p>تاریخ عضویت:</p>
+              <p> تاریخ عضویت:</p>
               <p> {user?.createdAt?.toString()}</p>
             </div>
             <div className=" flex flex-row gap-2 p-1 items-center justify-between">
               <p>آدرس:</p>
-              {user?.addresses && (
-                <p className=" text-sm">{user?.addresses[0].address}</p>
-              )}
+              {user?.address && <p className=" text-sm">{user?.address}</p>}
             </div>
           </div>
         </>
@@ -82,36 +80,37 @@ const Dashboard = () => {
       text: "account",
       innerHTML: <UserInfoEditForm />,
     },
-    {
-      icon: <MdOutlineEditLocation />,
-      text: "address",
-      innerHTML: (
-        <>
-          <div className=" flex items-center justify-between border-b-[2px] py-2">
-            <p>آدرس های من</p>
-            <p
-              className="text-xs text-error cursor-pointer"
-              onClick={() =>
-                (
-                  document.getElementById("my_modal_2") as HTMLFormElement
-                ).showModal()
-              }
-            >
-              + ثبت آدرس جدید
-            </p>
-          </div>
-          <dialog id="my_modal_2" className="modal">
-            <div className="modal-box">
-              <AddressEditForm data={null} />
-            </div>
-            <form method="dialog" className="modal-backdrop">
-              <button>close</button>
-            </form>
-          </dialog>
-          <Address />
-        </>
-      ),
-    },
+    //address
+    // {
+    //   icon: <MdOutlineEditLocation />,
+    //   text: "address",
+    //   innerHTML: (
+    //     <>
+    //       <div className=" flex items-center justify-between border-b-[2px] py-2">
+    //         <p>آدرس های من</p>
+    //         <p
+    //           className="text-xs text-error cursor-pointer"
+    //           onClick={() =>
+    //             (
+    //               document.getElementById("my_modal_2") as HTMLFormElement
+    //             ).showModal()
+    //           }
+    //         >
+    //           + ثبت آدرس جدید
+    //         </p>
+    //       </div>
+    //       <dialog id="my_modal_2" className="modal">
+    //         <div className="modal-box">
+    //           <AddressInsertForm />
+    //         </div>
+    //         <form method="dialog" className="modal-backdrop">
+    //           <button>close</button>
+    //         </form>
+    //       </dialog>
+    //       <Address />
+    //     </>
+    //   ),
+    // },
     { icon: <LuWallet />, text: "wallet", innerHTML: undefined },
     { icon: <RiHistoryFill />, text: "orders", innerHTML: undefined },
     ,

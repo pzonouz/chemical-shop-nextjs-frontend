@@ -4,7 +4,7 @@ import InputBox from "./InputBox";
 import fetchWithTokenClient from "@/app/utils/FetchWithTokenClient";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { IUser, userInfoUpdated } from "@/lib/features/entities/user";
+import { IUser, userInfoFetched } from "@/lib/features/entities/user";
 import { createSelector } from "reselect";
 import { toast } from "react-toastify";
 
@@ -23,10 +23,24 @@ const UserInfoEditForm = () => {
     register,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: user! });
+  } = useForm({
+    defaultValues: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      mobile: user.mobile,
+      email: user.email,
+      address: user.address,
+    },
+  });
   useEffect(() => {
     //For updating form data after state update, default values caches at first render and must change by reset after state cha
-    reset(user);
+    reset({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      mobile: user.mobile,
+      email: user.email,
+      address: user.address,
+    });
   }, [user, reset]);
   const userFormSubmit = async (data: any) => {
     try {
@@ -37,7 +51,7 @@ const UserInfoEditForm = () => {
         const { error } = await response.json();
         throw new Error(error?.name);
       } else {
-        dispatch(userInfoUpdated(data));
+        dispatch(userInfoFetched(data));
         toast.success("با موفقیت انجام شد", { position: "top-center" });
       }
     } catch (error) {
@@ -72,6 +86,11 @@ const UserInfoEditForm = () => {
         type="text"
         text="موبایل"
       />
+      <textarea
+        className="textarea textarea-bordered"
+        placeholder="آدرس"
+        {...register("address")}
+      ></textarea>
       <button className=" btn btn-primary relative">
         ثبت
         {isLoading && (

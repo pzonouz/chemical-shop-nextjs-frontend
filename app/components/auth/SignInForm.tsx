@@ -7,13 +7,12 @@ import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Toast from "@/app/components/utils/Toast";
 import { useAppDispatch } from "@/lib/hooks";
 import { loggedIn } from "@/lib/features/auth/auth";
+import { toast } from "react-toastify";
 
 const SignInForm = () => {
   const dispatch = useAppDispatch();
-  const [error, setError] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const { status } = useSession();
@@ -42,7 +41,9 @@ const SignInForm = () => {
       dispatch(loggedIn({ email: data.email }));
       router.push("/");
     } else {
-      setError(signInResponse?.error!);
+      toast.error("نام کاربری و پسورد مطابقت ندارد", {
+        position: "top-center",
+      });
     }
   };
   return (
@@ -86,12 +87,6 @@ const SignInForm = () => {
             <span className="loading loading-spinner absolute right-1/3"></span>
           )}
         </button>
-        <Toast
-          state={error}
-          stateSetter={setError}
-          text="نام کاربری و پسورد مطابقت ندارد"
-          type="error"
-        />
       </form>
     </div>
   );

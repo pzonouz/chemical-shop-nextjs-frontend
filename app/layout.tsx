@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { headers } from "next/headers";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";

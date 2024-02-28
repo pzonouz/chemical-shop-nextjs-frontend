@@ -5,13 +5,13 @@ const api =
   ({ dispatch }: { dispatch: any }) =>
   (next: any) =>
   async (action: any) => {
-    if (action.type !== "userApiFetchBegan") {
+    if (action.type !== "apiFetchBegan") {
       return next(action);
     }
     next(action);
     try {
       const { url, token } = action.payload;
-      const res = await fetchWithToken(url, "POST", token);
+      const res = await fetchWithToken(url, "GET", token);
       if (!res.ok) {
         throw new Error((res as any).error);
       }

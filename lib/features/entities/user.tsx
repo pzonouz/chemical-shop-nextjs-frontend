@@ -1,3 +1,4 @@
+import { objectCopy } from "@/app/utils/CopyObject";
 import { createAction, createSlice } from "@reduxjs/toolkit";
 export interface IUser {
   email: string | null;
@@ -5,7 +6,7 @@ export interface IUser {
   lastName: string;
   createdAt: string;
   mobile: string;
-  addresses: { address: string }[];
+  address: string;
 }
 
 const userSlice = createSlice({
@@ -13,18 +14,11 @@ const userSlice = createSlice({
   initialState: {},
   reducers: {
     userInfoFetched(user, action) {
-      user = Object.keys(action.payload).map((key) => {
-        (user as any)[key] = action.payload[key];
-      });
-    },
-    userInfoUpdated(user, action) {
-      user = Object.keys(action.payload).map((key) => {
-        (user as any)[key] = action.payload[key];
-      });
+      objectCopy(action.payload, user);
     },
   },
 });
 
-export const fetchUser = createAction("userApiFetchBegan");
-export const { userInfoFetched, userInfoUpdated } = userSlice.actions;
+export const fetchUser = createAction("apiFetchBegan");
+export const { userInfoFetched } = userSlice.actions;
 export default userSlice.reducer;

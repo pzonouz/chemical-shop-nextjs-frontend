@@ -1,8 +1,11 @@
+import fetchWithTokenClient from "@/app/utils/FetchWithTokenClient";
 import React from "react";
 import { useForm } from "react-hook-form";
 
 const AddressEditForm = () => {
-  const onFormSubmit = (data: any) => {};
+  const onFormSubmit = async (data: any) => {
+    const res = await fetchWithTokenClient("/api/addresses", "POST", data);
+  };
   const {
     handleSubmit,
     register,
