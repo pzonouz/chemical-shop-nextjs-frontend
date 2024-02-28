@@ -1,8 +1,16 @@
 "use client";
 import { useForm } from "react-hook-form";
-import InputBox from "../data/InputBox";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import InputBox from "../data/InputBox";
+
+const schema = z.object({
+  productName: z.string().min(1),
+  price: z.string().min(1),
+});
 
 const AdminProductForm = () => {
   const [file, setFile] = useState<File>();
@@ -21,7 +29,7 @@ const AdminProductForm = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: any) => {
     //remove thousand separator mask(,)
@@ -64,7 +72,7 @@ const AdminProductForm = () => {
   }, [numberValue]);
   return (
     <form
-      className=" flex flex-col items-center justify-between gap-2"
+      className=" flex flex-col items-start justify-between gap-2"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input {...register("uploadedImageLink")} hidden type="text" />
@@ -75,6 +83,9 @@ const AdminProductForm = () => {
         registerFn={register}
         text="نام محصول را وارد کنید"
       />
+      {errors["productName"] ? (
+        <p className=" text-error text-sx">نام محصول را وارد کنید</p>
+      ) : null}
       <input
         className="input input-bordered flex items-center gap-2 w-full"
         name="price"
@@ -83,6 +94,9 @@ const AdminProductForm = () => {
         onInput={numberHandleChange}
         placeholder="قیمت را وارد کنید"
       />
+      {errors["productName"] ? (
+        <p className=" text-error text-sm">قیمت محصول را وارد کنید</p>
+      ) : null}
 
       <input
         type="file"
