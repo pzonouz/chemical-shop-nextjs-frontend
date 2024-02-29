@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import InputBox from "../data/InputBox";
+import OneFileUploader from "./OneFileUploader";
 
 const schema = z.object({
   productName: z.string().min(1),
@@ -13,9 +14,8 @@ const schema = z.object({
 });
 
 const AdminProductForm = () => {
-  const [file, setFile] = useState<File>();
   const [uploadedImageLink, setUploadedImageLink] = useState(null);
-  const [numberValue, setNumberValue] = useState(null);
+  const [numberValue, setNumberValue] = useState(undefined);
 
   //mask with thousand separator
   const addCommas = (num: any) =>
@@ -36,31 +36,7 @@ const AdminProductForm = () => {
     data = { ...data, price: (data.price as string).replaceAll(",", "") };
     console.log(data);
   };
-  const onFileUpload = async () => {
-    try {
-      const fileData = new FormData();
-      if (!file) {
-        return;
-      }
-      fileData.set("file", file!);
-      const res = await fetch("/admin/api/images", {
-        method: "POST",
-        body: fileData,
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.code);
-        throw new Error(data.code);
-      }
-      setUploadedImageLink(data.path);
-      toast.success("موفق");
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  };
-  useEffect(() => {
-    onFileUpload();
-  }, [file]);
+
   //update uploadedImageLink value
   useEffect(() => {
     setValue("uploadedImageLink", uploadedImageLink);
@@ -97,24 +73,10 @@ const AdminProductForm = () => {
       {errors["productName"] ? (
         <p className=" text-error text-sm">قیمت محصول را وارد کنید</p>
       ) : null}
-
-      <input
-        type="file"
-        className="file-input file-input-bordered max-w-xs w-full"
-        onChange={(e) => {
-          setFile(e.target.files![0]);
-        }}
+      <OneFileUploader
+        uploadedImageLink={uploadedImageLink}
+        uploadedImageLinkSetter={setUploadedImageLink}
       />
-      {uploadedImageLink && (
-        <a
-          href={uploadedImageLink}
-          target="_blank"
-          className=" link hover:link-hover"
-        >
-          مشاهده عکس
-        </a>
-      )}
-
       <button className="btn btn-primary w-full">ثبت</button>
     </form>
   );
