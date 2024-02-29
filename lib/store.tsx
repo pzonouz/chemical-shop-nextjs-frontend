@@ -1,11 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/auth";
 import userReducer from "./features/entities/user";
+import categoriesReducer from "./features/entities/categories";
 import { api } from "./middlewares/api";
 
 export const makeStore = () => {
   return configureStore({
-    reducer: combineReducers({ auth: authReducer, user: userReducer }),
+    reducer: combineReducers({
+      auth: authReducer,
+      user: userReducer,
+      categories: categoriesReducer,
+    }),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api),
   });
 };

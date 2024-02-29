@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev-server": "npm-run-all --parallel dev-server precompile-routes",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

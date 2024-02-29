@@ -13,6 +13,7 @@ const fetchWithTokenServer = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${token!.value}`,
     },
+    body: JSON.stringify(data),
   });
 };
 

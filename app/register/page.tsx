@@ -4,13 +4,13 @@ import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import Toast from "@/app/components/utils/Toast";
 import InputBox from "@/app/components/data/InputBox";
 import { signIn } from "next-auth/react";
+import { toast } from "react-toastify";
+import { showError } from "../utils/ShowError";
 
 const UserRegisterPage = (props: any) => {
   const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const schema: ZodSchema = z
@@ -28,7 +28,6 @@ const UserRegisterPage = (props: any) => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FieldValues) => {
-    setError(null);
     try {
       setLoading(true);
       const response = await fetch("/api/auth/register", {
@@ -45,10 +44,7 @@ const UserRegisterPage = (props: any) => {
       router.push("/");
     } catch (err: unknown) {
       setLoading(false);
-      if (typeof err === "string") setError(err);
-      if (err instanceof Error) {
-        setError(err.message);
-      }
+      showError(err);
     }
   };
   return (
@@ -98,12 +94,6 @@ const UserRegisterPage = (props: any) => {
           )}
           ثبت
         </button>
-        <Toast
-          state={error}
-          stateSetter={setError}
-          text={error!}
-          type="error"
-        />
       </form>
     </div>
   );

@@ -38,7 +38,7 @@ model Session {
 }
 
 model User {
-  id                     String    @id @default(uuid())
+  id                     String    @id @default(cuid())
   name                   String?
   firstName              String?
   lastName               String?
@@ -51,15 +51,15 @@ model User {
   emailVerificationToken String?
   forgetPasswordToken    String?
   image                  String?
+  address                String?
   favorite               Favorite?
+  favoriteId             String?
   accounts               Account[]
   sessions               Session[]
-  address                String?
-  favoriteId             String?
 }
 
 model Favorite {
-  id        String    @id @default(uuid())
+  id        String    @id @default(cuid())
   user      User      @relation(fields: [userId], references: [id])
   userId    String    @unique
   products  Product[]
@@ -68,16 +68,26 @@ model Favorite {
 }
 
 model Product {
-  id         String    @id @default(uuid())
+  id         String    @id @default(cuid())
   name       String?
-  Favorite   Favorite? @relation(fields: [favoriteId], references: [id])
+  image      String?
+  favorite   Favorite? @relation(fields: [favoriteId], references: [id])
   favoriteId String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @updatedAt
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  image    String?
+  products Product[]
 }
 
 // model Address {
-//   id        String    @id @default(uuid())
+//   id        String    @id @default(cuid())
 //   state     String
 //   city      String
 //   address   String

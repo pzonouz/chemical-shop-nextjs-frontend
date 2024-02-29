@@ -10,7 +10,7 @@ export interface IUser {
 }
 
 const userSlice = createSlice({
-  name: "users",
+  name: "user",
   initialState: {},
   reducers: {
     userInfoFetched(user, action) {

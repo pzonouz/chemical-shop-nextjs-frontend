@@ -1,3 +1,4 @@
+import { showError } from "@/app/utils/ShowError";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -22,13 +23,13 @@ const OneFileUploader = ({
       });
       const data = await res.json();
       if (!res.ok) {
-        console.log(data.code);
         throw new Error(data.code);
       }
       uploadedImageLinkSetter(data.path);
       toast.success("موفق");
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      // toast.error(error.message);
+      showError(error);
     }
   };
   useEffect(() => {
