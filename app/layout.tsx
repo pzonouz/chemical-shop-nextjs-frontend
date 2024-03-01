@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { headers } from "next/headers";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import Drawer from "./components/Navigation/Drawer";
 import AuthProvider from "./auth/provider";
 import StoreProvider from "./StoreProvider";
 import ToastProvider from "./providers/toast.provider";

@@ -20,7 +20,7 @@ const Navbar = () => {
   //Fetch user once
   useEffect(() => {
     dispatch({
-      type: "apiFetchBegan",
+      type: "userApiFetchBegan",
       payload: { url: "/api/users", token },
     });
   }, [token, dispatch]);

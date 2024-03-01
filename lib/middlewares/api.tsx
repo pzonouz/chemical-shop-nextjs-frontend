@@ -25,9 +25,9 @@ const api =
         const user = await res.json();
         dispatch(userInfoFetched(user));
       } catch (error) {
-        if (error instanceof Error) {
-          toast.error("خطا در دریافت اطلاعات کاربر", { position: "top-right" });
-        }
+        // if (error instanceof Error) {
+        //   toast.error("خطا در دریافت اطلاعات کاربر", { position: "top-right" });
+        // }
       }
     }
     if (action.type === "categoriesGetApiFetchBegan") {
@@ -48,12 +48,14 @@ const api =
     if (action.type === "categoryDeleteApiBegan") {
       next(action);
       try {
+        dispatch(setLoading());
         const res = await fetchWithToken(
           `/admin/api/categories/${action.payload}`,
           "DELETE",
           action.payload.token
         );
         const responseData = await res.json();
+        dispatch(unsetLoading());
         if (!res.ok) {
           throw new Error(responseData.error);
         }
@@ -86,6 +88,7 @@ const api =
     if (action.type === "categoryUpdateApiFetchBegan") {
       next(action);
       try {
+        dispatch(setLoading());
         const res = await fetchWithToken(
           `/admin/api/categories/${action.payload.id}`,
           "PATCH",
@@ -93,6 +96,7 @@ const api =
           action.payload.data
         );
         const responseData = await res.json();
+        dispatch(unsetLoading());
         if (!res.ok) {
           throw new Error(responseData);
         }

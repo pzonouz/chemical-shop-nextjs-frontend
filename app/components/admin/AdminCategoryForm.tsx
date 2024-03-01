@@ -14,7 +14,7 @@ const AdminCategoryForm = ({
   category: Category | null | undefined;
 }) => {
   const dispatch = useAppDispatch();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(category?.image || "");
 
   const schema = z.object({
     name: z.string().min(1),
@@ -23,6 +23,7 @@ const AdminCategoryForm = ({
   const {
     handleSubmit,
     register,
+    reset,
     setValue,
     formState: { errors },
   } = useForm({
@@ -40,12 +41,14 @@ const AdminCategoryForm = ({
       });
     } else {
       dispatch({ type: "categoryCreateApiFetchBegan", payload: data });
+      reset();
+      setImage("");
     }
   };
 
   return (
     <form
-      className="flex flex-col gap-2 items-start"
+      className="flex flex-col gap-2 items-start p-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input {...register("image")} hidden />

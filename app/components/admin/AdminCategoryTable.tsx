@@ -5,6 +5,7 @@ import { useState } from "react";
 import { RiEdit2Line } from "react-icons/ri";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import AdminCategoryForm from "./AdminCategoryForm";
+import classNames from "classnames";
 
 export interface Category {
   id?: string;
@@ -32,7 +33,7 @@ const AdminCategoryTable = () => {
         </thead>
         <tbody>
           {categories?.map((category: Category) => (
-            <div key={category?.name}>
+            <>
               <tr className="flex bg-base-200 w-full justify-between items-center">
                 <td>{category?.name} </td>
                 <td>
@@ -44,8 +45,18 @@ const AdminCategoryTable = () => {
                 </td>
                 <td className=" flex gap-4 items-center">
                   <RiEdit2Line
-                    className="text-xl text-info cursor-pointer"
-                    onClick={() => setEditVisible(category?.id!)}
+                    className={classNames({
+                      "text-xl text-info cursor-pointer": true,
+                      "bg-error": editVisible === category?.id,
+                    })}
+                    onClick={() => {
+                      if (editVisible === category?.id!) {
+                        setEditVisible("");
+                      }
+                      if (editVisible !== category?.id!) {
+                        setEditVisible(category?.id!);
+                      }
+                    }}
                   />
                   <RiDeleteBin2Line
                     className="text-xl text-error cursor-pointer"
@@ -59,9 +70,13 @@ const AdminCategoryTable = () => {
                 </td>
               </tr>
               {editVisible === category.id && (
-                <AdminCategoryForm category={category} />
+                <tr className=" w-full">
+                  <td className="w-full">
+                    <AdminCategoryForm category={category} />
+                  </td>
+                </tr>
               )}
-            </div>
+            </>
           ))}
         </tbody>
       </table>

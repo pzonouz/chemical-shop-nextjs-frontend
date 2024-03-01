@@ -22,7 +22,7 @@ export default function CategoriesPage() {
           onClick={() => setVisible(false)}
         />
       )}
-      {visible && <AdminCategoryForm />}
+      {visible && <AdminCategoryForm category={null} />}
       <AdminCategoryTable />
     </div>
   );

@@ -1,5 +1,8 @@
 import { showError } from "@/app/utils/ShowError";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 import { useEffect, useState } from "react";
+import { AiFillCloseCircle } from "react-icons/ai";
 import { toast } from "react-toastify";
 
 const OneFileUploader = ({
@@ -9,6 +12,7 @@ const OneFileUploader = ({
   uploadedImageLinkSetter: any;
   uploadedImageLink: any;
 }) => {
+  const dispatch = useAppDispatch();
   const [file, setFile] = useState<File>();
   const onFileUpload = async () => {
     try {
@@ -17,18 +21,18 @@ const OneFileUploader = ({
         return;
       }
       fileData.set("file", file!);
+      dispatch(setLoading());
       const res = await fetch("/admin/api/images", {
         method: "POST",
         body: fileData,
       });
       const data = await res.json();
+      dispatch(unsetLoading());
       if (!res.ok) {
         throw new Error(data.code);
       }
       uploadedImageLinkSetter(data.path);
-      toast.success("موفق");
     } catch (error: unknown) {
-      // toast.error(error.message);
       showError(error);
     }
   };
@@ -46,13 +50,21 @@ const OneFileUploader = ({
         }}
       />
       {uploadedImageLink && (
-        <a
-          href={uploadedImageLink}
-          target="_blank"
-          className=" link hover:link-hover"
-        >
-          مشاهده عکس
-        </a>
+        <div className=" flex gap-2 items-center">
+          <AiFillCloseCircle
+            className="text-error text-xl cursor-pointer"
+            onClick={() => {
+              uploadedImageLinkSetter(undefined);
+            }}
+          />
+          <a
+            href={uploadedImageLink}
+            target="_blank"
+            className=" link hover:link-hover"
+          >
+            مشاهده عکس
+          </a>
+        </div>
       )}
     </>
   );
