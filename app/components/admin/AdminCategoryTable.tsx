@@ -39,7 +39,9 @@ const AdminCategoryTable = () => {
                 <td>
                   <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
-                      <img src={category.image} alt={category.name} />
+                      {category.image && (
+                        <img src={category.image} alt={category.name} />
+                      )}
                     </div>
                   </div>
                 </td>

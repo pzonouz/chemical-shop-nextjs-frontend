@@ -49,6 +49,17 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   pages: { signIn: "/api/auth/credential-signin" },
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) token.role = (user as any).role;
+      return token;
+    },
+    session({ session, token }) {
+      // @ts-ignore
+      session!.user!.role = token.role;
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

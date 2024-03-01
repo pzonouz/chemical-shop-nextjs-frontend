@@ -9,8 +9,12 @@ import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
+import { useSession } from "next-auth/react";
 
 const AdminMenu = () => {
+  // const { data: session, status } = useSession();
+  // if (session?.user?.role !== "admin") {
+  // }
   const dispatch = useAppDispatch();
   const [active, setActive] = useState("");
   const path = usePathname();
@@ -32,7 +36,7 @@ const AdminMenu = () => {
   }, [path]);
   useEffect(() => {
     dispatch({ type: "categoriesGetApiFetchBegan" });
-  }, []);
+  }, [dispatch]);
 
   return (
     <ul className="menu bg-base-200 rounded-box w-fit text-2xl p-2 gap-2 flex flex-col my-auto">

@@ -7,6 +7,7 @@ export interface IUser {
   createdAt: string;
   mobile: string;
   address: string;
+  role: string;
 }
 
 const userSlice = createSlice({

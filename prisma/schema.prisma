@@ -54,6 +54,7 @@ model User {
   address                String?
   favorite               Favorite?
   favoriteId             String?
+  role                   String?   @default("user")
   accounts               Account[]
   sessions               Session[]
 }
