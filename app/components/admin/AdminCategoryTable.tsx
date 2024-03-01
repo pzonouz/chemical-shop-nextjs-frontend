@@ -47,7 +47,7 @@ const AdminCategoryTable = () => {
                   className="text-xl text-error cursor-pointer"
                   onClick={() => {
                     setCategoryToDelete(category?.name);
-                    document?.getElementById("my_modal_5")?.showModal();
+                    (document.getElementById("my_modal_5") as any)?.showModal();
                   }}
                 />
               </td>

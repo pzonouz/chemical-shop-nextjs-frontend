@@ -1,8 +1,10 @@
+import { Category } from "@/app/components/admin/AdminCategoryTable";
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState: Category[] = [];
 const categorySlice = createSlice({
   name: "categories",
-  initialState: [],
+  initialState: initialState,
   reducers: {
     categoriesFetched: (categories, action) => {
       categories.push(...action.payload);
