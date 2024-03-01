@@ -6,7 +6,9 @@ import {
   categoriesFetched,
   categoryCreated,
   categoryDeleted,
+  categoryUpdated,
 } from "../features/entities/categories";
+import { setLoading, unsetLoading } from "../features/utils/loading";
 
 const api =
   ({ dispatch }: { dispatch: any }) =>
@@ -31,8 +33,10 @@ const api =
     if (action.type === "categoriesGetApiFetchBegan") {
       next(action);
       try {
+        dispatch(setLoading());
         const res = await fetch("/api/categories");
         const responseData = await res.json();
+        dispatch(unsetLoading());
         if (!res.ok) {
           throw new Error(responseData.error);
         }
@@ -75,6 +79,25 @@ const api =
         }
         toast.success("با موفقیت انجام شد");
         dispatch(categoryCreated(action.payload));
+      } catch (err: unknown) {
+        showError(err);
+      }
+    }
+    if (action.type === "categoryUpdateApiFetchBegan") {
+      next(action);
+      try {
+        const res = await fetchWithToken(
+          `/admin/api/categories/${action.payload.id}`,
+          "PATCH",
+          "",
+          action.payload.data
+        );
+        const responseData = await res.json();
+        if (!res.ok) {
+          throw new Error(responseData);
+        }
+        toast.success("با موفقیت انجام شد");
+        dispatch(categoryUpdated(action.payload));
       } catch (err: unknown) {
         showError(err);
       }

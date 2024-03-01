@@ -4,14 +4,17 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useState } from "react";
 import { RiEdit2Line } from "react-icons/ri";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import AdminCategoryForm from "./AdminCategoryForm";
 
 export interface Category {
+  id?: string;
   name: string;
   image: string;
 }
 const AdminCategoryTable = () => {
   const dispatch = useAppDispatch();
   const [categoryToDelete, setCategoryToDelete] = useState("");
+  const [editVisible, setEditVisible] = useState("");
   const deleteCategory = () => {
     dispatch({ type: "categoryDeleteApiBegan", payload: categoryToDelete });
   };
@@ -29,29 +32,36 @@ const AdminCategoryTable = () => {
         </thead>
         <tbody>
           {categories?.map((category: Category) => (
-            <tr
-              key={category?.name}
-              className="flex bg-base-200 w-full justify-between items-center"
-            >
-              <td>{category?.name} </td>
-              <td>
-                <div className="avatar">
-                  <div className="mask mask-squircle w-12 h-12">
-                    <img src={category.image} alt={category.name} />
+            <div key={category?.name}>
+              <tr className="flex bg-base-200 w-full justify-between items-center">
+                <td>{category?.name} </td>
+                <td>
+                  <div className="avatar">
+                    <div className="mask mask-squircle w-12 h-12">
+                      <img src={category.image} alt={category.name} />
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td className=" flex gap-4 items-center">
-                <RiEdit2Line className="text-xl text-info cursor-pointer" />
-                <RiDeleteBin2Line
-                  className="text-xl text-error cursor-pointer"
-                  onClick={() => {
-                    setCategoryToDelete(category?.name);
-                    (document.getElementById("my_modal_5") as any)?.showModal();
-                  }}
-                />
-              </td>
-            </tr>
+                </td>
+                <td className=" flex gap-4 items-center">
+                  <RiEdit2Line
+                    className="text-xl text-info cursor-pointer"
+                    onClick={() => setEditVisible(category?.id!)}
+                  />
+                  <RiDeleteBin2Line
+                    className="text-xl text-error cursor-pointer"
+                    onClick={() => {
+                      setCategoryToDelete(category?.id!);
+                      (
+                        document.getElementById("my_modal_5") as any
+                      )?.showModal();
+                    }}
+                  />
+                </td>
+              </tr>
+              {editVisible === category.id && (
+                <AdminCategoryForm category={category} />
+              )}
+            </div>
           ))}
         </tbody>
       </table>
@@ -60,7 +70,10 @@ const AdminCategoryTable = () => {
         <div className="modal-box">
           <p className="py-4">پاک شود؟</p>
           <div className="modal-action">
-            <form method="dialog">
+            <form
+              method="dialog"
+              className=" flex flex-row gap-2 ite justify-around w-full"
+            >
               {/* if there is a button in form, it will close the modal */}
               <button
                 className="btn btn-error text-error-content"
@@ -68,6 +81,7 @@ const AdminCategoryTable = () => {
               >
                 تایید
               </button>
+              <button className="btn btn-neutral">نه</button>
             </form>
           </div>
         </div>

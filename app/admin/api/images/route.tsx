@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     await writeFile(path, buffer);
     return NextResponse.json(
       {
-        path: request.nextUrl.origin + "/media/" + fileName + "." + extension,
+        path: process.env.BACKEND_URL + "/media/" + fileName + "." + extension,
       },
       { status: 200 }
     );

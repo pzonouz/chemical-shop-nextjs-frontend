@@ -3,6 +3,7 @@ import authReducer from "./features/auth/auth";
 import userReducer from "./features/entities/user";
 import categoriesReducer from "./features/entities/categories";
 import { api } from "./middlewares/api";
+import loadingReducer from "./features/utils/loading";
 
 export const makeStore = () => {
   return configureStore({
@@ -10,6 +11,7 @@ export const makeStore = () => {
       auth: authReducer,
       user: userReducer,
       categories: categoriesReducer,
+      loading: loadingReducer,
     }),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api),
   });

@@ -34,7 +34,6 @@ const AdminProductForm = () => {
   const onSubmit = async (data: any) => {
     //remove thousand separator mask(,)
     data = { ...data, price: (data.price as string).replaceAll(",", "") };
-    console.log(data);
   };
 
   //update uploadedImageLink value

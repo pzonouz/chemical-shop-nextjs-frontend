@@ -9,6 +9,8 @@ import Drawer from "./components/Navigation/Drawer";
 import AuthProvider from "./auth/provider";
 import StoreProvider from "./StoreProvider";
 import ToastProvider from "./providers/toast.provider";
+import Navbar from "./components/Navigation/Navbar";
+import Loading from "./components/utils/Loading";
 
 const IranSans = localFont({
   src: [
@@ -71,7 +73,9 @@ export default function RootLayout({
         <StoreProvider>
           <AuthProvider>
             <ToastProvider>
-              <Drawer>{children}</Drawer>
+              <Loading />
+              <Navbar />
+              {children}
             </ToastProvider>
           </AuthProvider>
         </StoreProvider>

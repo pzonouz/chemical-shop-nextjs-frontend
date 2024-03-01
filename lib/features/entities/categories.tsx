@@ -10,6 +10,11 @@ const categorySlice = createSlice({
       categories.push(...action.payload);
       return categories;
     },
+    categoryUpdated: (categories, action) => {
+      const search = (item: Category) => item.id == action.payload.id;
+      const index = categories.findIndex(search);
+      categories[index] = { ...action.payload.data };
+    },
     categoryDeleted: (categories, action) => {
       const index = categories.indexOf(action.payload);
       categories.splice(index, 1);
@@ -20,6 +25,10 @@ const categorySlice = createSlice({
   },
 });
 
-export const { categoryDeleted, categoriesFetched, categoryCreated } =
-  categorySlice.actions;
+export const {
+  categoryDeleted,
+  categoriesFetched,
+  categoryCreated,
+  categoryUpdated,
+} = categorySlice.actions;
 export default categorySlice.reducer;

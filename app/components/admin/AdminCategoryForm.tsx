@@ -2,24 +2,45 @@
 import { useForm } from "react-hook-form";
 import InputBox from "../data/InputBox";
 import OneFileUploader from "./OneFileUploader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch } from "@/lib/hooks";
+import { Category } from "./AdminCategoryTable";
 
-const AdminCategoryForm = () => {
+const AdminCategoryForm = ({
+  category,
+}: {
+  category: Category | null | undefined;
+}) => {
   const dispatch = useAppDispatch();
-  const [uploadedImageLink, setUploadedImageLink] = useState("");
+  const [image, setImage] = useState("");
+
   const schema = z.object({
     name: z.string().min(1),
+    image: z.string().nullish(),
   });
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(schema) });
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: category ? schema.parse(category) : {},
+  });
+  useEffect(() => {
+    setValue("image", image);
+  }, [image]);
   const onSubmit = (data: any) => {
-    dispatch({ type: "categoryCreateApiFetchBegan", payload: data });
+    if (category) {
+      dispatch({
+        type: "categoryUpdateApiFetchBegan",
+        payload: { id: category.id, data: data },
+      });
+    } else {
+      dispatch({ type: "categoryCreateApiFetchBegan", payload: data });
+    }
   };
 
   return (
@@ -27,11 +48,7 @@ const AdminCategoryForm = () => {
       className="flex flex-col gap-2 items-start"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <input
-        value={uploadedImageLink}
-        {...register("uploadedImageLink")}
-        hidden
-      />
+      <input {...register("image")} hidden />
       <InputBox
         type="text"
         text="نام دسته بندی را وارد نمایید"
@@ -43,8 +60,8 @@ const AdminCategoryForm = () => {
         <p className="text-error text-xs">نام دسته بندی را وارد کنید</p>
       )}
       <OneFileUploader
-        uploadedImageLink={uploadedImageLink}
-        uploadedImageLinkSetter={setUploadedImageLink}
+        uploadedImageLink={image}
+        uploadedImageLinkSetter={setImage}
       />
       <button className=" btn btn-primary w-full">تبت</button>
     </form>
