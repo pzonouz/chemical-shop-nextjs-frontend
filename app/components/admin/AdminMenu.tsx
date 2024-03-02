@@ -31,9 +31,6 @@ const AdminMenu = () => {
         break;
     }
   }, [path]);
-  useEffect(() => {
-    dispatch({ type: "categoriesGetApiFetchBegan" });
-  }, [dispatch]);
 
   return (
     <ul className="menu bg-base-200 rounded-box w-fit text-2xl p-2 gap-2 flex flex-col my-auto">

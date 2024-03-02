@@ -1,4 +1,4 @@
-import { Category } from "@/app/components/admin/AdminCategoryTable";
+import { Category } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: Category[] = [];

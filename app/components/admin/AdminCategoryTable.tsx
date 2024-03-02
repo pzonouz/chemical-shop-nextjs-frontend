@@ -1,25 +1,34 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiEdit2Line } from "react-icons/ri";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import AdminCategoryForm from "./AdminCategoryForm";
 import classNames from "classnames";
+import {
+  useDeleteCategoryMutation,
+  useFetchCategoriesQuery,
+} from "@/lib/features/api/api";
+import { Category } from "@prisma/client";
+import { truncate } from "fs";
 
-export interface Category {
-  id?: string;
-  name: string;
-  image: string;
-}
 const AdminCategoryTable = () => {
-  const dispatch = useAppDispatch();
+  const { data: categories, isFetching, refetch } = useFetchCategoriesQuery();
   const [categoryToDelete, setCategoryToDelete] = useState("");
   const [editVisible, setEditVisible] = useState("");
-  const deleteCategory = () => {
-    dispatch({ type: "categoryDeleteApiBegan", payload: categoryToDelete });
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+  const onDeleteCategory = () => {
+    deleteCategory(categoryToDelete)
+      .then((res) => {
+        console.log(res);
+        refetch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  const categories = useAppSelector((state) => state.categories);
 
   return (
     <div className="overflow-x-auto w-full">
@@ -33,14 +42,14 @@ const AdminCategoryTable = () => {
         </thead>
         <tbody>
           {categories?.map((category: Category) => (
-            <>
+            <React.Fragment key={category.id}>
               <tr className="flex bg-base-200 w-full justify-between items-center">
                 <td className=" w-1/2">{category?.name} </td>
                 <td className=" w-1/4">
                   <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
                       {category.image && (
-                        <img src={category.image} alt={category.name} />
+                        <img src={category?.image} alt={category?.name} />
                       )}
                     </div>
                   </div>
@@ -78,7 +87,7 @@ const AdminCategoryTable = () => {
                   </td>
                 </tr>
               )}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>
@@ -94,7 +103,7 @@ const AdminCategoryTable = () => {
               {/* if there is a button in form, it will close the modal */}
               <button
                 className="btn btn-error text-error-content"
-                onClick={deleteCategory}
+                onClick={onDeleteCategory}
               >
                 تایید
               </button>

@@ -5,7 +5,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const deletedItem = await prisma?.category.deleteMany({
+    const deletedItem = await prisma?.category.delete({
       where: { id: params.id },
     });
     return NextResponse.json(deletedItem, { status: 200 });
