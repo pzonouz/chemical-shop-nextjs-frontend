@@ -1,15 +1,15 @@
+import { User } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../entities/user";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {},
   reducers: {
     loggedIn(user, action) {
-      (user as IUser).email = action.payload.email;
+      (user as User).email = action.payload.email;
     },
     loggedOut(user, action) {
-      (user as IUser).email = null;
+      (user as User).email = null;
     },
   },
 });

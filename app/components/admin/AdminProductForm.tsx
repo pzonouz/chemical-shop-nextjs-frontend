@@ -7,14 +7,14 @@ import { z } from "zod";
 
 import InputBox from "../data/InputBox";
 import OneFileUploader from "./OneFileUploader";
+import { Product } from "@prisma/client";
 
-const schema = z.object({
-  productName: z.string().min(1),
-  price: z.string().min(1),
-});
-
-const AdminProductForm = () => {
-  const [uploadedImageLink, setUploadedImageLink] = useState(null);
+const AdminProductForm = ({
+  product,
+}: {
+  product: Product | null | undefined;
+}) => {
+  const [image, setImage] = useState(product?.image || "");
   const [numberValue, setNumberValue] = useState(undefined);
 
   //mask with thousand separator
@@ -24,41 +24,50 @@ const AdminProductForm = () => {
   const numberHandleChange = (event: any) =>
     setNumberValue(addCommas(removeNonNumeric(event.target.value)));
 
+  const schema = z.object({
+    name: z.string().min(1),
+    price: z.string().min(1),
+    image: z.string().nullish(),
+  });
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(schema) });
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: product ? schema.parse(product) : {},
+  });
 
   const onSubmit = async (data: any) => {
     //remove thousand separator mask(,)
     data = { ...data, price: (data.price as string).replaceAll(",", "") };
+    console.log(data);
   };
 
   //update uploadedImageLink value
   useEffect(() => {
-    setValue("uploadedImageLink", uploadedImageLink);
-  }, [uploadedImageLink]);
+    setValue("image", image);
+  }, [image]);
 
   //mask with thousand separator
   useEffect(() => {
-    setValue("price", numberValue);
+    setValue("price", numberValue!);
   }, [numberValue]);
   return (
     <form
-      className=" flex flex-col items-start justify-between gap-2"
+      className=" flex flex-col items-start justify-between gap-2 p-4"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <input {...register("uploadedImageLink")} hidden type="text" />
+      <input {...register("image")} hidden />
       <InputBox
-        name="productName"
+        name="name"
         type="text"
         errors={errors}
         registerFn={register}
         text="نام محصول را وارد کنید"
       />
-      {errors["productName"] ? (
+      {errors["name"] ? (
         <p className=" text-error text-sx">نام محصول را وارد کنید</p>
       ) : null}
       <input
@@ -69,12 +78,12 @@ const AdminProductForm = () => {
         onInput={numberHandleChange}
         placeholder="قیمت را وارد کنید"
       />
-      {errors["productName"] ? (
+      {errors["price"] ? (
         <p className=" text-error text-sm">قیمت محصول را وارد کنید</p>
       ) : null}
       <OneFileUploader
-        uploadedImageLink={uploadedImageLink}
-        uploadedImageLinkSetter={setUploadedImageLink}
+        uploadedImageLink={image}
+        uploadedImageLinkSetter={setImage}
       />
       <button className="btn btn-primary w-full">ثبت</button>
     </form>

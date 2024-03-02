@@ -24,17 +24,13 @@ const api =
         }
         const user = await res.json();
         dispatch(userInfoFetched(user));
-      } catch (error) {
-        // if (error instanceof Error) {
-        //   toast.error("خطا در دریافت اطلاعات کاربر", { position: "top-right" });
-        // }
-      }
+      } catch (error) {}
     }
     if (action.type === "categoriesGetApiFetchBegan") {
       next(action);
       try {
         dispatch(setLoading());
-        const res = await fetch("/api/categories");
+        const res = await fetch("x/api/categories");
         const responseData = await res.json();
         dispatch(unsetLoading());
         if (!res.ok) {
@@ -42,6 +38,7 @@ const api =
         }
         dispatch(categoriesFetched(responseData));
       } catch (error: any) {
+        dispatch(unsetLoading());
         showError(error);
       }
     }

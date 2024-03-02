@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch } from "@/lib/hooks";
-import { Category } from "./AdminCategoryTable";
+import { Category } from "@prisma/client";
 
 const AdminCategoryForm = ({
   category,

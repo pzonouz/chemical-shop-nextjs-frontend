@@ -9,7 +9,6 @@ export default async function middleware(request: NextRequest) {
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
     });
-    console.log(token);
   } catch (error) {
     token = null;
   }

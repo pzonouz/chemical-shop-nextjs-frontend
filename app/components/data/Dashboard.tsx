@@ -17,9 +17,8 @@ import AddressInsertForm from "./AddressInsertForm";
 import Address from "./Address";
 import DashboardSideBar from "../Navigation/DashboardSideBar";
 import { useAppSelector } from "@/lib/hooks";
-import { IUser } from "@/lib/features/entities/user";
+import { User } from "@prisma/client";
 
-// import { createSelector } from "reselect";
 
 export interface DashboardItem {
   icon: ReactNode;
@@ -27,7 +26,7 @@ export interface DashboardItem {
   innerHTML: JSX.Element | undefined;
 }
 const Dashboard = () => {
-  const user: IUser = useAppSelector((state) => state.user as IUser);
+  const user: User = useAppSelector((state) => state.user as User);
   const items: DashboardItem[] = [
     // dashboard
     {

@@ -26,8 +26,8 @@ const AdminCategoryTable = () => {
       <table className="table w-full">
         <thead className="w-full">
           <tr className="bg-base-200 w-full flex justify-between">
-            <th>نام</th>
-            <th>تصویر</th>
+            <th className=" w-1/2">نام</th>
+            <th className=" w-1/4">تصویر</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -35,8 +35,8 @@ const AdminCategoryTable = () => {
           {categories?.map((category: Category) => (
             <>
               <tr className="flex bg-base-200 w-full justify-between items-center">
-                <td>{category?.name} </td>
-                <td>
+                <td className=" w-1/2">{category?.name} </td>
+                <td className=" w-1/4">
                   <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
                       {category.image && (

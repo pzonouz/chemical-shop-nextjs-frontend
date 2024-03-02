@@ -12,9 +12,6 @@ import { useAppDispatch } from "@/lib/hooks";
 import { useSession } from "next-auth/react";
 
 const AdminMenu = () => {
-  // const { data: session, status } = useSession();
-  // if (session?.user?.role !== "admin") {
-  // }
   const dispatch = useAppDispatch();
   const [active, setActive] = useState("");
   const path = usePathname();

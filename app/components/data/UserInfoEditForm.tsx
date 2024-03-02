@@ -4,9 +4,10 @@ import InputBox from "./InputBox";
 import fetchWithTokenClient from "@/app/utils/FetchWithTokenClient";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { IUser, userInfoFetched } from "@/lib/features/entities/user";
+import { userInfoFetched } from "@/lib/features/entities/user";
 import { createSelector } from "reselect";
 import { toast } from "react-toastify";
+import { User } from "@prisma/client";
 
 const UserInfoEditForm = () => {
   const dispatch = useAppDispatch();
@@ -14,7 +15,7 @@ const UserInfoEditForm = () => {
     (state) => state,
     (state: any) => state.user
   );
-  const user: IUser = useAppSelector(userSelector);
+  const user: User = useAppSelector(userSelector);
 
   const [isLoading, setLoading] = useState(false);
 
