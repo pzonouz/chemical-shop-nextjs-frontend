@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const product = await request.json();
+    console.log(product);
     const savedProduct = await prisma?.product.create({ data: product });
     return NextResponse.json(savedProduct, { status: 200 });
   } catch (error: unknown) {

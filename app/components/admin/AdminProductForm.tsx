@@ -9,6 +9,7 @@ import { Product } from "@prisma/client";
 import {
   useCreateProductMutation,
   useEditProductMutation,
+  useFetchCategoriesQuery,
 } from "@/lib/features/api/api";
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
@@ -23,10 +24,15 @@ const AdminProductForm = ({
   const [createProduct, { isLoading: createIsLoading }] =
     useCreateProductMutation();
   const [editProduct, { isLoading: editIsLoading }] = useEditProductMutation();
+  const { data: categories, isLoading, error } = useFetchCategoriesQuery();
 
   const schema = z.object({
     name: z.string().min(1),
     image: z.string().nullish(),
+    categoryId: z
+      .string()
+      .min(1)
+      .refine((value: string) => value != "0"),
   });
   const {
     handleSubmit,
@@ -79,13 +85,29 @@ const AdminProductForm = ({
       <input {...register("image")} hidden />
       <InputBox
         type="text"
-        text="نام دسته بندی را وارد نمایید"
+        text="نام محصول را وارد نمایید"
         registerFn={register}
         name="name"
         errors={errors}
       />
       {errors?.name && (
-        <p className="text-error text-xs">نام دسته بندی را وارد کنید</p>
+        <p className="text-error text-xs">نام محصول را وارد کنید</p>
+      )}
+      <select
+        className="select select-bordered w-full max-w-xs"
+        {...register("categoryId")}
+      >
+        <option disabled selected value={"0"}>
+          دسته بندی
+        </option>
+        {categories?.map((category) => (
+          <option value={category.id} key={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+      {errors?.categoryId && (
+        <p className="text-error text-xs">دسته بندی را وارد کنید</p>
       )}
       <OneFileUploader
         uploadedImageLink={image}
