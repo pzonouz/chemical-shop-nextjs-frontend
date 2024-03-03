@@ -8,11 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAppDispatch } from "@/lib/hooks";
-import { loggedIn } from "@/lib/features/auth/auth";
 import { toast } from "react-toastify";
 
 const SignInForm = () => {
-  const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const { status } = useSession();
@@ -38,11 +36,10 @@ const SignInForm = () => {
     });
     setLoading(false);
     if (signInResponse?.ok) {
-      dispatch(loggedIn({ email: data.email }));
       router.push("/");
     } else {
       toast.error("نام کاربری و پسورد مطابقت ندارد", {
-        position: "top-center",
+        position: "top-right",
       });
     }
   };

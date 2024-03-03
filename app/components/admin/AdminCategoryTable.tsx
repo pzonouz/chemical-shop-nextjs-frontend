@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useEffect, useState } from "react";
 import { RiEdit2Line } from "react-icons/ri";
 import { RiDeleteBin2Line } from "react-icons/ri";
@@ -11,24 +10,40 @@ import {
   useFetchCategoriesQuery,
 } from "@/lib/features/api/api";
 import { Category } from "@prisma/client";
-import { truncate } from "fs";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import successToast from "@/app/utils/SuccessToast";
+import ErrorToast from "@/app/utils/ErrorToast";
 
 const AdminCategoryTable = () => {
-  const { data: categories, isFetching, refetch } = useFetchCategoriesQuery();
+  const {
+    data: categories,
+    isFetching,
+    error,
+    isError,
+  } = useFetchCategoriesQuery();
   const [categoryToDelete, setCategoryToDelete] = useState("");
   const [editVisible, setEditVisible] = useState("");
-  const [deleteCategory] = useDeleteCategoryMutation();
+  const [deleteCategory, { isLoading }] = useDeleteCategoryMutation();
 
   const onDeleteCategory = () => {
     deleteCategory(categoryToDelete)
-      .then((res) => {
-        console.log(res);
-        refetch();
+      .then((res: any) => {
+        if (res.error) {
+          throw new Error(res.error?.originalStatus);
+        }
+        successToast();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((err: any) => {
+        ErrorToast(err.message);
       });
   };
+
+  useEffect(() => {
+    isFetching || isLoading ? setLoading() : unsetLoading();
+  }, [isFetching, isLoading]);
+  useEffect(() => {
+    ErrorToast(error);
+  }, [error]);
 
   return (
     <div className="overflow-x-auto w-full">
@@ -47,7 +62,7 @@ const AdminCategoryTable = () => {
                 <td className=" w-1/2">{category?.name} </td>
                 <td className=" w-1/4">
                   <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
+                    <div className="mask mask-circle w-12 h-12">
                       {category.image && (
                         <img src={category?.image} alt={category?.name} />
                       )}

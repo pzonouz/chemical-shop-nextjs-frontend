@@ -36,6 +36,6 @@ export async function GET(
       );
     }
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 400 });
+    return NextResponse.json(error, { status: 400 });
   }
 }

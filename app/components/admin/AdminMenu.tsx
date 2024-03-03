@@ -37,7 +37,10 @@ const AdminMenu = () => {
       <li>
         <Link
           href={"/admin/"}
-          className={classNames({ active: active === "Home" })}
+          className={classNames({
+            active: active === "Home",
+            "p-3 flex items-center justify-center": true,
+          })}
           onClick={() => {
             setActive("Home");
           }}
@@ -48,7 +51,10 @@ const AdminMenu = () => {
       <li>
         <Link
           href={"/admin/products"}
-          className={classNames({ active: active === "Products" })}
+          className={classNames({
+            active: active === "Products",
+            "p-3 flex items-center justify-center": true,
+          })}
           onClick={() => {
             setActive("Products");
           }}
@@ -59,7 +65,10 @@ const AdminMenu = () => {
       <li>
         <Link
           href={"/admin/categories"}
-          className={classNames({ active: active === "Categories" })}
+          className={classNames({
+            active: active === "Categories",
+            "p-3 flex items-center justify-center": true,
+          })}
           onClick={() => {
             setActive("Categories");
           }}
@@ -70,7 +79,10 @@ const AdminMenu = () => {
       <li>
         <Link
           href={"/admin/users"}
-          className={classNames({ active: active === "Users" })}
+          className={classNames({
+            active: active === "Users",
+            "p-3 flex items-center justify-center": true,
+          })}
           onClick={() => {
             setActive("Users");
           }}
@@ -79,9 +91,9 @@ const AdminMenu = () => {
         </Link>
       </li>
       <li>
-        <a>
+        <Link href="#" className=" p-3 flex items-center justify-center">
           <MdBorderColor />
-        </a>
+        </Link>
       </li>
     </ul>
   );

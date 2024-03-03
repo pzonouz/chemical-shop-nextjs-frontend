@@ -1,4 +1,3 @@
-import { showError } from "@/app/utils/ShowError";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useAppDispatch } from "@/lib/hooks";
 import { useEffect, useState } from "react";
@@ -33,7 +32,7 @@ const OneFileUploader = ({
       }
       uploadedImageLinkSetter(data.path);
     } catch (error: unknown) {
-      showError(error);
+      toast.error(error.message, { position: "top-right" });
     }
   };
   useEffect(() => {

@@ -1,18 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import authReducer from "./features/auth/auth";
-import userReducer from "./features/entities/user";
-import categoriesReducer from "./features/entities/categories";
-// import { api } from "./middlewares/api";
 import loadingReducer from "./features/utils/loading";
 import { apiSlice } from "./features/api/api";
 
-export const makeStore = () => {
+export const makeStore: any = () => {
   return configureStore({
     reducer: combineReducers({
       [apiSlice.reducerPath]: apiSlice.reducer,
-      auth: authReducer,
-      user: userReducer,
-      categories: categoriesReducer,
       loading: loadingReducer,
     }),
     middleware: (getDefaultMiddleware) =>

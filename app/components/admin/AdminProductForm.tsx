@@ -1,13 +1,18 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
 import InputBox from "../data/InputBox";
 import OneFileUploader from "./OneFileUploader";
+import { useEffect, useState } from "react";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Product } from "@prisma/client";
+import {
+  useCreateProductMutation,
+  useEditProductMutation,
+} from "@/lib/features/api/api";
+import successToast from "@/app/utils/SuccessToast";
+import ErrorToast from "@/app/utils/ErrorToast";
+import LoadingButton from "../utils/LoadingButton";
 
 const AdminProductForm = ({
   product,
@@ -15,77 +20,82 @@ const AdminProductForm = ({
   product: Product | null | undefined;
 }) => {
   const [image, setImage] = useState(product?.image || "");
-  const [numberValue, setNumberValue] = useState(undefined);
-
-  //mask with thousand separator
-  const addCommas = (num: any) =>
-    num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  const removeNonNumeric = (num: any) => num.toString().replace(/[^0-9]/g, "");
-  const numberHandleChange = (event: any) =>
-    setNumberValue(addCommas(removeNonNumeric(event.target.value)));
+  const [createProduct, { isLoading: createIsLoading }] =
+    useCreateProductMutation();
+  const [editProduct, { isLoading: editIsLoading }] = useEditProductMutation();
 
   const schema = z.object({
     name: z.string().min(1),
-    price: z.string().min(1),
     image: z.string().nullish(),
   });
   const {
-    register,
     handleSubmit,
+    register,
+    reset,
     setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: product ? schema.parse(product) : {},
   });
-
-  const onSubmit = async (data: any) => {
-    //remove thousand separator mask(,)
-    data = { ...data, price: (data.price as string).replaceAll(",", "") };
-    console.log(data);
-  };
-
-  //update uploadedImageLink value
   useEffect(() => {
     setValue("image", image);
-  }, [image]);
+  }, [image, setValue]);
+  const onSubmit = (data: any) => {
+    if (product) {
+      editProduct({ ...data, id: product.id })
+        .then((res: any) => {
+          if (res.error) {
+            throw new Error(res.error.originalStatus);
+          }
+          successToast();
+          reset(data);
+          setImage("");
+        })
+        .catch((error) => {
+          ErrorToast(error.message);
+        });
+    } else {
+      createProduct(data)
+        .then((res: any) => {
+          if (res.error) {
+            throw new Error(res.error.originalStatus);
+          }
+          successToast();
+          reset();
+          setImage("");
+        })
+        .catch((error) => {
+          ErrorToast(error.message);
+        });
+    }
+  };
 
-  //mask with thousand separator
-  useEffect(() => {
-    setValue("price", numberValue!);
-  }, [numberValue]);
   return (
     <form
-      className=" flex flex-col items-start justify-between gap-2 p-4"
+      className="flex flex-col gap-2 items-start"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input {...register("image")} hidden />
       <InputBox
-        name="name"
         type="text"
-        errors={errors}
+        text="نام دسته بندی را وارد نمایید"
         registerFn={register}
-        text="نام محصول را وارد کنید"
+        name="name"
+        errors={errors}
       />
-      {errors["name"] ? (
-        <p className=" text-error text-sx">نام محصول را وارد کنید</p>
-      ) : null}
-      <input
-        className="input input-bordered flex items-center gap-2 w-full"
-        name="price"
-        type="string"
-        value={numberValue!}
-        onInput={numberHandleChange}
-        placeholder="قیمت را وارد کنید"
-      />
-      {errors["price"] ? (
-        <p className=" text-error text-sm">قیمت محصول را وارد کنید</p>
-      ) : null}
+      {errors?.name && (
+        <p className="text-error text-xs">نام دسته بندی را وارد کنید</p>
+      )}
       <OneFileUploader
         uploadedImageLink={image}
         uploadedImageLinkSetter={setImage}
       />
-      <button className="btn btn-primary w-full">ثبت</button>
+      {/* <button className=" btn btn-primary w-full">تبت</button> */}
+      <LoadingButton
+        isLoading={createIsLoading || editIsLoading}
+        className=" w-full"
+      />
     </form>
   );
 };

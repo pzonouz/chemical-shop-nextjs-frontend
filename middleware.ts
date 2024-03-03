@@ -1,6 +1,5 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import user from "./lib/features/entities/user";
 
 export default async function middleware(request: NextRequest) {
   let token = null;

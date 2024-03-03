@@ -5,16 +5,25 @@ import OneFileUploader from "./OneFileUploader";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch } from "@/lib/hooks";
 import { Category } from "@prisma/client";
+import {
+  useCreateCategoryMutation,
+  useEditCategoryMutation,
+} from "@/lib/features/api/api";
+import successToast from "@/app/utils/SuccessToast";
+import ErrorToast from "@/app/utils/ErrorToast";
+import LoadingButton from "../utils/LoadingButton";
 
 const AdminCategoryForm = ({
   category,
 }: {
   category: Category | null | undefined;
 }) => {
-  const dispatch = useAppDispatch();
   const [image, setImage] = useState(category?.image || "");
+  const [createCategory, { isLoading: createIsLoading }] =
+    useCreateCategoryMutation();
+  const [editCategory, { isLoading: editIsLoading }] =
+    useEditCategoryMutation();
 
   const schema = z.object({
     name: z.string().min(1),
@@ -32,23 +41,40 @@ const AdminCategoryForm = ({
   });
   useEffect(() => {
     setValue("image", image);
-  }, [image]);
+  }, [image, setValue]);
   const onSubmit = (data: any) => {
     if (category) {
-      dispatch({
-        type: "categoryUpdateApiFetchBegan",
-        payload: { id: category.id, data: data },
-      });
+      editCategory({ ...data, id: category.id })
+        .then((res: any) => {
+          if (res.error) {
+            throw new Error(res.error.originalStatus);
+          }
+          successToast();
+          reset(data);
+          setImage("");
+        })
+        .catch((error) => {
+          ErrorToast(error.message);
+        });
     } else {
-      dispatch({ type: "categoryCreateApiFetchBegan", payload: data });
-      reset();
-      setImage("");
+      createCategory(data)
+        .then((res: any) => {
+          if (res.error) {
+            throw new Error(res.error.originalStatus);
+          }
+          successToast();
+          reset();
+          setImage("");
+        })
+        .catch((error) => {
+          ErrorToast(error.message);
+        });
     }
   };
 
   return (
     <form
-      className="flex flex-col gap-2 items-start p-4"
+      className="flex flex-col gap-2 items-start"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input {...register("image")} hidden />
@@ -66,7 +92,11 @@ const AdminCategoryForm = ({
         uploadedImageLink={image}
         uploadedImageLinkSetter={setImage}
       />
-      <button className=" btn btn-primary w-full">تبت</button>
+      {/* <button className=" btn btn-primary w-full">تبت</button> */}
+      <LoadingButton
+        isLoading={createIsLoading || editIsLoading}
+        className=" w-full"
+      />
     </form>
   );
 };

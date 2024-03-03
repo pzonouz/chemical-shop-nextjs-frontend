@@ -1,19 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
-import { Product } from "@prisma/client";
-import classNames from "classnames";
-import { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import { RiEdit2Line } from "react-icons/ri";
+import { RiDeleteBin2Line } from "react-icons/ri";
 import AdminProductForm from "./AdminProductForm";
-import { RiDeleteBin2Line, RiEdit2Line } from "react-icons/ri";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import classNames from "classnames";
+import {
+  useDeleteProductMutation,
+  useFetchProductsQuery,
+} from "@/lib/features/api/api";
+import { Product } from "@prisma/client";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import successToast from "@/app/utils/SuccessToast";
+import ErrorToast from "@/app/utils/ErrorToast";
 
-const AdminProductTable = ({}) => {
-  const dispatch = useAppDispatch();
+const AdminProductTable = () => {
+  const { data: products, isFetching } = useFetchProductsQuery();
   const [productToDelete, setProductToDelete] = useState("");
   const [editVisible, setEditVisible] = useState("");
-  const deleteProduct = () => {
-    dispatch({ type: "productDeleteApiBegan", payload: productToDelete });
+  const [deleteProduct] = useDeleteProductMutation();
+
+  const onDeleteProduct = () => {
+    deleteProduct(productToDelete)
+      .then((res: any) => {
+        if (res.error) {
+          throw new Error(res.error?.originalStatus);
+        }
+        successToast();
+      })
+      .catch((err) => {
+        ErrorToast(err.message);
+      });
   };
-  const products = useAppSelector((state) => state.products);
+
+  useEffect(() => {
+    isFetching ? setLoading() : unsetLoading();
+  }, [isFetching]);
+
   return (
     <div className="overflow-x-auto w-full">
       <table className="table w-full">
@@ -26,14 +49,14 @@ const AdminProductTable = ({}) => {
         </thead>
         <tbody>
           {products?.map((product: Product) => (
-            <>
+            <React.Fragment key={product.id}>
               <tr className="flex bg-base-200 w-full justify-between items-center">
                 <td className=" w-1/2">{product?.name} </td>
                 <td className=" w-1/4">
                   <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
                       {product.image && (
-                        <img src={product.image} alt={product.name!} />
+                        <img src={product?.image} alt={product?.name!} />
                       )}
                     </div>
                   </div>
@@ -71,7 +94,7 @@ const AdminProductTable = ({}) => {
                   </td>
                 </tr>
               )}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>
@@ -87,7 +110,7 @@ const AdminProductTable = ({}) => {
               {/* if there is a button in form, it will close the modal */}
               <button
                 className="btn btn-error text-error-content"
-                onClick={deleteProduct}
+                onClick={onDeleteProduct}
               >
                 تایید
               </button>
@@ -99,5 +122,4 @@ const AdminProductTable = ({}) => {
     </div>
   );
 };
-
 export default AdminProductTable;

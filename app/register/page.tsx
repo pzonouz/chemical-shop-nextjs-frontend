@@ -6,8 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import InputBox from "@/app/components/data/InputBox";
 import { signIn } from "next-auth/react";
-import { toast } from "react-toastify";
-import { showError } from "../utils/ShowError";
+import { toast, toast } from "react-toastify";
 
 const UserRegisterPage = (props: any) => {
   const [isLoading, setLoading] = useState(false);
@@ -42,9 +41,9 @@ const UserRegisterPage = (props: any) => {
       setLoading(false);
       signIn("credentials", { email: data.email, password: data.password });
       router.push("/");
-    } catch (err: unknown) {
+    } catch (err) {
       setLoading(false);
-      showError(err);
+      toast.error(err.message, { position: "top-right" });
     }
   };
   return (

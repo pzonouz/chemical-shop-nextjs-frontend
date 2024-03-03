@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     });
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 400 });
+    return NextResponse.json(error, { status: 400 });
   }
 }
 export async function PATCH(request: NextRequest) {
@@ -43,6 +43,6 @@ export async function PATCH(request: NextRequest) {
     });
     return NextResponse.json(updatedUser);
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 400 });
+    return NextResponse.json(error, { status: 400 });
   }
 }
