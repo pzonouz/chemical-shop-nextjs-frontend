@@ -43,7 +43,7 @@ const AdminProductTable = () => {
         <thead className="w-full">
           <tr className="bg-base-200 w-full flex justify-between">
             <th className=" w-1/2">نام</th>
-            <th className=" w-1/4">تصویر</th>
+            <th className=" w-1/4">قیمت</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -53,13 +53,14 @@ const AdminProductTable = () => {
               <tr className="flex bg-base-200 w-full justify-between items-center">
                 <td className=" w-1/2">{product?.name} </td>
                 <td className=" w-1/4">
-                  <div className="avatar">
+                  {product.price}
+                  {/* <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
                       {product.image && (
                         <img src={product?.image} alt={product?.name!} />
                       )}
                     </div>
-                  </div>
+                  </div> */}
                 </td>
                 <td className=" flex gap-4 items-center">
                   <RiEdit2Line

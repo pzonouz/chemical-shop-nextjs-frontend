@@ -70,8 +70,9 @@ model Favorite {
 
 model Product {
   id         String    @id @default(cuid())
-  name       String?
+  name       String    @unique
   image      String?
+  price      String
   favorite   Favorite? @relation(fields: [favoriteId], references: [id])
   favoriteId String?
   createdAt  DateTime  @default(now())

@@ -1,11 +1,11 @@
 "use client";
-import { useForm } from "react-hook-form";
-import InputBox from "../data/InputBox";
-import OneFileUploader from "./OneFileUploader";
+import { useForm, Controller } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
 import { useEffect, useState } from "react";
-import z from "zod";
+import z, { ZodSchema } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Product } from "@prisma/client";
+
 import {
   useCreateProductMutation,
   useEditProductMutation,
@@ -14,6 +14,7 @@ import {
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
+import OneFileUploader from "./OneFileUploader";
 
 const AdminProductForm = ({
   product,
@@ -26,9 +27,10 @@ const AdminProductForm = ({
   const [editProduct, { isLoading: editIsLoading }] = useEditProductMutation();
   const { data: categories, isLoading, error } = useFetchCategoriesQuery();
 
-  const schema = z.object({
+  const schema: ZodSchema = z.object({
     name: z.string().min(1),
     image: z.string().nullish(),
+    price: z.string().min(1),
     categoryId: z
       .string()
       .min(1)
@@ -39,6 +41,7 @@ const AdminProductForm = ({
     register,
     reset,
     setValue,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -69,6 +72,7 @@ const AdminProductForm = ({
           }
           successToast();
           reset();
+          setValue("price", "");
           setImage("");
         })
         .catch((error) => {
@@ -83,15 +87,33 @@ const AdminProductForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <input {...register("image")} hidden />
-      <InputBox
+
+      <input
         type="text"
-        text="نام محصول را وارد نمایید"
-        registerFn={register}
-        name="name"
-        errors={errors}
+        {...register("name")}
+        placeholder="نام کالا"
+        className="input input-bordered w-full max-w-xs"
       />
       {errors?.name && (
         <p className="text-error text-xs">نام محصول را وارد کنید</p>
+      )}
+
+      <Controller
+        name="price"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <NumericFormat
+            type="text"
+            className="input input-bordered w-full max-w-xs"
+            {...field}
+            thousandSeparator={true}
+            placeholder="قیمت"
+          />
+        )}
+      />
+      {errors?.price && (
+        <p className="text-error text-xs"> قیمت را وارد کنید</p>
       )}
       <select
         className="select select-bordered w-full max-w-xs"
