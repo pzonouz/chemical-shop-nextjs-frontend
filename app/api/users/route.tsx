@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   findUserByEmail,
   updateUserByEmail,
-} from "@/kysely/repositories/UserRepository";
+} from "@/db/repositories/UserRepository";
 import { User } from "@/kysely/types";
 
 export async function GET(request: NextRequest) {

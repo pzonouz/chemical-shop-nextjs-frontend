@@ -1,17 +1,17 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { KyselyAdapter } from "@auth/kysely-adapter";
 import bcrypt from "bcrypt";
+import PostgresAdapter from "@auth/pg-adapter";
 import NextAuth, { NextAuthOptions } from "next-auth";
-import { db } from "../../../../kysely/db";
-import { findUserByEmail } from "@/kysely/repositories/UserRepository";
-import { User } from "@/kysely/types";
+import { findUserByEmail } from "@/db/repositories/UserRepository";
+import { pool } from "@/db/db";
+import { User } from "@/db/types";
 
 const authOption: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  adapter: KyselyAdapter(db),
+  adapter: PostgresAdapter(pool),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,

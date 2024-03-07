@@ -4,10 +4,7 @@ import crypto from "crypto";
 
 import { Mailer } from "@/app/utils/Mailer";
 import { User } from "@/kysely/types";
-import {
-  createUser,
-  findUserByEmail,
-} from "@/kysely/repositories/UserRepository";
+import { createUser, findUserByEmail } from "@/db/repositories/UserRepository";
 
 export async function POST(request: NextRequest) {
   const data: User = await request.json();

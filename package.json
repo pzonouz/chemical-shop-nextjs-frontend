@@ -8,10 +8,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "npx ts-node --skipProject kysely/scripts/migrator.ts"
+    "migrate": "npx ts-node --skipProject db/scripts/migrator.ts"
   },
   "dependencies": {
     "@auth/kysely-adapter": "^0.1.12",
+    "@auth/pg-adapter": "^0.7.0",
     "@hookform/resolvers": "^3.3.4",
     "@reduxjs/toolkit": "^2.2.1",
     "@types/bcrypt": "^5.0.2",
