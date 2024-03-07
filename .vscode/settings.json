@@ -1,5 +1,6 @@
 {
   "cSpell.diagnosticLevel": "Hint",
   "WillLuke.nextjs.addTypesOnSave": true,
-  "WillLuke.nextjs.hasPrompted": true
+  "WillLuke.nextjs.hasPrompted": true,
+  "cSpell.words": ["Insertable", "kysely", "Updateable"]
 }

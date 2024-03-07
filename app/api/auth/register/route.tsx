@@ -2,27 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
-import prisma from "../../../../prisma/prisma";
 import { Mailer } from "@/app/utils/Mailer";
-
-export interface User {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstName?: string;
-  lastName?: string;
-  mobile?: string;
-  verification_token?: string;
-  createdAt: Date;
-  updatedAp: Date;
-  addresses?: any[];
-}
+import { User } from "@/kysely/types";
+import {
+  createUser,
+  findUserByEmail,
+} from "@/kysely/repositories/UserRepository";
 
 export async function POST(request: NextRequest) {
   const data: User = await request.json();
   const { email, password, confirmPassword } = data;
   try {
-    let user = await prisma.user.findUnique({ where: { email: email } });
+    let user = await findUserByEmail(email);
     if (user) {
       return NextResponse.json(
         { error: "ایمیل قبلا ثبت شده است" },
@@ -38,13 +29,7 @@ export async function POST(request: NextRequest) {
     const verification_token = crypto.randomBytes(16).toString("hex");
     const emailVerificationAddress = `${request.nextUrl.origin}/api/auth/email/${verification_token}/verification`;
     const hashedPassword = await bcrypt.hash(password, 10);
-    user = await prisma.user.create({
-      data: {
-        email: email,
-        hashedPassword: hashedPassword,
-        emailVerificationToken: verification_token,
-      },
-    });
+    user = await createUser({ email: email, hashedPassword: hashedPassword });
     if (user) {
       const emailResponse = await Mailer.sendMail({
         from: "Nanoshop",

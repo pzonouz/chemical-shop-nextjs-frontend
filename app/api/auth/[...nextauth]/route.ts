@@ -1,15 +1,17 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "../../../../prisma/prisma";
+import { KyselyAdapter } from "@auth/kysely-adapter";
 import bcrypt from "bcrypt";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import { db } from "../../../../kysely/db";
+import { findUserByEmail } from "@/kysely/repositories/UserRepository";
+import { User } from "@/kysely/types";
 
-const authOptions: NextAuthOptions = {
+const authOption: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: KyselyAdapter(db),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -27,14 +29,14 @@ const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         try {
-          const user = await prisma.user.findUnique({
-            where: { email: credentials?.email },
-          });
+          const user: User = (await findUserByEmail(
+            credentials.email as string
+          )) as User;
           if (!user) {
             return null;
           }
           const match = bcrypt.compareSync(
-            credentials?.password!,
+            credentials?.password! as string,
             user.hashedPassword!
           );
           if (match) {
@@ -62,6 +64,5 @@ const authOptions: NextAuthOptions = {
   },
 };
 
-const handler = NextAuth(authOptions);
-
+const handler = NextAuth(authOption);
 export { handler as GET, handler as POST };
