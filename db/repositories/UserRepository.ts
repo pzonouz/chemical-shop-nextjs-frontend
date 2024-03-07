@@ -8,7 +8,7 @@ export function findUserById(id: string) {
 }
 
 export function findUserByEmail(email: string) {
-  const text = "SELECT * FROM User WHERE email =$1";
+  const text = "SELECT * FROM users WHERE email =$1";
   return query<User>(text, [email]);
 }
 // export function updateUserById(id: string, updateWith: Partial<User>) {

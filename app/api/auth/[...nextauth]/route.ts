@@ -29,9 +29,8 @@ const authOption: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         try {
-          const user: User = (await findUserByEmail(
-            credentials.email as string
-          )) as User;
+          const user = await findUserByEmail(credentials.email as string);
+          console.log(user);
           if (!user) {
             return null;
           }
