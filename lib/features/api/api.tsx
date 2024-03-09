@@ -1,24 +1,24 @@
-import { Category, User, Product } from "@prisma/client";
+import { Category, Product, User } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.BACKEND_URL,
+    baseUrl: "http://localhost:8000",
   }),
   tagTypes: ["User", "Category", "Product"],
   endpoints(builder) {
     return {
       fetchCategories: builder.query<Category[], number | void>({
         query: (limit = 10) => {
-          return { url: `/api/categories?limit=${limit}` };
+          return { url: `/api/categories/` };
         },
         providesTags: ["Category"],
       }),
       createCategory: builder.mutation<Category, Category>({
         query: (category) => {
           return {
-            url: `/admin/api/categories`,
+            url: `/api/admin/categories/`,
             method: "POST",
             body: category,
           };
@@ -28,7 +28,7 @@ export const apiSlice = createApi({
       editCategory: builder.mutation<Category, Category>({
         query: (category) => {
           return {
-            url: `/admin/api/categories/${category.id}`,
+            url: `/api/admin/categories/${category.id}/`,
             method: "PATCH",
             body: category,
           };
@@ -38,7 +38,7 @@ export const apiSlice = createApi({
       deleteCategory: builder.mutation<string, string>({
         query: (id) => {
           return {
-            url: `/admin/api/categories/${id}`,
+            url: `/api/admin/categories/${id}/`,
             method: "DELETE",
           };
         },
@@ -47,7 +47,7 @@ export const apiSlice = createApi({
       fetchProducts: builder.query<Product[], number | void>({
         query: (limit = 10) => {
           return {
-            url: `/api/products?limit=${limit}`,
+            url: `/api/products/`,
           };
         },
         providesTags: ["Product"],
@@ -55,7 +55,7 @@ export const apiSlice = createApi({
       createProduct: builder.mutation<Product, Product>({
         query: (product: Product) => {
           return {
-            url: `/admin/api/products`,
+            url: `/api/admin/products/`,
             method: "POST",
             body: product,
           };
@@ -65,7 +65,7 @@ export const apiSlice = createApi({
       editProduct: builder.mutation<Product, Product>({
         query: (product: Product) => {
           return {
-            url: `/admin/api/products/${product.id}`,
+            url: `/api/admin/products/${product.id}/`,
             method: "PATCH",
             body: product,
           };
@@ -75,7 +75,7 @@ export const apiSlice = createApi({
       deleteProduct: builder.mutation<Product, string>({
         query: (id: string) => {
           return {
-            url: `/admin/api/products/${id}`,
+            url: `/api/admin/products/${id}/`,
             method: "DELETE",
           };
         },
@@ -83,7 +83,7 @@ export const apiSlice = createApi({
       }),
       fetchUser: builder.query<User, void>({
         query: () => {
-          return { url: `/api/users` };
+          return { url: `/api/users/` };
         },
         providesTags: ["User"],
       }),

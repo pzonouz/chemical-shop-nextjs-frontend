@@ -9,10 +9,10 @@ import {
   useDeleteProductMutation,
   useFetchProductsQuery,
 } from "@/lib/features/api/api";
-import { Product } from "@prisma/client";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
+import { Product } from "@/app/types";
 
 const AdminProductTable = () => {
   const { data: products, isFetching } = useFetchProductsQuery();
