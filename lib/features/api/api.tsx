@@ -81,9 +81,19 @@ export const apiSlice = createApi({
         },
         invalidatesTags: ["Product"],
       }),
+      registerUser: builder.mutation<User, Partial<User>>({
+        query: (user) => {
+          return { url: `/api/auth/users/`, method: "POST", body: user };
+        },
+      }),
+      loginUser: builder.mutation<User, Partial<User>>({
+        query: (user) => {
+          return { url: `/api/auth/jwt/create/`, method: "POST", body: user };
+        },
+      }),
       fetchUser: builder.query<User, void>({
         query: () => {
-          return { url: `/api/users/` };
+          return { url: `/api/auth/users/` };
         },
         providesTags: ["User"],
       }),
@@ -111,5 +121,7 @@ export const {
   useEditProductMutation,
   useDeleteProductMutation,
   useFetchUserQuery,
+  useRegisterUserMutation,
   useEditUserMutation,
+  useLoginUserMutation,
 } = apiSlice;

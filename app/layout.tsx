@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import AuthProvider from "./auth/provider";
 import StoreProvider from "./StoreProvider";
 import ToastProvider from "./providers/toast.provider";
 import Navbar from "./components/Navigation/Navbar";
@@ -69,13 +68,11 @@ export default function RootLayout({
     <html lang="en" dir="rtl" data-theme="light" className=" scroll-smooth">
       <body className={IranSans.className}>
         <StoreProvider>
-          <AuthProvider>
-            <ToastProvider>
-              <Loading />
-              <Navbar />
-              {children}
-            </ToastProvider>
-          </AuthProvider>
+          <ToastProvider>
+            <Loading />
+            <Navbar />
+            {children}
+          </ToastProvider>
         </StoreProvider>
       </body>
     </html>

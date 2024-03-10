@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
 
-export default function ErrorToast(err: any) {
+export default function errorToast(err: any) {
   toast.error(err, { position: "top-right" });
 }

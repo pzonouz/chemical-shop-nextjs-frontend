@@ -5,12 +5,16 @@ import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import InputBox from "@/app/components/data/InputBox";
-import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
+import { useRegisterUserMutation } from "@/lib/features/api/api";
+import successToast from "@/app/utils/SuccessToast";
+import ErrorToast from "@/app/utils/ErrorToast";
+import errorToast from "@/app/utils/ErrorToast";
 
 const UserRegisterPage = (props: any) => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
+  const [registerUser] = useRegisterUserMutation();
 
   const schema: ZodSchema = z
     .object({
@@ -27,24 +31,22 @@ const UserRegisterPage = (props: any) => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FieldValues) => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
+    setLoading(true);
+    registerUser(data)
+      .then((res) => {
+        setLoading(false);
+        if (res?.error) {
+          throw new Error(JSON.stringify(res?.error?.data));
+        } else {
+          successToast();
+          setTimeout(() => {}, 2000);
+          router.push("/auth/login");
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        errorToast(err.message);
       });
-      const responseData = await response.json();
-      if (!response.ok) {
-        throw new Error(responseData.error);
-      }
-      setLoading(false);
-      signIn("credentials", { email: data.email, password: data.password });
-      router.push("/");
-    } catch (err: unknown) {
-      setLoading(false);
-      toast.error(err.message, { position: "top-right" });
-    }
   };
   return (
     <div className=" flex flex-col items-center mt-12 gap-6 px-8">

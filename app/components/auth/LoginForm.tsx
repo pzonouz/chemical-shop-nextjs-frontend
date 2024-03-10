@@ -1,20 +1,25 @@
 "use client";
 import { FcGoogle } from "react-icons/fc";
 import InputBox from "@/app/components/data/InputBox";
-import { signIn, useSession } from "next-auth/react";
 import { FieldValues, useForm } from "react-hook-form";
 import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useAppDispatch } from "@/lib/hooks";
 import { toast } from "react-toastify";
+import {
+  useLoginUserMutation,
+  useLoginUserQuery,
+} from "@/lib/features/api/api";
+import errorToast from "@/app/utils/ErrorToast";
+import successToast from "@/app/utils/SuccessToast";
 
-const SignInForm = () => {
+const LoginForm = () => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
-  const { status } = useSession();
-  status === "authenticated" ? router.push("/") : null;
+  const [loginUser] = useLoginUserMutation();
+  // const { status } = useSession();
+  // status === "authenticated" ? router.push("/") : null;
   const schema: ZodSchema = z.object({
     email: z.string().min(1).email(),
     password: z.string().min(1),
@@ -28,29 +33,27 @@ const SignInForm = () => {
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FieldValues) => {
     setLoading(true);
-    const signInResponse = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-      callbackUrl: "/",
-    });
-    setLoading(false);
-    if (signInResponse?.ok) {
-      router.push("/");
-    } else {
-      toast.error("نام کاربری و پسورد مطابقت ندارد", {
-        position: "top-right",
+    loginUser(data)
+      .then((res) => {
+        setLoading(false);
+        if (res?.error) {
+          throw new Error(JSON.stringify(res?.error?.data));
+        } else {
+          setLoading(false);
+          successToast();
+          setTimeout(2000);
+          router.push("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setLoading(false);
+        errorToast(err.message);
       });
-    }
   };
   return (
     <div className=" flex flex-col px-8 gap-8 mt-12">
-      <button
-        className="btn"
-        onClick={() => {
-          signIn("google");
-        }}
-      >
+      <button className="btn" onClick={() => {}}>
         <FcGoogle className=" text-3xl" />
         <div>ورود با گوگل</div>
       </button>
@@ -89,4 +92,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default LoginForm;
