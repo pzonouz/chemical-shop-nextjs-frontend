@@ -17,3 +17,6 @@ export interface User {
   firstName: string;
   lastName: string;
 }
+export interface RessponseWithError {
+  error: any;
+}

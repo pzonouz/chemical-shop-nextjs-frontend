@@ -7,12 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import {
-  useLoginUserMutation,
-  useLoginUserQuery,
-} from "@/lib/features/api/api";
+import { useLoginUserMutation } from "@/lib/features/api/api";
 import errorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
+import { RessponseWithError } from "@/app/types";
 
 const LoginForm = () => {
   const [isLoading, setLoading] = useState(false);
@@ -34,21 +32,17 @@ const LoginForm = () => {
   const onSubmit = async (data: FieldValues) => {
     setLoading(true);
     loginUser(data)
+      .unwrap()
       .then((res) => {
         setLoading(false);
-        if (res?.error) {
-          throw new Error(JSON.stringify(res?.error?.data));
-        } else {
-          setLoading(false);
-          successToast();
-          setTimeout(2000);
-          router.push("/");
-        }
+        successToast();
+        setTimeout((e) => {}, 2000);
+        router.push("/");
       })
       .catch((err) => {
         console.log(err.message);
         setLoading(false);
-        errorToast(err.message);
+        errorToast(JSON.stringify(err.data));
       });
   };
   return (

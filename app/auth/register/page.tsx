@@ -1,15 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { useForm, FieldValues } from "react-hook-form";
 import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import InputBox from "@/app/components/data/InputBox";
-import { toast } from "react-toastify";
 import { useRegisterUserMutation } from "@/lib/features/api/api";
 import successToast from "@/app/utils/SuccessToast";
-import ErrorToast from "@/app/utils/ErrorToast";
 import errorToast from "@/app/utils/ErrorToast";
+import { RessponseWithError } from "@/app/types";
 
 const UserRegisterPage = (props: any) => {
   const [isLoading, setLoading] = useState(false);
@@ -33,19 +32,16 @@ const UserRegisterPage = (props: any) => {
   const onSubmit = async (data: FieldValues) => {
     setLoading(true);
     registerUser(data)
+      .unwrap()
       .then((res) => {
         setLoading(false);
-        if (res?.error) {
-          throw new Error(JSON.stringify(res?.error?.data));
-        } else {
-          successToast();
-          setTimeout(() => {}, 2000);
-          router.push("/auth/login");
-        }
+        successToast();
+        setTimeout(() => {}, 2000);
+        router.push("/auth/login");
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setLoading(false);
-        errorToast(err.message);
+        errorToast(JSON.stringify(err.data));
       });
   };
   return (
