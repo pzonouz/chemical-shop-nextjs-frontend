@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import InputBox from "@/app/components/data/InputBox";
 import { useRegisterUserMutation } from "@/lib/features/api/api";
-import successToast from "@/app/utils/SuccessToast";
+import successToast, { successToastWithmsg } from "@/app/utils/SuccessToast";
 import errorToast from "@/app/utils/ErrorToast";
 import { RessponseWithError } from "@/app/types";
 
@@ -35,7 +35,7 @@ const UserRegisterPage = (props: any) => {
       .unwrap()
       .then((res) => {
         setLoading(false);
-        successToast();
+        successToastWithmsg("ایمیل خود را برای فعالسازی کنترل کنید");
         setTimeout(() => {}, 2000);
         router.push("/auth/login");
       })

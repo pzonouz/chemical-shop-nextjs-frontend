@@ -1,10 +1,22 @@
 import { Category, Product, User } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getCookie } from "cookies-next";
 
+const token = getCookie("access");
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000",
+    // prepareHeaders: (headers) => {
+    //   getCookie("access")
+    //     ? headers.append("Authorization", `JWT ${getCookie("access")}`)
+    //     : null;
+    //   return headers;
+    // },
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
   }),
   tagTypes: ["User", "Category", "Product"],
   endpoints(builder) {
@@ -88,7 +100,21 @@ export const apiSlice = createApi({
       }),
       loginUser: builder.mutation<User, Partial<User>>({
         query: (user) => {
-          return { url: `/api/auth/jwt/create/`, method: "POST", body: user };
+          return {
+            url: `/api/auth/jwt/create/`,
+            method: "POST",
+            body: user,
+            credentials: "include",
+          };
+        },
+      }),
+      activateUser: builder.query<any, any>({
+        query: (data) => {
+          return {
+            url: `/api/auth/users/activation/`,
+            method: "POST",
+            body: data,
+          };
         },
       }),
       fetchUser: builder.query<User, void>({
@@ -124,4 +150,5 @@ export const {
   useRegisterUserMutation,
   useEditUserMutation,
   useLoginUserMutation,
+  useActivateUserQuery,
 } = apiSlice;

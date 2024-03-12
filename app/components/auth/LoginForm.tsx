@@ -6,18 +6,17 @@ import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { useLoginUserMutation } from "@/lib/features/api/api";
 import errorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
-import { RessponseWithError } from "@/app/types";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 
 const LoginForm = () => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const [loginUser] = useLoginUserMutation();
-  // const { status } = useSession();
-  // status === "authenticated" ? router.push("/") : null;
+  const [cookies, setCookie] = useCookies(["access", "refresh"]);
   const schema: ZodSchema = z.object({
     email: z.string().min(1).email(),
     password: z.string().min(1),
@@ -31,19 +30,41 @@ const LoginForm = () => {
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FieldValues) => {
     setLoading(true);
-    loginUser(data)
-      .unwrap()
+    const response = fetch("http://localhost:8000/api/auth/login", {
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // redirect: "follow", // manual, *follow, error
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(data),
+    })
       .then((res) => {
         setLoading(false);
+        console.log(res);
         successToast();
         setTimeout((e) => {}, 2000);
         router.push("/");
       })
       .catch((err) => {
-        console.log(err.message);
         setLoading(false);
         errorToast(JSON.stringify(err.data));
       });
+    // loginUser(data)
+    //   .unwrap()
+    //   .then((res) => {
+    //     setLoading(false);
+    //     console.log(res);
+    //     successToast();
+    //     setTimeout((e) => {}, 2000);
+    //     router.push("/");
+    //   })
+    //   .catch((err) => {
+    //     setLoading(false);
+    //     errorToast(JSON.stringify(err.data));
+    //   });
   };
   return (
     <div className=" flex flex-col px-8 gap-8 mt-12">
