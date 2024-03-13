@@ -1,7 +1,5 @@
 "use client";
 import { useFetchUserQuery } from "@/lib/features/api/api";
-import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
-import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import { useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
@@ -9,13 +7,10 @@ import { toast } from "react-toastify";
 
 const DashboardPage = () => {
   const { data: user, error, isFetching } = useFetchUserQuery();
-  const dispatch = useAppDispatch();
 
+  useEffect(() => {}, [isFetching]);
   useEffect(() => {
-    isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
-  }, [isFetching, dispatch]);
-  useEffect(() => {
-    toast.error(error?.originalStatus);
+    toast.error((error as any)?.originalStatus);
   }, [error]);
   return (
     <div className=" p-4 bg-base-200 rounded-xl">
@@ -32,11 +27,11 @@ const DashboardPage = () => {
       <div className=" flex flex-col gap-1 mt-3">
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p>نام:</p>
-          <p>{user?.firstName}</p>
+          <p>{user?.first_name}</p>
         </div>
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p>نام خانوادگی:</p>
-          <p> {user?.lastName}</p>
+          <p> {user?.last_name}</p>
         </div>
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p>ایمیل:</p>
@@ -48,7 +43,7 @@ const DashboardPage = () => {
         </div>
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p> تاریخ عضویت:</p>
-          <p> {user?.createdAt?.toString()}</p>
+          <p> {user?.created_at?.toString()}</p>
         </div>
         <div className=" flex flex-row gap-2 p-1 items-center justify-between">
           <p>آدرس:</p>

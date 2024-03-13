@@ -9,10 +9,9 @@ import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
-import { useSession } from "next-auth/react";
 
 const AdminMenu = () => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [active, setActive] = useState("");
   const path = usePathname();
   useEffect(() => {

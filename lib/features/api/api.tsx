@@ -2,21 +2,12 @@ import { Category, Product, User } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getCookie } from "cookies-next";
 
-const token = getCookie("access");
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000",
-    // prepareHeaders: (headers) => {
-    //   getCookie("access")
-    //     ? headers.append("Authorization", `JWT ${getCookie("access")}`)
-    //     : null;
-    //   return headers;
-    // },
+    baseUrl: "",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    mode: "same-origin",
   }),
   tagTypes: ["User", "Category", "Product"],
   endpoints(builder) {
@@ -98,16 +89,13 @@ export const apiSlice = createApi({
           return { url: `/api/auth/users/`, method: "POST", body: user };
         },
       }),
-      loginUser: builder.mutation<User, Partial<User>>({
-        query: (user) => {
-          return {
-            url: `/api/auth/jwt/create/`,
-            method: "POST",
-            body: user,
-            credentials: "include",
-          };
-        },
-      }),
+      // getUser: builder.query<User, void>({
+      //   query: () => {
+      //     return {
+      //       url: `/api/auth/users/me`,
+      //     };
+      //   },
+      // }),
       activateUser: builder.query<any, any>({
         query: (data) => {
           return {
@@ -117,16 +105,17 @@ export const apiSlice = createApi({
           };
         },
       }),
+      //
       fetchUser: builder.query<User, void>({
         query: () => {
-          return { url: `/api/auth/users/` };
+          return { url: `/api/auth/users/me` };
         },
         providesTags: ["User"],
       }),
       editUser: builder.mutation<User, Partial<User>>({
         query: (user: User) => {
           return {
-            url: `/api/users/`,
+            url: `/api/auth/users/me/`,
             method: "PATCH",
             body: user,
           };
@@ -149,6 +138,5 @@ export const {
   useFetchUserQuery,
   useRegisterUserMutation,
   useEditUserMutation,
-  useLoginUserMutation,
   useActivateUserQuery,
 } = apiSlice;

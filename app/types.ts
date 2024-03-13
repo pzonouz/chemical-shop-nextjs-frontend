@@ -14,8 +14,13 @@ export interface Category {
 export interface User {
   id: string;
   name: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  created_at: string;
+  mobile: string;
+  address: string;
+  image: string;
 }
 export interface RessponseWithError {
   error: any;

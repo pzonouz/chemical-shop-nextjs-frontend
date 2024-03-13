@@ -1,28 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect } from "react";
 import { FaBars } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
 import { BsCart } from "react-icons/bs";
-import { useAppDispatch } from "@/lib/hooks";
-import { getCookie } from "cookies-next";
-import { useSelector } from "react-redux";
+import { useFetchUserQuery } from "@/lib/features/api/api";
+import { useEffect } from "react";
 
 const Navbar = () => {
-  //get session by NextAuth
-  //Redux App(main) Dispatch
-  const dispatch = useAppDispatch();
-  //get token from browser
-  const token = getCookie("next-auth.session-token");
-  //Fetch user once
-  useEffect(() => {
-    dispatch({
-      type: "userApiFetchBegan",
-      payload: { url: "/api/users", token },
-    });
-  }, [token, dispatch]);
-
+  const { data: user } = useFetchUserQuery();
+  useEffect(() => {}, [user]);
   return (
     <div>
       <div className="bg-base-100 navbar">
@@ -90,39 +77,35 @@ const Navbar = () => {
             >
               <div className="w-10 rounded-full">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {/* <img
+                <img
                   alt="Sample user image"
-                  src={
-                    status == "authenticated"
-                      ? session.user?.image!
-                      : "/images/Sample_User_Icon.png"
-                  }
-                /> */}
+                  src={user ? user?.image! : "/images/Sample_User_Icon.png"}
+                />
               </div>
             </div>
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-28 flex flex-col gap-3"
             >
-              {/* {status == "authenticated" ? (
+              {user ? (
                 <>
                   <li>
                     <Link href={`/users/dashboard`}>پنل کاربری</Link>
                   </li>
                   <li>
-                    <Link href={"/api/auth/signout"}>خروج</Link>
+                    <Link href={"auth/signout"}>خروج</Link>
                   </li>
                 </>
               ) : (
                 <>
                   <li>
-                    <Link href={"/register"}>ثبت نام</Link>
+                    <Link href={"auth/register"}>ثبت نام</Link>
                   </li>
                   <li>
-                    <Link href={"/api/auth/signin"}>ورود</Link>
+                    <Link href={"auth/login"}>ورود</Link>
                   </li>
                 </>
-              )} */}
+              )}
             </ul>
           </div>
         </div>

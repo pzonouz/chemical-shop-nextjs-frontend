@@ -5,7 +5,6 @@ import ErrorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
 import { useEditUserMutation, useFetchUserQuery } from "@/lib/features/api/api";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
-import { useAppDispatch } from "@/lib/hooks";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -13,13 +12,12 @@ import { toast } from "react-toastify";
 export default function UserEditForm() {
   const { data: user, error, isFetching } = useFetchUserQuery();
   const [editUser, { isLoading }] = useEditUserMutation();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
-  }, [isFetching, dispatch]);
+    isFetching ? setLoading() : unsetLoading();
+  }, [isFetching]);
   useEffect(() => {
-    ErrorToast(error?.originalStatus);
+    ErrorToast((error as any)?.originalStatus);
   }, [error]);
 
   const {
@@ -29,13 +27,13 @@ export default function UserEditForm() {
     formState: { errors },
   } = useForm({});
   useEffect(() => {
-    toast.error(error?.originalStatus);
+    toast.error((error as any)?.originalStatus);
   }, [error]);
   useEffect(() => {
     //For updating form data after state update, default values caches at first render and must change by reset after state cha
     reset({
-      firstName: user?.firstName,
-      lastName: user?.lastName,
+      first_name: user?.first_name,
+      last_name: user?.last_name,
       mobile: user?.mobile,
       address: user?.address,
     });
@@ -58,14 +56,14 @@ export default function UserEditForm() {
       onSubmit={handleSubmit(userFormSubmit)}
     >
       <InputBox
-        name="firstName"
+        name="first_name"
         errors={errors}
         registerFn={register}
         type="text"
         text="نام"
       />
       <InputBox
-        name="lastName"
+        name="last_name"
         errors={errors}
         registerFn={register}
         type="text"
