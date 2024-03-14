@@ -1,6 +1,8 @@
 "use client";
+import errorToast from "@/app/utils/ErrorToast";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useSearchParams } from "next/navigation";
+import { unknown } from "zod";
 
 export default function GoogleCallback() {
   const sendToBackend = async (state: string, code: string) => {
@@ -15,13 +17,13 @@ export default function GoogleCallback() {
         body: new URLSearchParams(data),
       });
       unsetLoading();
+      const resData = await res.json();
       if (!res.ok) {
-        const resData = await res.json();
-        console.log(resData);
-        throw new Error();
+        throw new Error((res as any).error);
       }
-      console.log(res);
-    } catch (e) {}
+    } catch (err) {
+      errorToast((err as any)?.message!);
+    }
   };
   const searchParams = useSearchParams();
   const state = searchParams.get("state");

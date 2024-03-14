@@ -4,7 +4,6 @@ import { NumericFormat } from "react-number-format";
 import { useEffect, useState } from "react";
 import z, { ZodSchema } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@prisma/client";
 
 import {
   useCreateProductMutation,
@@ -15,6 +14,7 @@ import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
 import OneFileUploader from "./OneFileUploader";
+import { Product } from "@/app/types";
 
 const AdminProductForm = ({
   product,
@@ -31,10 +31,7 @@ const AdminProductForm = ({
     name: z.string().min(1),
     image: z.string().nullish(),
     price: z.string().min(1),
-    categoryId: z
-      .string()
-      .min(1)
-      .refine((value: string) => value != "0"),
+    category: z.string().nullish(),
   });
   const {
     handleSubmit,
@@ -117,18 +114,18 @@ const AdminProductForm = ({
       )}
       <select
         className="select select-bordered w-full max-w-xs"
-        {...register("categoryId")}
+        {...register("category")}
       >
         <option disabled selected value={"0"}>
           دسته بندی
         </option>
         {categories?.map((category) => (
-          <option value={category.id} key={category.id}>
+          <option value={category.name} key={category.id}>
             {category.name}
           </option>
         ))}
       </select>
-      {errors?.categoryId && (
+      {errors?.category && (
         <p className="text-error text-xs">دسته بندی را وارد کنید</p>
       )}
       <OneFileUploader

@@ -5,7 +5,6 @@ import OneFileUploader from "./OneFileUploader";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Category } from "@prisma/client";
 import {
   useCreateCategoryMutation,
   useEditCategoryMutation,
@@ -13,6 +12,7 @@ import {
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
+import { Category } from "@/app/types";
 
 const AdminCategoryForm = ({
   category,

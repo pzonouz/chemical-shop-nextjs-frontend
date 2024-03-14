@@ -1,9 +1,9 @@
 import React from "react";
 import { BsHeart } from "react-icons/bs";
 import Rating from "../utils/Rating";
-import Image from "next/image";
+import { Product } from "@/app/types";
 
-const Card = () => {
+const Card = ({ product }: { product: Product }) => {
   return (
     <div className="rounded-lg shadow-md">
       <div className="relative">
@@ -26,12 +26,12 @@ const Card = () => {
       </div>
       <div className="p-4 border-b border-gray-200 bg-white  rounded-b-md ">
         <h3 className="mb-3 text-xl font-medium text-start">
-          <a href="#"> محصول یک</a>
+          <a href="#"> {product?.name}</a>
         </h3>
         <div className="relative flex flex-row-reverse items-center justify-between mb-3 text-left">
           <p className="text-lg font-medium text-neutral flex flex-col items-start justify-center">
-            <span className="ml-2 line-through text-sm">۱.۵۰۰.۰۰۰ </span>
-            <span className="text-primary ">۱.۲۰۰.۰۰۰ تومان</span>
+            <span className="ml-2 line-through text-sm">{product?.price} </span>
+            {/* <span className="text-primary ">۱.۲۰۰.۰۰۰ تومان</span> */}
           </p>
           <p className=" btn btn-primary"> افزودن به سبد</p>
         </div>

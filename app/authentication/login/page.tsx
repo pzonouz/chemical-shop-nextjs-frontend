@@ -12,7 +12,7 @@ export default function SignInPage() {
         className="btn w-full mt-20  flex flex-row items-center gap-2"
         onClick={async () => {
           const res = await fetch(
-            "/api/auth/o/google-oauth2/?redirect_uri=http://localhost/auth/google-callback"
+            "/api/auth/o/google-oauth2/?redirect_uri=http://localhost/authentication/google-callback"
           );
           const data = await res.json();
           window.location = data.authorization_url;

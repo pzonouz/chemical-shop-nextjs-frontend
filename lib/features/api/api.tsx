@@ -1,6 +1,5 @@
 import { Category, Product, User } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getCookie } from "cookies-next";
 
 export const apiSlice = createApi({
   reducerPath: "api",
@@ -89,13 +88,7 @@ export const apiSlice = createApi({
           return { url: `/api/auth/users/`, method: "POST", body: user };
         },
       }),
-      // getUser: builder.query<User, void>({
-      //   query: () => {
-      //     return {
-      //       url: `/api/auth/users/me`,
-      //     };
-      //   },
-      // }),
+
       activateUser: builder.query<any, any>({
         query: (data) => {
           return {

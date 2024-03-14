@@ -1,25 +1,22 @@
-import { getServerSession } from "next-auth";
+"use client";
+
+import { useFetchUserQuery } from "@/lib/features/api/api";
 import AdminMenu from "../components/admin/AdminMenu";
 import { redirect } from "next/navigation";
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // const session = await getServerSession();
-  // if (!session) {
-  //   return redirect("/api/auth/signin");
-  // }
-  // if (!session?.user) {
-  //   return redirect("/api/auth/signin");
-  // }
-  // const user = await prisma.user.findUnique({
-  //   where: { email: session?.user?.email! },
-  // });
-  // if (user?.role !== "admin") {
-  //   return <div className="p-8">شما مجاز به ورود نیستید</div>;
-  // }
+  const { data: user, isError } = useFetchUserQuery();
+
+  if (isError) {
+    return redirect("/authentication/login");
+  }
+  if (!user?.is_staff) {
+    return <div className="p-8">شما مجاز به ورود نیستید</div>;
+  }
   return (
     <main className="mt-6 px-2 flex flex-row gap-3">
       <AdminMenu />

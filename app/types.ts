@@ -3,12 +3,15 @@ export interface Product {
   name: string;
   image: string;
   price: string;
+  category: string;
 }
 
 export interface Category {
+  products: any;
   id: string;
   name: string;
   image: string;
+  proucts: Product[];
 }
 
 export interface User {
@@ -21,6 +24,7 @@ export interface User {
   mobile: string;
   address: string;
   image: string;
+  is_staff: boolean;
 }
 export interface RessponseWithError {
   error: any;

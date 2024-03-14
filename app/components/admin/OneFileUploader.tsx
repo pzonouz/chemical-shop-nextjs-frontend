@@ -1,3 +1,4 @@
+"use client";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useAppDispatch } from "@/lib/hooks";
 import { useEffect, useState } from "react";
@@ -20,8 +21,9 @@ const OneFileUploader = ({
         return;
       }
       fileData.set("file", file!);
-      dispatch(setLoading());
-      const res = await fetch("/admin/api/images", {
+      setLoading();
+      const res = await fetch("/api/image-upload/", {
+        headers: {},
         method: "POST",
         body: fileData,
       });
@@ -30,13 +32,14 @@ const OneFileUploader = ({
       if (!res.ok) {
         throw new Error(data.code);
       }
-      uploadedImageLinkSetter(data.path);
+      uploadedImageLinkSetter(data.file);
     } catch (error: unknown) {
-      toast.error(error.message, { position: "top-right" });
+      toast.error((error as any).message, { position: "top-right" });
     }
   };
   useEffect(() => {
     onFileUpload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
   return (

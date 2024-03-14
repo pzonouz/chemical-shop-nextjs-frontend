@@ -99,10 +99,10 @@ const Navbar = () => {
               ) : (
                 <>
                   <li>
-                    <Link href={"auth/register"}>ثبت نام</Link>
+                    <Link href={"/authentication/register"}>ثبت نام</Link>
                   </li>
                   <li>
-                    <Link href={"auth/login"}>ورود</Link>
+                    <Link href={"/authentication/login"}>ورود</Link>
                   </li>
                 </>
               )}
