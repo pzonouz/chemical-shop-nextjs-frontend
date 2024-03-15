@@ -4,12 +4,19 @@ import Link from "next/link";
 import { FaBars } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
 import { BsCart } from "react-icons/bs";
-import { useFetchUserQuery } from "@/lib/features/api/api";
+import {
+  useFetchCartItemsQuery,
+  useFetchUserQuery,
+} from "@/lib/features/api/api";
 import { useEffect } from "react";
+import errorToast from "@/app/utils/ErrorToast";
 
 const Navbar = () => {
   const { data: user } = useFetchUserQuery();
-  useEffect(() => {}, [user]);
+  const { data: cartItems, isError, error } = useFetchCartItemsQuery();
+  useEffect(() => {
+    errorToast(error);
+  }, [error]);
   return (
     <div>
       <div className="bg-base-100 navbar">
@@ -50,7 +57,7 @@ const Navbar = () => {
               <div className="indicator">
                 <BsCart className="text-2xl" />
                 <span className="badge badge-sm indicator-item bg-secondary text-white font-bold">
-                  ۲
+                  {cartItems?.length}
                 </span>
               </div>
             </div>
@@ -59,7 +66,9 @@ const Navbar = () => {
               className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
             >
               <div className="card-body">
-                <span className="font-bold text-lg">۲ مورد</span>
+                <span className="font-bold text-lg">
+                  {cartItems?.length} مورد
+                </span>
                 <span className="text-info">مجموع: ۱.۲۰۰.۰۰۰ تومان</span>
                 <div className="card-actions">
                   <button className="btn btn-primary btn-block">
@@ -93,7 +102,7 @@ const Navbar = () => {
                     <Link href={`/users/dashboard`}>پنل کاربری</Link>
                   </li>
                   <li>
-                    <Link href={"auth/signout"}>خروج</Link>
+                    <Link href={"auth/logout"}>خروج</Link>
                   </li>
                 </>
               ) : (

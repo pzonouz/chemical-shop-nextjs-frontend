@@ -14,6 +14,8 @@ export default function SignInPage() {
           const res = await fetch(
             "/api/auth/o/google-oauth2/?redirect_uri=http://localhost/authentication/google-callback"
           );
+          if (!res.ok) {
+          }
           const data = await res.json();
           window.location = data.authorization_url;
         }}

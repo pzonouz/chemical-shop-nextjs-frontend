@@ -2,41 +2,44 @@
 import { Category, Product } from "@/app/types";
 import Card from "./Card";
 import React from "react";
-import { Certificate } from "crypto";
+import ErrorComponent from "./ErrorComponent";
+import { useFetchCategoriesQuery } from "@/lib/features/api/api";
 
+let errorMessage = null;
 async function getCategories() {
   try {
-    const res = await fetch("http://localhost/api/categories", {
+    const res: Response = await fetch("http://localhost/api/categories", {
+      next: { revalidate: 60 },
       headers: { "Content-Type": " application/vnd.api+json" },
       // headers: { "Content-Type": " application/json" },
     });
     if (!res.ok) {
-      throw new Error(res?.error);
+      errorMessage = res.status;
+      throw new Error(errorMessage);
     }
     return res.json();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 const ProductListByCategory = async () => {
   const categories: Category[] = await getCategories();
-  console.log(categories);
   return (
     <section className="pt-12 px-3 ">
-      {categories.map((category: Category) => (
-        <div key={category.id}>
-          <div className="flex flex-row gap-2 items-center">
-            <div className="flex-auto border-t-2 border-b-2 h-[6px] text-center align-middle"></div>
-            <div>{category.name} </div>
-            <div className="flex-auto border-t-2 border-b-2 h-[6px] text-center align-middle"></div>
+      {errorMessage && <ErrorComponent text={errorMessage}></ErrorComponent>}
+      {!errorMessage &&
+        categories?.map((category: Category) => (
+          <div key={category?.id}>
+            <div className="flex flex-row gap-2 items-center">
+              <div className="flex-auto border-t-2 border-b-2 h-[6px] text-center align-middle"></div>
+              <div>{category?.name} </div>
+              <div className="flex-auto border-t-2 border-b-2 h-[6px] text-center align-middle"></div>
+            </div>
+            <div className=" grid grid-cols-1 pt-6">
+              {category?.products?.map((product: Product) => {
+                return <Card key={product?.id} product={product} />;
+              })}
+            </div>
           </div>
-          <div className=" grid grid-cols-1 pt-6">
-            {category?.products?.map((product: Product) => {
-              return <Card key={product.id} product={product} />;
-            })}
-          </div>
-        </div>
-      ))}
+        ))}
     </section>
   );
 };

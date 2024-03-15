@@ -1,4 +1,4 @@
-import { Category, Product, User } from "@/app/types";
+import { Cart, Category, Product, User } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -8,7 +8,7 @@ export const apiSlice = createApi({
     credentials: "include",
     mode: "same-origin",
   }),
-  tagTypes: ["User", "Category", "Product"],
+  tagTypes: ["User", "Category", "Product", "Cart"],
   endpoints(builder) {
     return {
       fetchCategories: builder.query<Category[], number | void>({
@@ -54,6 +54,14 @@ export const apiSlice = createApi({
         },
         providesTags: ["Product"],
       }),
+      fetchProduct: builder.query<Product, number | null>({
+        query: (id) => {
+          return {
+            url: `/api/products/${id}`,
+          };
+        },
+        providesTags: ["Product"],
+      }),
       createProduct: builder.mutation<Product, Product>({
         query: (product: Product) => {
           return {
@@ -82,6 +90,24 @@ export const apiSlice = createApi({
           };
         },
         invalidatesTags: ["Product"],
+      }),
+      fetchCartItems: builder.query<Cart[], void>({
+        query: () => {
+          return {
+            url: `/api/cart-items/`,
+          };
+        },
+        providesTags: ["Cart"],
+      }),
+      addToCart: builder.mutation<Cart, Partial<Cart>>({
+        query: (cart: Cart) => {
+          return {
+            url: `/api/cart-items/`,
+            method: "POST",
+            body: cart,
+          };
+        },
+        invalidatesTags: ["Cart"],
       }),
       registerUser: builder.mutation<User, Partial<User>>({
         query: (user) => {
@@ -125,6 +151,7 @@ export const {
   useEditCategoryMutation,
   useDeleteCategoryMutation,
   useFetchProductsQuery,
+  useFetchProductQuery,
   useCreateProductMutation,
   useEditProductMutation,
   useDeleteProductMutation,
@@ -132,4 +159,6 @@ export const {
   useRegisterUserMutation,
   useEditUserMutation,
   useActivateUserQuery,
+  useFetchCartItemsQuery,
+  useAddToCartMutation,
 } = apiSlice;

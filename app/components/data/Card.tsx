@@ -2,6 +2,7 @@ import React from "react";
 import { BsHeart } from "react-icons/bs";
 import Rating from "../utils/Rating";
 import { Product } from "@/app/types";
+import AddToCartButton from "./AddToCartButton";
 
 const Card = ({ product }: { product: Product }) => {
   return (
@@ -10,7 +11,7 @@ const Card = ({ product }: { product: Product }) => {
         <a href="#" className="">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/Benzene-2D-full.svg.png"
+            src={product.image}
             alt=""
             className="object-cover w-full mx-auto rounded-md"
           />
@@ -30,10 +31,10 @@ const Card = ({ product }: { product: Product }) => {
         </h3>
         <div className="relative flex flex-row-reverse items-center justify-between mb-3 text-left">
           <p className="text-lg font-medium text-neutral flex flex-col items-start justify-center">
-            <span className="ml-2 line-through text-sm">{product?.price} </span>
-            {/* <span className="text-primary ">۱.۲۰۰.۰۰۰ تومان</span> */}
+            {/* <span className="ml-2 line-through text-sm">{product?.price} </span> */}
+            <span className="text-primary ">{product?.price} تومان</span>
           </p>
-          <p className=" btn btn-primary"> افزودن به سبد</p>
+          <AddToCartButton product={product} />
         </div>
         <div className="w-full flex flex-row justify-end">
           <Rating />

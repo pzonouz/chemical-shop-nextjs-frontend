@@ -7,11 +7,15 @@ export interface Product {
 }
 
 export interface Category {
-  products: any;
   id: string;
   name: string;
   image: string;
-  proucts: Product[];
+  products: Product[];
+}
+export interface Cart {
+  user: any;
+  product: any;
+  quantity: any;
 }
 
 export interface User {
