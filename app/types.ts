@@ -13,7 +13,6 @@ export interface Category {
   products: Product[];
 }
 export interface Cart {
-  user: any;
   product: any;
   quantity: any;
 }

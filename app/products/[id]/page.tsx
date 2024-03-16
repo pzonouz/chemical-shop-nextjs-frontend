@@ -29,11 +29,14 @@ export default async function ProductPage({
         alt={product.name}
         className=" rounded-tl-lg rounded-tr-lg"
       />
-      <div className=" flex flex-row items-center justify-between">
-        <div className=" text-xl font-bold">{product.name}</div>
-        <div className=" text-md">EnglishName</div>
+      <div className=" px-2 flex flex-col gap-2">
+        <div className=" flex flex-row items-center justify-between">
+          <div className=" text-xl font-bold">{product.name}</div>
+          <div className=" text-md">EnglishName</div>
+        </div>
+
+        <AddToCartButtonWithCount product={product} />
       </div>
-      <AddToCartButtonWithCount product={product} />
     </div>
   );
 }

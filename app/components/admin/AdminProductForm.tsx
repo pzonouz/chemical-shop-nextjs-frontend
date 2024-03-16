@@ -15,6 +15,7 @@ import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
 import OneFileUploader from "./OneFileUploader";
 import { Product } from "@/app/types";
+import { textToThousandSeparated } from "@/app/utils/numberConvert";
 
 const AdminProductForm = ({
   product,

@@ -8,7 +8,7 @@ const Card = ({ product }: { product: Product }) => {
   return (
     <div className="rounded-lg shadow-md">
       <div className="relative">
-        <a href="#" className="">
+        <a href={`/products/${product.id}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={product.image}
@@ -27,7 +27,7 @@ const Card = ({ product }: { product: Product }) => {
       </div>
       <div className="p-4 border-b border-gray-200 bg-white  rounded-b-md ">
         <h3 className="mb-3 text-xl font-medium text-start">
-          <a href="#"> {product?.name}</a>
+          <a href={`/products/${product.id}`}> {product?.name}</a>
         </h3>
         <div className="relative flex flex-row-reverse items-center justify-between mb-3 text-left">
           <p className="text-lg font-medium text-neutral flex flex-col items-start justify-center">
