@@ -46,6 +46,8 @@ const OneFileUploader = ({
     <>
       <input
         type="file"
+        accept=".jpg, .jpeg, .png"
+        data-max-size="1000"
         className="file-input file-input-bordered max-w-xs w-full"
         onChange={(e) => {
           setFile(e.target.files![0]);

@@ -26,7 +26,7 @@ const LoginForm = () => {
     setLoading(true);
     const res = await fetch("/api/auth/login", {
       method: "POST",
-      mode: "cors",
+      // mode: "cors",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

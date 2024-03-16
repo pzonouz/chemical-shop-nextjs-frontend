@@ -15,7 +15,6 @@ import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
 import OneFileUploader from "./OneFileUploader";
 import { Product } from "@/app/types";
-import { textToThousandSeparated } from "@/app/utils/numberConvert";
 
 const AdminProductForm = ({
   product,
@@ -30,6 +29,7 @@ const AdminProductForm = ({
 
   const schema: ZodSchema = z.object({
     name: z.string().min(1),
+    english_name: z.string().min(1),
     image: z.string().nullish(),
     price: z.string().min(1),
     category: z.string().nullish(),
@@ -57,7 +57,7 @@ const AdminProductForm = ({
           }
           successToast();
           reset(data);
-          setImage("");
+          // setImage("");
         })
         .catch((error) => {
           ErrorToast(error.message);
@@ -95,6 +95,15 @@ const AdminProductForm = ({
       {errors?.name && (
         <p className="text-error text-xs">نام محصول را وارد کنید</p>
       )}
+      <input
+        type="text"
+        {...register("english_name")}
+        placeholder="نام انگلیسی کالا"
+        className="input input-bordered w-full max-w-xs"
+      />
+      {errors?.name && (
+        <p className="text-error text-xs">نام انگلیسی محصول را وارد کنید</p>
+      )}
 
       <Controller
         name="price"
@@ -105,6 +114,7 @@ const AdminProductForm = ({
             type="text"
             className="input input-bordered w-full max-w-xs"
             {...field}
+            ref={null}
             thousandSeparator={true}
             placeholder="قیمت"
           />
@@ -114,10 +124,11 @@ const AdminProductForm = ({
         <p className="text-error text-xs"> قیمت را وارد کنید</p>
       )}
       <select
+        defaultValue={"0"}
         className="select select-bordered w-full max-w-xs"
         {...register("category")}
       >
-        <option disabled selected value={"0"}>
+        <option disabled value={"0"}>
           دسته بندی
         </option>
         {categories?.map((category) => (

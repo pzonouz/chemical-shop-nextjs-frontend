@@ -52,16 +52,7 @@ const AdminProductTable = () => {
             <React.Fragment key={product.id}>
               <tr className="flex bg-base-200 w-full justify-between items-center">
                 <td className=" w-1/2">{product?.name} </td>
-                <td className=" w-1/4">
-                  {product.price}
-                  {/* <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                      {product.image && (
-                        <img src={product?.image} alt={product?.name!} />
-                      )}
-                    </div>
-                  </div> */}
-                </td>
+                <td className=" w-1/4">{product.price}</td>
                 <td className=" flex gap-4 items-center">
                   <RiEdit2Line
                     className={classNames({

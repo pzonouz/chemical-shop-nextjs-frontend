@@ -9,10 +9,10 @@ import {
   useDeleteCategoryMutation,
   useFetchCategoriesQuery,
 } from "@/lib/features/api/api";
-import { Category } from "@prisma/client";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
+import { Category } from "@/app/types";
 
 const AdminCategoryTable = () => {
   const {

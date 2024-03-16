@@ -1,6 +1,7 @@
 export interface Product {
   id: string;
   name: string;
+  english_name: any;
   image: string;
   price: string;
   category: string;
@@ -13,7 +14,9 @@ export interface Category {
   products: Product[];
 }
 export interface Cart {
-  product: any;
+  id?: any;
+  product?: Product;
+  product_id?: string;
   quantity: any;
 }
 

@@ -1,5 +1,5 @@
 export const textToNumber = (text: string) => {
-  return parseInt(text.replace(",", ""));
+  return parseInt(text?.replace(",", ""));
 };
 export const textToThousandSeparated = (textNumber: string | number) => {
   if (typeof textNumber === "string") {

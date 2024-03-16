@@ -9,7 +9,7 @@ let errorMessage = null;
 async function getCategories() {
   try {
     const res: Response = await fetch("http://localhost/api/categories", {
-      next: { revalidate: 60 },
+      cache: "no-store",
       headers: { "Content-Type": " application/vnd.api+json" },
       // headers: { "Content-Type": " application/json" },
     });

@@ -10,6 +10,7 @@ import {
 } from "@/lib/features/api/api";
 import { useEffect } from "react";
 import errorToast from "@/app/utils/ErrorToast";
+import Cart from "../data/Cart";
 
 const Navbar = () => {
   const { data: user } = useFetchUserQuery();
@@ -56,25 +57,23 @@ const Navbar = () => {
             >
               <div className="indicator">
                 <BsCart className="text-2xl" />
-                <span className="badge badge-sm indicator-item bg-secondary text-white font-bold">
-                  {cartItems?.length}
-                </span>
+                {cartItems?.length ? (
+                  <span className="badge badge-sm indicator-item bg-secondary text-white font-bold">
+                    {cartItems?.length}
+                  </span>
+                ) : null}
               </div>
             </div>
             <div
               tabIndex={0}
-              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
+              className="mt-3 z-[1] card card-compact dropdown-content bg-base-100 shadow w-80"
             >
-              <div className="card-body">
-                <span className="font-bold text-lg">
-                  {cartItems?.length} مورد
-                </span>
-                <span className="text-info">مجموع: ۱.۲۰۰.۰۰۰ تومان</span>
-                <div className="card-actions">
-                  <button className="btn btn-primary btn-block">
-                    مشاهده سبد
-                  </button>
-                </div>
+              <div className="card-body w-full">
+                {cartItems?.length ? (
+                  <Cart />
+                ) : (
+                  <div className=" text-error"> سبد خرید شما خالی است</div>
+                )}
               </div>
             </div>
           </div>
