@@ -13,35 +13,34 @@ import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 import { Category } from "@/app/types";
+import { useAppDispatch } from "@/lib/hooks";
 
 const AdminCategoryTable = () => {
-  const {
-    data: categories,
-    isFetching,
-    error,
-    isError,
-  } = useFetchCategoriesQuery();
+  const dispatch = useAppDispatch();
+  const { data: categories, isFetching, error } = useFetchCategoriesQuery();
   const [categoryToDelete, setCategoryToDelete] = useState("");
   const [editVisible, setEditVisible] = useState("");
-  const [deleteCategory, { isLoading }] = useDeleteCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   const onDeleteCategory = () => {
+    dispatch(setLoading());
     deleteCategory(categoryToDelete)
+      .unwrap()
       .then((res: any) => {
-        if (res.error) {
-          throw new Error(res.error?.originalStatus);
-        }
         successToast();
+        dispatch(unsetLoading());
       })
       .catch((err: any) => {
-        ErrorToast(err.message);
+        ErrorToast(err.status);
+        dispatch(unsetLoading());
       });
   };
 
   useEffect(() => {
-    isFetching || isLoading ? setLoading() : unsetLoading();
-  }, [isFetching, isLoading]);
+    isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
+  }, [dispatch, isFetching]);
   useEffect(() => {
+    console.log(error);
     ErrorToast(error);
   }, [error]);
 

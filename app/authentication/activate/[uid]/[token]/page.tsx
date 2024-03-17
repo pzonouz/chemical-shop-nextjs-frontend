@@ -8,6 +8,7 @@ export default function ActivatePage({
 }: {
   params: { uid: string; token: string };
 }) {
+  // TODO: Loading
   const { isFetching, isSuccess, isError, error } = useActivateUserQuery({
     uid: uid,
     token: token,

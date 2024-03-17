@@ -8,12 +8,13 @@ import InputBox from "@/app/components/data/InputBox";
 import { useRegisterUserMutation } from "@/lib/features/api/api";
 import successToast, { successToastWithmsg } from "@/app/utils/SuccessToast";
 import errorToast from "@/app/utils/ErrorToast";
-import { RessponseWithError } from "@/app/types";
+import { useAppDispatch } from "@/lib/hooks";
 
 const UserRegisterPage = (props: any) => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const [registerUser] = useRegisterUserMutation();
+  const dispatch = useAppDispatch();
 
   const schema: ZodSchema = z
     .object({
@@ -30,18 +31,18 @@ const UserRegisterPage = (props: any) => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FieldValues) => {
-    setLoading(true);
+    dispatch(setLoading(true));
     registerUser(data)
       .unwrap()
-      .then((res) => {
-        setLoading(false);
+      .then(() => {
+        dispatch(setLoading(false));
         successToastWithmsg("ایمیل خود را برای فعالسازی کنترل کنید");
         setTimeout(() => {}, 2000);
         router.push("/auth/login");
       })
       .catch((err: any) => {
-        setLoading(false);
-        errorToast(JSON.stringify(err.data));
+        dispatch(setLoading(false));
+        errorToast(err.status);
       });
   };
   return (

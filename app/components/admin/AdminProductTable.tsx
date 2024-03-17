@@ -13,8 +13,10 @@ import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 import { Product } from "@/app/types";
+import { useAppDispatch } from "@/lib/hooks";
 
 const AdminProductTable = () => {
+  const dispatch = useAppDispatch();
   const { data: products, isFetching } = useFetchProductsQuery();
   const [productToDelete, setProductToDelete] = useState("");
   const [editVisible, setEditVisible] = useState("");
@@ -22,20 +24,18 @@ const AdminProductTable = () => {
 
   const onDeleteProduct = () => {
     deleteProduct(productToDelete)
-      .then((res: any) => {
-        if (res.error) {
-          throw new Error(res.error?.originalStatus);
-        }
+      .unwrap()
+      .then(() => {
         successToast();
       })
       .catch((err) => {
-        ErrorToast(err.message);
+        ErrorToast(err.status);
       });
   };
 
   useEffect(() => {
-    isFetching ? setLoading() : unsetLoading();
-  }, [isFetching]);
+    isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
+  }, [dispatch, isFetching]);
 
   return (
     <div className="overflow-x-auto w-full">

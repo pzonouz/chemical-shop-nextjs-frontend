@@ -15,17 +15,20 @@ import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
 import OneFileUploader from "./OneFileUploader";
 import { Product } from "@/app/types";
+import { useAppDispatch } from "@/lib/hooks";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 
 const AdminProductForm = ({
   product,
 }: {
   product: Product | null | undefined;
 }) => {
+  const dispatch = useAppDispatch();
   const [image, setImage] = useState(product?.image || "");
   const [createProduct, { isLoading: createIsLoading }] =
     useCreateProductMutation();
-  const [editProduct, { isLoading: editIsLoading }] = useEditProductMutation();
-  const { data: categories, isLoading, error } = useFetchCategoriesQuery();
+  const [editProduct] = useEditProductMutation();
+  const { data: categories, isFetching, error } = useFetchCategoriesQuery();
 
   const schema: ZodSchema = z.object({
     name: z.string().min(1),
@@ -48,33 +51,34 @@ const AdminProductForm = ({
   useEffect(() => {
     setValue("image", image);
   }, [image, setValue]);
+  useEffect(() => {
+    isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
+  }, [dispatch, isFetching]);
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
   const onSubmit = (data: any) => {
     if (product) {
       editProduct({ ...data, id: product.id })
-        .then((res: any) => {
-          if (res.error) {
-            throw new Error(res.error.originalStatus);
-          }
+        .unwrap()
+        .then(() => {
           successToast();
           reset(data);
-          // setImage("");
         })
-        .catch((error) => {
-          ErrorToast(error.message);
+        .catch((err) => {
+          ErrorToast(err.status);
         });
     } else {
       createProduct(data)
-        .then((res: any) => {
-          if (res.error) {
-            throw new Error(res.error.originalStatus);
-          }
+        .unwrap()
+        .then(() => {
           successToast();
           reset();
           setValue("price", "");
           setImage("");
         })
-        .catch((error) => {
-          ErrorToast(error.message);
+        .catch((err) => {
+          ErrorToast(err.status);
         });
     }
   };
@@ -145,10 +149,7 @@ const AdminProductForm = ({
         uploadedImageLinkSetter={setImage}
       />
       {/* <button className=" btn btn-primary w-full">تبت</button> */}
-      <LoadingButton
-        isLoading={createIsLoading || editIsLoading}
-        className=" w-full"
-      />
+      <LoadingButton isLoading={createIsLoading} className=" w-full" />
     </form>
   );
 };

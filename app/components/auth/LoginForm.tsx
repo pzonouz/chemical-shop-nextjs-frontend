@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import errorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
+import { useAppDispatch } from "@/lib/hooks";
 
 const LoginForm = () => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
+  // const dispatch = useAppDispatch();
   const schema: ZodSchema = z.object({
     email: z.string().min(1).email(),
     password: z.string().min(1),
@@ -19,29 +21,23 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FieldValues) => {
+    // dispatch(setLoading(true));
     setLoading(true);
     const res = await fetch("/api/auth/login", {
       method: "POST",
-      // mode: "cors",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      // redirect: "follow", // manual, *follow, error
-      referrerPolicy: "no-referrer",
       body: JSON.stringify(data),
     });
-    const resData = await res.json();
     if (res.ok) {
-      setLoading(false);
-      successToast();
-      setTimeout((e) => {}, 2000);
-      router.push("/");
+      window.location.href = "/";
     } else {
+      const resData = await res.json();
       setLoading(false);
       errorToast(JSON.stringify(resData));
     }
@@ -74,10 +70,8 @@ const LoginForm = () => {
       )}
 
       <button type="submit" className=" btn btn-primary">
-        ورود
-        {isLoading && (
-          <span className="loading loading-spinner absolute right-1/3"></span>
-        )}
+        {isLoading && <span className="loading loading-spinner"></span>}
+        {!isLoading && <>ورود</>}
       </button>
     </form>
   );

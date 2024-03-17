@@ -13,6 +13,7 @@ import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
 import { Category } from "@/app/types";
+import { useAppDispatch } from "@/lib/hooks";
 
 const AdminCategoryForm = ({
   category,
@@ -20,10 +21,9 @@ const AdminCategoryForm = ({
   category: Category | null | undefined;
 }) => {
   const [image, setImage] = useState(category?.image || "");
-  const [createCategory, { isLoading: createIsLoading }] =
-    useCreateCategoryMutation();
-  const [editCategory, { isLoading: editIsLoading }] =
-    useEditCategoryMutation();
+  const [loading, setLoading] = useState(false);
+  const [createCategory] = useCreateCategoryMutation();
+  const [editCategory] = useEditCategoryMutation();
 
   const schema = z.object({
     name: z.string().min(1),
@@ -44,30 +44,32 @@ const AdminCategoryForm = ({
   }, [image, setValue]);
   const onSubmit = (data: any) => {
     if (category) {
+      setLoading(true);
       editCategory({ ...data, id: category.id })
-        .then((res: any) => {
-          if (res.error) {
-            throw new Error(res.error.originalStatus);
-          }
+        .unwrap()
+        .then(() => {
+          setLoading(false);
           successToast();
           reset(data);
           setImage("");
         })
-        .catch((error) => {
-          ErrorToast(error.message);
+        .catch((err) => {
+          setLoading(false);
+          ErrorToast(err.status);
         });
     } else {
+      setLoading(true);
       createCategory(data)
-        .then((res: any) => {
-          if (res.error) {
-            throw new Error(res.error.originalStatus);
-          }
+        .unwrap()
+        .then(() => {
+          setLoading(false);
           successToast();
           reset();
           setImage("");
         })
-        .catch((error) => {
-          ErrorToast(error.message);
+        .catch((err) => {
+          setLoading(false);
+          ErrorToast(err.status);
         });
     }
   };
@@ -93,10 +95,7 @@ const AdminCategoryForm = ({
         uploadedImageLinkSetter={setImage}
       />
       {/* <button className=" btn btn-primary w-full">تبت</button> */}
-      <LoadingButton
-        isLoading={createIsLoading || editIsLoading}
-        className=" w-full"
-      />
+      <LoadingButton isLoading={loading} className=" w-full" />
     </form>
   );
 };

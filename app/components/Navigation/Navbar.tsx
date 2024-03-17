@@ -13,8 +13,10 @@ import errorToast from "@/app/utils/ErrorToast";
 import Cart from "../data/Cart";
 import { usePathname, useRouter } from "next/navigation";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
   const { data: user } = useFetchUserQuery();
   const path = usePathname();
   const { data: cartItems, isError, error } = useFetchCartItemsQuery();
@@ -102,25 +104,33 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-28 flex flex-col gap-3"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-56 flex flex-col gap-3"
             >
               {user ? (
                 <>
+                  <li>
+                    <a className=" text-primary">{user.email}</a>
+                  </li>
                   <li>
                     <Link href={`/users/dashboard`}>پنل کاربری</Link>
                   </li>
                   <li
                     onClick={() => {
-                      setLoading();
-                      fetch("http://localhost/api/auth/logout")
+                      dispatch(setLoading());
+                      fetch(`/api/auth/logout`, {
+                        cache: "no-store",
+                      })
                         .then((res) => {
                           if (res.ok) {
-                            window.location.href =
-                              "http://localhost:/authentication/login";
+                            window.location.href = `/authentication/login`;
+                          } else {
+                            throw new Error(res.statusText);
                           }
-                          unsetLoading();
                         })
-                        .catch();
+                        .catch((err) => {
+                          errorToast(err.message);
+                          dispatch(unsetLoading());
+                        });
                     }}
                   >
                     <a>خروج</a>

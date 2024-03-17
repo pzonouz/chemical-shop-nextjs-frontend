@@ -3,27 +3,34 @@ import { Product } from "@/app/types";
 import errorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
 import { useAddToCartMutation } from "@/lib/features/api/api";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const AddToCartButton = ({ product }: { product: Product }) => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [addToCart] = useAddToCartMutation();
+
   return (
     <p
       className=" btn btn-primary"
       onClick={() => {
+        dispatch(setLoading());
         addToCart({ product_id: product.id, quantity: 1 })
-          .then((res) => {
-            if (res.error) {
-              if (res?.error?.status == 401) {
-                return router.push("/authentication/login/");
-              } else {
-                throw new Error(res.error.originalStatus);
-              }
-            }
+          .unwrap()
+          .then(() => {
+            dispatch(unsetLoading());
             successToast();
           })
-          .catch((err) => errorToast(err?.message));
+          .catch((err) => {
+            if (err?.status == 401) {
+              dispatch(unsetLoading());
+              errorToast("باید ابتدا وارد شوید");
+              router.push("/authentication/login/");
+            }
+          });
       }}
     >
       افزودن به سبد

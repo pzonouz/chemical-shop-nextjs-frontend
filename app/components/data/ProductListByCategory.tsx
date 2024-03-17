@@ -1,29 +1,25 @@
-"use server";
 import { Category, Product } from "@/app/types";
 import Card from "./Card";
 import React from "react";
 import ErrorComponent from "./ErrorComponent";
-import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 
 let errorMessage = null;
-async function getCategories() {
+async function GetCategories() {
   try {
     const res: Response = await fetch("http://localhost/api/categories", {
       cache: "no-store",
       headers: { "Content-Type": " application/vnd.api+json" },
-      // headers: { "Content-Type": " application/json" },
     });
     if (!res.ok) {
-      errorMessage = res.status;
-      throw new Error(errorMessage);
+      throw new Error(res.statusText);
     }
     return res.json();
-  } catch (error) {}
+  } catch (error) {
+    return { error: { message: error.message } };
+  }
 }
 const ProductListByCategory = async () => {
-  setLoading();
-  const categories: Category[] = await getCategories();
-  unsetLoading();
+  const categories: Category[] = await GetCategories();
   return (
     <section className="pt-12 px-3 ">
       {errorMessage && <ErrorComponent text={errorMessage}></ErrorComponent>}

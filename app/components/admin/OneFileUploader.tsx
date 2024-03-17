@@ -21,20 +21,21 @@ const OneFileUploader = ({
         return;
       }
       fileData.set("file", file!);
-      setLoading();
+      dispatch(setLoading());
       const res = await fetch("/api/image-upload/", {
         headers: {},
         method: "POST",
         body: fileData,
       });
-      const data = await res.json();
-      dispatch(unsetLoading());
       if (!res.ok) {
-        throw new Error(data.code);
+        throw new Error(res.statusText);
       }
+      dispatch(unsetLoading());
+      const data = await res.json();
       uploadedImageLinkSetter(data.file);
-    } catch (error: unknown) {
-      toast.error((error as any).message, { position: "top-right" });
+    } catch (err) {
+      dispatch(unsetLoading());
+      toast.error(err.message, { position: "top-right" });
     }
   };
   useEffect(() => {

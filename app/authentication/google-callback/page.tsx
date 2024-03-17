@@ -1,13 +1,15 @@
 "use client";
 import errorToast from "@/app/utils/ErrorToast";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 import { useSearchParams } from "next/navigation";
 
 export default function GoogleCallback() {
-  setLoading();
+  const dispatch = useAppDispatch();
   const sendToBackend = async (state: string, code: string) => {
     const data = { state: state, code: code };
     try {
+      dispatch(setLoading());
       const res = await fetch("/api/auth/o/google-oauth2/", {
         method: "POST",
         headers: {
@@ -15,14 +17,14 @@ export default function GoogleCallback() {
         },
         body: new URLSearchParams(data),
       });
-      // unsetLoading();
-      const resData = await res.json();
       if (!res.ok) {
-        throw new Error((res as any).error);
+        throw new Error(res.statusText);
       }
+      const resData = await res.json();
       window.location.href = "http://localhost";
     } catch (err) {
-      errorToast((err as any)?.message!);
+      dispatch(unsetLoading());
+      errorToast(err.message);
     }
   };
   const searchParams = useSearchParams();

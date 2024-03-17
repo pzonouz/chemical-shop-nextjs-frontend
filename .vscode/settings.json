@@ -2,7 +2,13 @@
   "cSpell.diagnosticLevel": "Hint",
   "WillLuke.nextjs.addTypesOnSave": true,
   "WillLuke.nextjs.hasPrompted": true,
-  "cSpell.words": ["Chemicalshop", "Insertable", "kysely", "Updateable"],
+  "cSpell.words": [
+    "Chemicalshop",
+    "Insertable",
+    "kysely",
+    "Updateable",
+    "ورود"
+  ],
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1a1a1a",
     "activityBar.background": "#1a1a1a",
