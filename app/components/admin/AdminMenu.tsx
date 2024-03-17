@@ -11,7 +11,6 @@ import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
 
 const AdminMenu = () => {
-  // const dispatch = useAppDispatch();
   const [active, setActive] = useState("");
   const path = usePathname();
   useEffect(() => {

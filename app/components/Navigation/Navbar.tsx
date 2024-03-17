@@ -11,13 +11,22 @@ import {
 import { useEffect } from "react";
 import errorToast from "@/app/utils/ErrorToast";
 import Cart from "../data/Cart";
+import { usePathname, useRouter } from "next/navigation";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 
 const Navbar = () => {
   const { data: user } = useFetchUserQuery();
+  const path = usePathname();
   const { data: cartItems, isError, error } = useFetchCartItemsQuery();
+  const router = useRouter();
   useEffect(() => {
     errorToast(error);
   }, [error]);
+  useEffect(() => {
+    if (user && path.endsWith("authentication/login")) {
+      router.push("/");
+    }
+  }, [user, path, router]);
   return (
     <div>
       <div className="bg-base-100 navbar">
@@ -100,8 +109,21 @@ const Navbar = () => {
                   <li>
                     <Link href={`/users/dashboard`}>پنل کاربری</Link>
                   </li>
-                  <li>
-                    <Link href={"auth/logout"}>خروج</Link>
+                  <li
+                    onClick={() => {
+                      setLoading();
+                      fetch("http://localhost/api/auth/logout")
+                        .then((res) => {
+                          if (res.ok) {
+                            window.location.href =
+                              "http://localhost:/authentication/login";
+                          }
+                          unsetLoading();
+                        })
+                        .catch();
+                    }}
+                  >
+                    <a>خروج</a>
                   </li>
                 </>
               ) : (

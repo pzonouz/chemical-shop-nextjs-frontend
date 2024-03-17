@@ -3,7 +3,7 @@ import { Category, Product } from "@/app/types";
 import Card from "./Card";
 import React from "react";
 import ErrorComponent from "./ErrorComponent";
-import { useFetchCategoriesQuery } from "@/lib/features/api/api";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 
 let errorMessage = null;
 async function getCategories() {
@@ -21,7 +21,9 @@ async function getCategories() {
   } catch (error) {}
 }
 const ProductListByCategory = async () => {
+  setLoading();
   const categories: Category[] = await getCategories();
+  unsetLoading();
   return (
     <section className="pt-12 px-3 ">
       {errorMessage && <ErrorComponent text={errorMessage}></ErrorComponent>}
