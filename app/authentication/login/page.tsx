@@ -25,7 +25,7 @@ export default function SignInPage() {
             dispatch(unsetLoading());
             const data = await res.json();
             window.location = data.authorization_url;
-          } catch (err) {
+          } catch (err: any) {
             errorToast(err.message);
             dispatch(unsetLoading());
           }

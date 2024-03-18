@@ -20,11 +20,11 @@ export default function GoogleCallback() {
       if (!res.ok) {
         throw new Error(res.statusText);
       }
-      const resData = await res.json();
-      window.location.href = "http://localhost";
-    } catch (err) {
       dispatch(unsetLoading());
+      window.location.href = "http://localhost";
+    } catch (err: any) {
       errorToast(err.message);
+      dispatch(unsetLoading());
     }
   };
   const searchParams = useSearchParams();

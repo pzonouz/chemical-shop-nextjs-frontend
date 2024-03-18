@@ -33,7 +33,7 @@ const OneFileUploader = ({
       dispatch(unsetLoading());
       const data = await res.json();
       uploadedImageLinkSetter(data.file);
-    } catch (err) {
+    } catch (err: any) {
       dispatch(unsetLoading());
       toast.error(err.message, { position: "top-right" });
     }

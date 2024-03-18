@@ -3,7 +3,7 @@ import Card from "./Card";
 import React from "react";
 import ErrorComponent from "./ErrorComponent";
 
-let errorMessage = null;
+let errorMessage: string | null = null;
 async function GetCategories() {
   try {
     const res: Response = await fetch("http://localhost/api/categories", {
@@ -14,7 +14,7 @@ async function GetCategories() {
       throw new Error(res.statusText);
     }
     return res.json();
-  } catch (error) {
+  } catch (error: any) {
     return { error: { message: error.message } };
   }
 }

@@ -18,7 +18,7 @@ const Cart = () => {
     let t = 0;
     setTotal((total) => {
       carts?.map((cart: Cart) => {
-        t += parseInt(cart.quantity) * textToNumber(cart.product.price);
+        t += parseInt(cart.quantity) * textToNumber(cart?.product?.price!);
       });
       total = t;
       return total;
