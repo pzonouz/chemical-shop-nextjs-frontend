@@ -14,8 +14,11 @@ import {
 import successToast from "@/app/utils/SuccessToast";
 import errorToast from "@/app/utils/ErrorToast";
 import { Cart } from "@/app/types";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 
-const CartItem = (props) => {
+const CartItem = (props: any) => {
+  const dispatch = useAppDispatch();
   const [count, setCount] = useState(parseInt(props.cart?.quantity));
   const [editActive, setEditActive] = useState(false);
   const [cart, setCart] = useState<Cart>(props.cart);
@@ -64,19 +67,22 @@ const CartItem = (props) => {
             <a
               className=" btn btn-primary"
               onClick={() => {
+                dispatch(setLoading());
                 editCart({
                   id: cart.id,
-                  product_id: cart.product.id,
+                  product_id: cart?.product?.id,
                   quantity: count,
                 })
+                  .unwrap()
                   .then((res: any) => {
-                    if (res?.error) {
-                      return errorToast(res.error.status);
-                    }
+                    dispatch(unsetLoading());
                     // successToast();
                     setEditActive(false);
                   })
-                  .catch((err) => errorToast(JSON.stringify(err)));
+                  .catch((err) => {
+                    dispatch(unsetLoading());
+                    errorToast(err.status);
+                  });
               }}
             >
               ذخیره
@@ -86,7 +92,7 @@ const CartItem = (props) => {
           <div>تعداد: {cart?.quantity}</div>
         )}
         <div className="col-start-2 col-end-3 row-start-2  justify-self-end ">
-          {textToThousandSeparated(count * textToNumber(cart?.product?.price))}
+          {textToThousandSeparated(count * textToNumber(cart?.product?.price!))}
           تومان
         </div>
       </div>
@@ -121,9 +127,17 @@ const CartItem = (props) => {
               <button
                 className="btn btn-error text-error-content"
                 onClick={() => {
+                  dispatch(setLoading());
                   deleteCart(cart?.id)
-                    .then((res) => successToast())
-                    .catch((err) => errorToast(err));
+                    .unwrap()
+                    .then(
+                      dispatch(unsetLoading())
+                      // () => successToast()
+                    )
+                    .catch((err) => {
+                      dispatch(unsetLoading());
+                      errorToast(err.status);
+                    });
                 }}
               >
                 تایید

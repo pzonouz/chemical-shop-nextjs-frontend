@@ -6,11 +6,9 @@ const loadingSlice = createSlice({
   initialState: initialState,
   reducers: {
     setLoading: (loading) => {
-      console.log(true);
       loading.status = true;
     },
     unsetLoading: (loading) => {
-      console.log(false);
       loading.status = false;
     },
   },

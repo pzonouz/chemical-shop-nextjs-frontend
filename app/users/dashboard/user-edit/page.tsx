@@ -5,6 +5,7 @@ import ErrorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
 import { useEditUserMutation, useFetchUserQuery } from "@/lib/features/api/api";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -82,9 +83,10 @@ export default function UserEditForm() {
         {...register("address")}
       ></textarea>
       <button className=" btn btn-primary relative">
-        ثبت
-        {isLoading && (
-          <span className=" loading loading-spinner absolute right-1/3"></span>
+        {isLoading ? (
+          <span className=" loading loading-spinner"></span>
+        ) : (
+          <>ثبت</>
         )}
       </button>
     </form>

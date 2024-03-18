@@ -8,10 +8,13 @@ import {
   textToThousandSeparated,
 } from "@/app/utils/numberConvert";
 import { useAddToCartMutation } from "@/lib/features/api/api";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const AddToCartButtonWithCount = ({ product }: { product: Product }) => {
+  const dispatch = useAppDispatch();
   const [count, setCount] = useState(1);
   const router = useRouter();
 
@@ -27,18 +30,21 @@ const AddToCartButtonWithCount = ({ product }: { product: Product }) => {
       <button
         className="btn btn-primary col-start-1 col-end-2"
         onClick={() => {
+          dispatch(setLoading());
           addToCartWithCount({ product_id: product?.id, quantity: count })
-            .then((res) => {
-              if (res.error) {
-                if (res?.error?.status == 401) {
-                  return router.push("/authentication/login/");
-                } else {
-                  throw new Error(res.error.originalStatus);
-                }
-              }
+            .unwrap()
+            .then(() => {
+              dispatch(unsetLoading());
               successToast();
             })
-            .catch((err) => errorToast(err?.message));
+            .catch((err) => {
+              if (err.status == 401) {
+                dispatch(unsetLoading());
+                errorToast("باید ابتدا وارد شوید");
+                router.push("/authentication/login/");
+              }
+              errorToast(err?.message);
+            });
         }}
       >
         افزودن

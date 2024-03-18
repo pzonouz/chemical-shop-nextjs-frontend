@@ -40,7 +40,6 @@ const AdminCategoryTable = () => {
     isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
   }, [dispatch, isFetching]);
   useEffect(() => {
-    console.log(error);
     ErrorToast(error);
   }, [error]);
 

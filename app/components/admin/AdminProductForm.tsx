@@ -54,9 +54,7 @@ const AdminProductForm = ({
   useEffect(() => {
     isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
   }, [dispatch, isFetching]);
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
+  useEffect(() => {}, [error]);
   const onSubmit = (data: any) => {
     if (product) {
       editProduct({ ...data, id: product.id })
