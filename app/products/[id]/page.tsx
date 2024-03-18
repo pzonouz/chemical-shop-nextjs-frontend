@@ -21,7 +21,7 @@ export default async function ProductPage({
   };
   const product: Product = await FetchProduct(id);
   return (
-    <div className="mt-12 mx-2 bg-base-200 p-4 grid grid-cols-1 gap-4">
+    <div className="mt-6 bg-base-200 p-3 grid grid-cols-1 gap-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={product?.image}

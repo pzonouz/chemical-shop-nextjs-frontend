@@ -10,6 +10,7 @@ import {
   textToNumber,
   textToThousandSeparated,
 } from "@/app/utils/numberConvert";
+import Link from "next/link";
 
 const Cart = () => {
   const { data: carts, error, isError } = useFetchCartItemsQuery();
@@ -36,9 +37,9 @@ const Cart = () => {
           return <CartItem key={cart.id} cart={cart} />;
         })}
       </div>
-      <button className=" btn btn-success text-white mt-4">
+      <Link href="/checkout" className=" btn btn-success text-white mt-4">
         نهایی کردن خرید
-      </button>
+      </Link>
     </div>
   );
 };

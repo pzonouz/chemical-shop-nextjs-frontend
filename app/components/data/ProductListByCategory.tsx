@@ -21,7 +21,7 @@ async function GetCategories() {
 const ProductListByCategory = async () => {
   const categories: Category[] = await GetCategories();
   return (
-    <section className="pt-12 px-3 ">
+    <section className="mt-6 px-3 ">
       {errorMessage && <ErrorComponent text={errorMessage}></ErrorComponent>}
       {!errorMessage &&
         categories?.map((category: Category) => (
