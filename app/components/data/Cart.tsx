@@ -6,30 +6,17 @@ import { useEffect, useState } from "react";
 import { Cart } from "@/app/types";
 import { useFetchCartItemsQuery } from "@/lib/features/api/api";
 import CartItem from "./CartItem";
-import {
-  textToNumber,
-  textToThousandSeparated,
-} from "@/app/utils/numberConvert";
+
 import Link from "next/link";
+import Price from "./Price";
 
 const Cart = () => {
   const { data: carts, error, isError } = useFetchCartItemsQuery();
-  const [total, setTotal] = useState(0);
-  useEffect(() => {
-    let t = 0;
-    setTotal((total) => {
-      carts?.map((cart: Cart) => {
-        t += parseInt(cart.quantity) * textToNumber(cart?.product?.price!);
-      });
-      total = t;
-      return total;
-    });
-  }, [carts]);
   return (
     <div>
       <div className=" flex gap-1 items-center justify-center text-success mt-2 w-fit">
         <p>مجموع:</p>
-        <p> {textToThousandSeparated(total)} </p>
+        <Price />
         <p>تومان</p>
       </div>
       <div className=" flex flex-col gap-2">
@@ -37,7 +24,16 @@ const Cart = () => {
           return <CartItem key={cart.id} cart={cart} />;
         })}
       </div>
-      <Link href="/checkout" className=" btn btn-success text-white mt-4">
+      <Link
+        href="/checkout"
+        className=" btn btn-success text-white mt-4"
+        onClick={(e) => {
+          const elm = document.activeElement as HTMLElement;
+          if (elm) {
+            elm?.blur();
+          }
+        }}
+      >
         نهایی کردن خرید
       </Link>
     </div>

@@ -1,4 +1,4 @@
-import { Cart, Category, Product, User } from "@/app/types";
+import { Cart, Category, Order, Product, User } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -8,7 +8,7 @@ export const apiSlice = createApi({
     credentials: "include",
     mode: "same-origin",
   }),
-  tagTypes: ["User", "Category", "Product", "Cart"],
+  tagTypes: ["User", "Category", "Product", "Cart", "Order"],
   endpoints(builder) {
     return {
       fetchCategories: builder.query<Category[], number | void>({
@@ -136,6 +136,51 @@ export const apiSlice = createApi({
         },
         invalidatesTags: ["Cart"],
       }),
+      fetchOrders: builder.query<Order[], void>({
+        query: () => {
+          return {
+            url: `/api/orders/`,
+          };
+        },
+        providesTags: ["Order"],
+      }),
+      fetchOrder: builder.query<Order, number>({
+        query: (id: number) => {
+          return {
+            url: `/api/orders/${id}`,
+          };
+        },
+        providesTags: ["Order"],
+      }),
+      createOrder: builder.mutation<Order, Partial<Order>>({
+        query: (order: Order) => {
+          return {
+            url: `/api/orders/`,
+            method: "POST",
+            body: order,
+          };
+        },
+        invalidatesTags: ["Order"],
+      }),
+      editOrder: builder.mutation<Order, Partial<Order>>({
+        query: (order: Order) => {
+          return {
+            url: `/api/admin/orders/${order.id}/`,
+            method: "PATCH",
+            body: order,
+          };
+        },
+        invalidatesTags: ["Order"],
+      }),
+      deleteOrder: builder.mutation<Order, number>({
+        query: (id: number) => {
+          return {
+            url: `/api/admin/orders/${id}/`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Order"],
+      }),
       registerUser: builder.mutation<User, Partial<User>>({
         query: (user) => {
           return { url: `/api/auth/users/`, method: "POST", body: user };
@@ -191,4 +236,9 @@ export const {
   useEditCartMutation,
   useDeleteCartMutation,
   useFetchCartItemQuery,
+  useFetchOrdersQuery,
+  useFetchOrderQuery,
+  useCreateOrderMutation,
+  useEditOrderMutation,
+  useDeleteOrderMutation,
 } = apiSlice;

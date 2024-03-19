@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import loadingReducer from "./features/utils/loading";
+import totalPriceZeroErrorReducer from "./features/utils/totalPrice";
 import { apiSlice } from "./features/api/api";
 
 export const makeStore: any = () => {
@@ -7,6 +8,7 @@ export const makeStore: any = () => {
     reducer: combineReducers({
       [apiSlice.reducerPath]: apiSlice.reducer,
       loading: loadingReducer,
+      totalPriceZeroError: totalPriceZeroErrorReducer,
     }),
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(apiSlice.middleware),

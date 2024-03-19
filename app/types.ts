@@ -5,6 +5,7 @@ export interface Product {
   image: string;
   price: string;
   category: string;
+  cart_items?: Cart[];
 }
 
 export interface Category {
@@ -18,6 +19,11 @@ export interface Cart {
   product?: Product;
   product_id?: string;
   quantity: any;
+}
+export interface Order {
+  id?: any;
+  user_id?: string;
+  cart_items: Cart[];
 }
 
 export interface User {
