@@ -32,7 +32,14 @@ const AdminMenu = () => {
 
   return (
     <ul className="menu bg-base-200 rounded-box w-fit text-2xl p-2 gap-2 flex flex-col my-auto">
-      <li>
+      <li
+        onClick={(e) => {
+          const elm = document.activeElement as HTMLElement;
+          if (elm) {
+            elm?.blur();
+          }
+        }}
+      >
         <Link
           href={"/admin/"}
           className={classNames({
@@ -46,7 +53,14 @@ const AdminMenu = () => {
           <IoHomeOutline />
         </Link>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          const elm = document.activeElement as HTMLElement;
+          if (elm) {
+            elm?.blur();
+          }
+        }}
+      >
         <Link
           href={"/admin/products"}
           className={classNames({
@@ -60,7 +74,14 @@ const AdminMenu = () => {
           <GoPackage />
         </Link>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          const elm = document.activeElement as HTMLElement;
+          if (elm) {
+            elm?.blur();
+          }
+        }}
+      >
         <Link
           href={"/admin/categories"}
           className={classNames({
@@ -74,7 +95,14 @@ const AdminMenu = () => {
           <MdOutlineCategory />
         </Link>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          const elm = document.activeElement as HTMLElement;
+          if (elm) {
+            elm?.blur();
+          }
+        }}
+      >
         <Link
           href={"/admin/users"}
           className={classNames({
@@ -88,7 +116,14 @@ const AdminMenu = () => {
           <FiUsers />
         </Link>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          const elm = document.activeElement as HTMLElement;
+          if (elm) {
+            elm?.blur();
+          }
+        }}
+      >
         <Link href="#" className=" p-3 flex items-center justify-center">
           <MdBorderColor />
         </Link>

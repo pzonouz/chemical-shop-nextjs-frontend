@@ -8,7 +8,7 @@ import {
   useFetchCartItemsQuery,
   useFetchUserQuery,
 } from "@/lib/features/api/api";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import errorToast from "@/app/utils/ErrorToast";
 import Cart from "../data/Cart";
 import { usePathname, useRouter } from "next/navigation";
@@ -21,6 +21,7 @@ const Navbar = () => {
   const path = usePathname();
   const { data: cartItems, isError, error } = useFetchCartItemsQuery();
   const router = useRouter();
+
   useEffect(() => {
     errorToast(error);
   }, [error]);
@@ -29,6 +30,7 @@ const Navbar = () => {
       router.push("/");
     }
   }, [user, path, router]);
+
   return (
     <div>
       <div className="bg-base-100 navbar">
@@ -40,13 +42,34 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
+            <li
+              onClick={(e) => {
+                const elm = document.activeElement as HTMLElement;
+                if (elm) {
+                  elm?.blur();
+                }
+              }}
+            >
               <a>Homepage</a>
             </li>
-            <li>
+            <li
+              onClick={(e) => {
+                const elm = document.activeElement as HTMLElement;
+                if (elm) {
+                  elm?.blur();
+                }
+              }}
+            >
               <a>Portfolio</a>
             </li>
-            <li>
+            <li
+              onClick={(e) => {
+                const elm = document.activeElement as HTMLElement;
+                if (elm) {
+                  elm?.blur();
+                }
+              }}
+            >
               <a>About</a>
             </li>
           </ul>
@@ -108,10 +131,24 @@ const Navbar = () => {
             >
               {user ? (
                 <>
-                  <li>
+                  <li
+                    onClick={(e) => {
+                      const elm = document.activeElement as HTMLElement;
+                      if (elm) {
+                        elm?.blur();
+                      }
+                    }}
+                  >
                     <a className=" text-primary">{user.email}</a>
                   </li>
-                  <li>
+                  <li
+                    onClick={(e) => {
+                      const elm = document.activeElement as HTMLElement;
+                      if (elm) {
+                        elm?.blur();
+                      }
+                    }}
+                  >
                     <Link href={`/users/dashboard`}>پنل کاربری</Link>
                   </li>
                   <li
@@ -138,10 +175,24 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <li>
+                  <li
+                    onClick={(e) => {
+                      const elm = document.activeElement as HTMLElement;
+                      if (elm) {
+                        elm?.blur();
+                      }
+                    }}
+                  >
                     <Link href={"/authentication/register"}>ثبت نام</Link>
                   </li>
-                  <li>
+                  <li
+                    onClick={(e) => {
+                      const elm = document.activeElement as HTMLElement;
+                      if (elm) {
+                        elm?.blur();
+                      }
+                    }}
+                  >
                     <Link href={"/authentication/login"}>ورود</Link>
                   </li>
                 </>
