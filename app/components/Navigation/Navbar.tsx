@@ -121,7 +121,11 @@ const Navbar = () => {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt="Sample user image"
-                  src={user ? user?.image! : "/images/Sample_User_Icon.png"}
+                  src={
+                    user
+                      ? user?.profile?.image!
+                      : "/images/Sample_User_Icon.png"
+                  }
                 />
               </div>
             </div>

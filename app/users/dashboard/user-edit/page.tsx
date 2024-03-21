@@ -1,46 +1,58 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import InputBox from "@/app/components/data/InputBox";
 import ErrorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
-import { useEditUserMutation, useFetchUserQuery } from "@/lib/features/api/api";
+import {
+  useEditUserProfileMutation,
+  useFetchUserQuery,
+} from "@/lib/features/api/api";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
-import { useAppDispatch } from "@/lib/hooks";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { ZodSchema, z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import LoadingButton from "@/app/components/utils/LoadingButton";
 
 export default function UserEditForm() {
   const { data: user, error, isFetching } = useFetchUserQuery();
-  const [editUser, { isLoading }] = useEditUserMutation();
+  const [editUser, { isLoading }] = useEditUserProfileMutation();
 
+  const schema: ZodSchema = z.object({
+    first_name: z.string().min(1),
+    last_name: z.string().min(1),
+    address: z.string().min(1),
+    mobile: z.string().min(1),
+  });
+  const {
+    setValue,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(schema) });
   useEffect(() => {
     isFetching ? setLoading() : unsetLoading();
   }, [isFetching]);
   useEffect(() => {
     ErrorToast((error as any)?.originalStatus);
   }, [error]);
-
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm({});
+  useEffect(() => {
+    setValue("first_name", user?.profile?.first_name);
+    setValue("last_name", user?.profile?.last_name);
+    setValue("address", user?.profile?.address);
+    setValue("mobile", user?.profile?.mobile);
+  }, []);
   useEffect(() => {
     toast.error((error as any)?.originalStatus);
   }, [error]);
-  useEffect(() => {
-    //For updating form data after state update, default values caches at first render and must change by reset after state cha
-    reset({
-      first_name: user?.first_name,
-      last_name: user?.last_name,
-      mobile: user?.mobile,
-      address: user?.address,
-    });
-  }, [user, reset]);
+
   const userFormSubmit = (data: any) => {
-    editUser(data)
+    const profile = { ...data };
+    const newUserData = { ...user };
+    newUserData.profile = profile;
+    editUser(newUserData)
       .then((res: any) => {
         if (res.error) {
           throw new Error(res.error.originalStatus);
@@ -48,7 +60,7 @@ export default function UserEditForm() {
         successToast();
       })
       .catch((error) => {
-        toast.error(error.message, { position: "top-right" });
+        ErrorToast(error.message);
       });
   };
   return (
@@ -56,39 +68,46 @@ export default function UserEditForm() {
       className=" w-full p-4 flex flex-col gap-4"
       onSubmit={handleSubmit(userFormSubmit)}
     >
-      <InputBox
-        name="first_name"
-        errors={errors}
-        registerFn={register}
+      <input
+        {...register("first_name")}
         type="text"
-        text="نام"
+        placeholder="نام"
+        className="input input-bordered w-full max-w-xs"
       />
-      <InputBox
-        name="last_name"
-        errors={errors}
-        registerFn={register}
+      {errors.first_name ? (
+        <p className=" text-xs text-error">نام را وارد کنید</p>
+      ) : null}
+
+      <input
+        {...register("last_name")}
         type="text"
-        text="نام خانوادگی"
+        placeholder="نام خانوادگی"
+        className="input input-bordered w-full max-w-xs"
       />
-      <InputBox
-        name="mobile"
-        errors={errors}
-        registerFn={register}
+      {errors.last_name ? (
+        <p className=" text-xs text-error">نام خانوادگی را وارد کنید</p>
+      ) : null}
+
+      <input
+        {...register("mobile")}
         type="text"
-        text="موبایل"
+        placeholder="موبایل"
+        className="input input-bordered w-full max-w-xs"
       />
-      <textarea
-        className="textarea textarea-bordered"
-        placeholder="آدرس"
+      {errors.mobile ? (
+        <p className=" text-xs text-error">موبایل را وارد کنید</p>
+      ) : null}
+
+      <input
         {...register("address")}
-      ></textarea>
-      <button className=" btn btn-primary relative">
-        {isLoading ? (
-          <span className=" loading loading-spinner"></span>
-        ) : (
-          <>ثبت</>
-        )}
-      </button>
+        type="text"
+        placeholder="آدرس"
+        className="input input-bordered w-full max-w-xs"
+      />
+      {errors.mobile ? (
+        <p className=" text-xs text-error">آدرس را وارد کنید</p>
+      ) : null}
+      <LoadingButton isLoading={isLoading} />
     </form>
   );
 }

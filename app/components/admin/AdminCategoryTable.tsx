@@ -44,7 +44,7 @@ const AdminCategoryTable = () => {
   }, [error]);
 
   return (
-    <div className="overflow-x-auto w-full">
+    <div className="overflow-x-auto w-full rounded-lg">
       <table className="table w-full">
         <thead className="w-full">
           <tr className="bg-base-200 w-full flex justify-between">

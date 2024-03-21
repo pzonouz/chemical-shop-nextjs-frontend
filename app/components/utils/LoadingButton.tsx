@@ -11,7 +11,7 @@ const LoadingButton = ({
   isLoading: boolean;
   type?: string;
   className?: string;
-  text: string;
+  text?: string;
 }) => {
   const totalPriceZeroError = useAppSelector(
     (state) => state.totalPriceZeroError

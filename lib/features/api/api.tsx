@@ -7,6 +7,7 @@ export const apiSlice = createApi({
     baseUrl: "",
     credentials: "include",
     mode: "same-origin",
+    headers: { "Content-Type": "application/json" },
   }),
   tagTypes: ["User", "Category", "Product", "Cart", "Order"],
   endpoints(builder) {
@@ -186,7 +187,6 @@ export const apiSlice = createApi({
           return { url: `/api/auth/users/`, method: "POST", body: user };
         },
       }),
-
       activateUser: builder.query<any, any>({
         query: (data) => {
           return {
@@ -196,17 +196,33 @@ export const apiSlice = createApi({
           };
         },
       }),
-      //
       fetchUser: builder.query<User, void>({
         query: () => {
           return { url: `/api/auth/users/me` };
         },
         providesTags: ["User"],
       }),
-      editUser: builder.mutation<User, Partial<User>>({
+      fetchUsers: builder.query<User[], void>({
+        query: () => {
+          return { url: `/api/admin/users/` };
+        },
+        providesTags: ["User"],
+      }),
+      editUserProfile: builder.mutation<User, Partial<User>>({
         query: (user: User) => {
           return {
-            url: `/api/auth/users/me/`,
+            url: `/api/admin/users/${user.id}/`,
+            method: "PATCH",
+            body: user,
+          };
+        },
+        invalidatesTags: ["User"],
+      }),
+      disableUser: builder.mutation<User, Partial<User>>({
+        query: (user: User) => {
+          user.is_active = false;
+          return {
+            url: `/api/admin/users/${user.id}/`,
             method: "PATCH",
             body: user,
           };
@@ -228,8 +244,10 @@ export const {
   useEditProductMutation,
   useDeleteProductMutation,
   useFetchUserQuery,
+  useFetchUsersQuery,
   useRegisterUserMutation,
-  useEditUserMutation,
+  useEditUserProfileMutation,
+  useDisableUserMutation,
   useActivateUserQuery,
   useFetchCartItemsQuery,
   useAddToCartMutation,

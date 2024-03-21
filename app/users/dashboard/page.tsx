@@ -27,11 +27,11 @@ const DashboardPage = () => {
       <div className=" flex flex-col gap-1 mt-3">
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p>نام:</p>
-          <p>{user?.first_name}</p>
+          <p>{user?.profile?.first_name}</p>
         </div>
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p>نام خانوادگی:</p>
-          <p> {user?.last_name}</p>
+          <p> {user?.profile?.last_name}</p>
         </div>
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p>ایمیل:</p>
@@ -39,15 +39,17 @@ const DashboardPage = () => {
         </div>{" "}
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p>موبایل :</p>
-          <p> {user?.mobile}</p>
+          <p> {user?.profile?.mobile}</p>
         </div>
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p> تاریخ عضویت:</p>
-          <p> {user?.created_at?.toString()}</p>
+          <p> {user?.profile?.created_at?.toString()}</p>
         </div>
         <div className=" flex flex-row gap-2 p-1 items-center justify-between">
           <p>آدرس:</p>
-          {user?.address && <p className=" text-sm">{user?.address}</p>}
+          {user?.profile?.address && (
+            <p className=" text-sm">{user?.profile?.address}</p>
+          )}
         </div>
       </div>
     </div>

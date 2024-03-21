@@ -16,6 +16,7 @@ import errorToast from "@/app/utils/ErrorToast";
 import { Cart } from "@/app/types";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useAppDispatch } from "@/lib/hooks";
+import { ToPersianDigit } from "@/app/utils/ToPersianDigit";
 
 const CartItem = (props: any) => {
   const dispatch = useAppDispatch();
@@ -48,7 +49,7 @@ const CartItem = (props: any) => {
                 <a>+</a>
               </li>
               <li className="p-3 text-black">
-                <a>{count}</a>
+                <a>{ToPersianDigit(count.toString())}</a>
               </li>
               <li
                 className="p-3 cursor-pointer bg-base-300"
@@ -89,10 +90,14 @@ const CartItem = (props: any) => {
             </a>
           </>
         ) : (
-          <div>تعداد: {cart?.quantity}</div>
+          <div>تعداد: {ToPersianDigit(cart?.quantity.toString())}</div>
         )}
         <div className="col-start-2 col-end-3 row-start-2  justify-self-end ">
-          {textToThousandSeparated(count * textToNumber(cart?.product?.price!))}
+          {ToPersianDigit(
+            textToThousandSeparated(
+              count * textToNumber(cart?.product?.price!)
+            ) as string
+          )}
           تومان
         </div>
       </div>

@@ -1,10 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import AddToCartButtonWithCount from "@/app/components/data/AddtoCartButtonWithCount";
 import { Product } from "@/app/types";
+import errorToast from "@/app/utils/ErrorToast";
+import { useAppDispatch } from "@/lib/hooks";
 export default async function ProductPage({
   params: { id },
 }: {
   params: { id: string };
 }) {
+  // Not using RTKQuery because of needs of useEffect that make this component client but I dont want it
   const FetchProduct = async (id: string) => {
     try {
       const res = await fetch(`http://localhost/api/products/${id}`, {
@@ -16,7 +20,7 @@ export default async function ProductPage({
       const resData = await res.json();
       return resData;
     } catch (err) {
-      // errorToast(err.message);
+      errorToast((err as any).message);
     }
   };
   const product: Product = await FetchProduct(id);
@@ -34,7 +38,7 @@ export default async function ProductPage({
           <div className=" text-md">{product?.english_name}</div>
         </div>
 
-        <AddToCartButtonWithCount product={product} />
+        <AddToCartButtonWithCount product={product!} />
       </div>
     </div>
   );

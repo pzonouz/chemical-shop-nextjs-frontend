@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   useCreateOrderMutation,
-  useEditUserMutation,
+  useEditProductMutation,
+  useEditUserProfileMutation,
   useFetchUserQuery,
 } from "@/lib/features/api/api";
 import { useRouter } from "next/navigation";
@@ -24,7 +25,7 @@ export default function CheckoutPage() {
   const [mobile, setMobile] = useState("");
   const [editStatus, setEditStatus] = useState(false);
   const router = useRouter();
-  const [editUser] = useEditUserMutation();
+  const [editUser] = useEditUserProfileMutation();
   const [createOrder] = useCreateOrderMutation();
   const onSubmit = (data: any) => {
     setLoadingOrder(true);
@@ -50,10 +51,10 @@ export default function CheckoutPage() {
     }
   }, [error, router]);
   useEffect(() => {
-    setAddress(user?.address!);
-    setFirstName(user?.first_name!);
-    setLastName(user?.last_name!);
-    setMobile(user?.mobile!);
+    setAddress(user?.profile?.address!);
+    setFirstName(user?.profile?.first_name!);
+    setLastName(user?.profile?.last_name!);
+    setMobile(user?.profile?.mobile!);
   }, [user]);
 
   return (
@@ -153,13 +154,14 @@ export default function CheckoutPage() {
                 className="btn btn-primary w-full"
                 onClick={() => {
                   setLoadingUser(true);
-                  editUser({
-                    ...user,
+                  const newUserData = { ...user };
+                  newUserData.profile = {
                     first_name: firstName,
                     last_name: lastName,
                     mobile: mobile,
                     address: address,
-                  })
+                  };
+                  editUser(newUserData)
                     .unwrap()
                     .then(() => {
                       setLoadingUser(false);
@@ -181,8 +183,9 @@ export default function CheckoutPage() {
             </div>
           ) : (
             <div>
-              {user?.address} {user?.first_name} {user?.last_name}
-              {user?.mobile}
+              {user?.profile?.address} {user?.profile?.first_name}{" "}
+              {user?.profile?.last_name}
+              {user?.profile?.mobile}
             </div>
           )}
         </div>

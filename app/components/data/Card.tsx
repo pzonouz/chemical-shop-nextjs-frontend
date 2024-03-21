@@ -4,6 +4,7 @@ import Rating from "../utils/Rating";
 import { Product } from "@/app/types";
 import AddToCartButton from "./AddToCartButton";
 import Link from "next/link";
+import { ToPersianDigit } from "@/app/utils/ToPersianDigit";
 
 const Card = ({ product }: { product: Product }) => {
   return (
@@ -35,7 +36,9 @@ const Card = ({ product }: { product: Product }) => {
         <div className="relative flex flex-row-reverse items-center justify-between mb-3 text-left">
           <p className="text-lg font-medium text-neutral flex flex-col items-start justify-center">
             {/* <span className="ml-2 line-through text-sm">{product?.price} </span> */}
-            <span className="text-primary ">{product?.price} تومان</span>
+            <span className="text-primary ">
+              {ToPersianDigit(product?.price.toString())} تومان
+            </span>
           </p>
           <AddToCartButton product={product} />
         </div>

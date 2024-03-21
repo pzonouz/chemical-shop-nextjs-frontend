@@ -23,8 +23,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
-  const onSubmit = async (data: FieldValues) => {
-    // dispatch(setLoading(true));
+  const onSubmit = async (data: any) => {
     setLoading(true);
     const res = await fetch("/api/auth/login", {
       method: "POST",

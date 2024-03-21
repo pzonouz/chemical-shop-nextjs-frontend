@@ -8,5 +8,6 @@ export const ToPersianDigit = (number: string) => {
   number = number.replaceAll("7", "۷");
   number = number.replaceAll("8", "۸");
   number = number.replaceAll("9", "۹");
+  number = number.replaceAll("0", "۰");
   return number;
 };

@@ -28,16 +28,18 @@ export interface Order {
 
 export interface User {
   id: string;
-  name: string;
-  first_name: string;
-  last_name: string;
+  // name: string;
   email: string;
-  created_at: string;
-  mobile: string;
-  address: string;
-  image: string;
   is_staff: boolean;
+  is_active: boolean;
+  profile?: ProfileUser;
 }
-export interface RessponseWithError {
-  error: any;
+export interface ProfileUser {
+  id?: string;
+  first_name?: string;
+  last_name?: string;
+  created_at?: string;
+  mobile?: string;
+  address?: string;
+  image?: string;
 }

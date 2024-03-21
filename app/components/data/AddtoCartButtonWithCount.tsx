@@ -3,6 +3,7 @@
 import { Product } from "@/app/types";
 import errorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
+import { ToPersianDigit } from "@/app/utils/ToPersianDigit";
 import {
   textToNumber,
   textToThousandSeparated,
@@ -21,10 +22,15 @@ const AddToCartButtonWithCount = ({ product }: { product: Product }) => {
   const [addToCartWithCount] = useAddToCartMutation();
   return (
     <div className=" grid grid-cols-2 grid-rows-2 items-center justify-between w-full gap-2">
-      <div className=" ">{product?.price} تومان</div>
+      <div className=" ">{ToPersianDigit(product?.price)} تومان</div>
       <div className="flex justify-center gap-2 ">
         <div className=" text-error">
-          {textToThousandSeparated(textToNumber(product?.price) * count)} تومان
+          {ToPersianDigit(
+            textToThousandSeparated(
+              textToNumber(product?.price) * count
+            ) as string
+          )}{" "}
+          تومان
         </div>
       </div>
       <button
@@ -59,7 +65,7 @@ const AddToCartButtonWithCount = ({ product }: { product: Product }) => {
           <a>+</a>
         </li>
         <li className="p-3 text-black">
-          <a>{count}</a>
+          <a>{ToPersianDigit(count.toString())}</a>
         </li>
         <li
           className="p-3 cursor-pointer bg-base-300"
