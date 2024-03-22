@@ -161,7 +161,7 @@ export const apiSlice = createApi({
             body: order,
           };
         },
-        invalidatesTags: ["Order"],
+        invalidatesTags: ["Order", "Cart"],
       }),
       editOrder: builder.mutation<Order, Partial<Order>>({
         query: (order: Order) => {
@@ -171,7 +171,7 @@ export const apiSlice = createApi({
             body: order,
           };
         },
-        invalidatesTags: ["Order"],
+        invalidatesTags: ["Order", "Cart"],
       }),
       deleteOrder: builder.mutation<Order, number>({
         query: (id: number) => {
@@ -180,7 +180,7 @@ export const apiSlice = createApi({
             method: "DELETE",
           };
         },
-        invalidatesTags: ["Order"],
+        invalidatesTags: ["Order", "Cart"],
       }),
       registerUser: builder.mutation<User, Partial<User>>({
         query: (user) => {
