@@ -27,6 +27,9 @@ const AdminMenu = () => {
       case "/admin/users":
         setActive("Users");
         break;
+      case "/admin/orders":
+        setActive("Orders");
+        break;
     }
   }, [path]);
 
@@ -124,7 +127,16 @@ const AdminMenu = () => {
           }
         }}
       >
-        <Link href="#" className=" p-3 flex items-center justify-center">
+        <Link
+          href={"/admin/orders"}
+          className={classNames({
+            active: active === "Orders",
+            "p-3 flex items-center justify-center": true,
+          })}
+          onClick={() => {
+            setActive("Orders");
+          }}
+        >
           <MdBorderColor />
         </Link>
       </li>

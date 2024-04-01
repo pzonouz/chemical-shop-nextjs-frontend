@@ -24,6 +24,8 @@ export interface Order {
   id?: any;
   user_id?: string;
   cart_items: Cart[];
+  user: User;
+  processes: any;
 }
 
 export interface User {

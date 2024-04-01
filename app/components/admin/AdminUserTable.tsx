@@ -2,7 +2,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { RiEdit2Line } from "react-icons/ri";
-import { RiDeleteBin2Line } from "react-icons/ri";
 import classNames from "classnames";
 import {
   useDisableUserMutation,

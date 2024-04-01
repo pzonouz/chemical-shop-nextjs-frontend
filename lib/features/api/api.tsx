@@ -145,6 +145,14 @@ export const apiSlice = createApi({
         },
         providesTags: ["Order"],
       }),
+      fetchAdminOrders: builder.query<Order[], void>({
+        query: () => {
+          return {
+            url: `/api/admin/orders/`,
+          };
+        },
+        providesTags: ["Order"],
+      }),
       fetchOrder: builder.query<Order, number>({
         query: (id: number) => {
           return {
@@ -158,16 +166,6 @@ export const apiSlice = createApi({
           return {
             url: `/api/orders/`,
             method: "POST",
-            body: order,
-          };
-        },
-        invalidatesTags: ["Order", "Cart"],
-      }),
-      editOrder: builder.mutation<Order, Partial<Order>>({
-        query: (order: Order) => {
-          return {
-            url: `/api/admin/orders/${order.id}/`,
-            method: "PATCH",
             body: order,
           };
         },
@@ -256,7 +254,7 @@ export const {
   useFetchCartItemQuery,
   useFetchOrdersQuery,
   useFetchOrderQuery,
+  useFetchAdminOrdersQuery,
   useCreateOrderMutation,
-  useEditOrderMutation,
   useDeleteOrderMutation,
 } = apiSlice;

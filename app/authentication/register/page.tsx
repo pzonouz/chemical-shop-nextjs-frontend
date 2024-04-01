@@ -6,15 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import InputBox from "@/app/components/data/InputBox";
 import { useRegisterUserMutation } from "@/lib/features/api/api";
-import successToast, { successToastWithmsg } from "@/app/utils/SuccessToast";
+import { successToastWithMsg } from "@/app/utils/SuccessToast";
 import errorToast from "@/app/utils/ErrorToast";
-import { useAppDispatch } from "@/lib/hooks";
 
 const UserRegisterPage = (props: any) => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const [registerUser] = useRegisterUserMutation();
-  const dispatch = useAppDispatch();
 
   const schema: ZodSchema = z
     .object({
@@ -31,17 +29,17 @@ const UserRegisterPage = (props: any) => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FieldValues) => {
-    dispatch(setLoading(true));
+    setLoading(true);
     registerUser(data)
       .unwrap()
       .then(() => {
-        dispatch(setLoading(false));
-        successToastWithmsg("ایمیل خود را برای فعالسازی کنترل کنید");
-        setTimeout(() => {}, 2000);
-        router.push("/auth/login");
+        setLoading(false);
+        successToastWithMsg("ایمیل خود را برای فعالسازی کنترل کنید");
+        setTimeout(() => {}, 5000);
+        router.push("/authentication/login");
       })
       .catch((err: any) => {
-        dispatch(setLoading(false));
+        setLoading(false);
         errorToast(err.status);
       });
   };
