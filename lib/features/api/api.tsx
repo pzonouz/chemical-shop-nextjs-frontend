@@ -180,6 +180,16 @@ export const apiSlice = createApi({
         },
         invalidatesTags: ["Order", "Cart"],
       }),
+      OrderNext: builder.mutation<Order, Number>({
+        query: (id: Number) => {
+          return {
+            url: `/api/admin/processes/`,
+            method: "POST",
+            body: { order_id: id },
+          };
+        },
+        invalidatesTags: ["Order"],
+      }),
       registerUser: builder.mutation<User, Partial<User>>({
         query: (user) => {
           return { url: `/api/auth/users/`, method: "POST", body: user };
@@ -254,6 +264,7 @@ export const {
   useFetchCartItemQuery,
   useFetchOrdersQuery,
   useFetchOrderQuery,
+  useOrderNextMutation,
   useFetchAdminOrdersQuery,
   useCreateOrderMutation,
   useDeleteOrderMutation,

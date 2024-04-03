@@ -1,5 +1,7 @@
 "use client";
 import { useFetchUserQuery } from "@/lib/features/api/api";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import { useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
@@ -7,8 +9,11 @@ import { toast } from "react-toastify";
 
 const DashboardPage = () => {
   const { data: user, error, isFetching } = useFetchUserQuery();
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {}, [isFetching]);
+  useEffect(() => {
+    isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
+  }, [dispatch, isFetching]);
   useEffect(() => {
     toast.error((error as any)?.originalStatus);
   }, [error]);

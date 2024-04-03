@@ -3,6 +3,7 @@ import { Order } from "@/app/types";
 import {
   useDeleteOrderMutation,
   useFetchAdminOrdersQuery,
+  useOrderNextMutation,
 } from "@/lib/features/api/api";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { RiDeleteBin2Line } from "react-icons/ri";
@@ -10,17 +11,30 @@ import { useAppDispatch } from "@/lib/hooks";
 import React, { useEffect, useState } from "react";
 import { MdNextPlan } from "react-icons/md";
 import errorToast from "@/app/utils/ErrorToast";
+import {
+  OrderStatusCalculator,
+  OrderNextStatusCalculator,
+} from "@/app/utils/OrderStatusCalculator";
+import classNames from "classnames";
 
 const AdminOrderTable = () => {
   const { data: orders, isFetching } = useFetchAdminOrdersQuery();
-  const [deleteOrder, { isLoading }] = useDeleteOrderMutation();
+  const [deleteOrder, { isLoading: OrderDeleteIsLoading }] =
+    useDeleteOrderMutation();
+  const [nextOrder, { isLoading: OrderNextIsLoading }] = useOrderNextMutation();
   const [orderToDelete, setOrderToDelete] = useState("");
+  const [orderToNext, setOrderToNext] = useState<Order>();
   const dispatch = useAppDispatch();
   useEffect(() => {
     isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
-    isLoading ? dispatch(setLoading()) : dispatch(unsetLoading());
-  }, [dispatch, isFetching, isLoading]);
+    OrderDeleteIsLoading || OrderNextIsLoading
+      ? dispatch(setLoading())
+      : dispatch(unsetLoading());
+  }, [dispatch, isFetching, OrderDeleteIsLoading, OrderNextIsLoading]);
 
+  useEffect(() => {
+    console.log(orderToNext);
+  }, [orderToNext]);
   return (
     <div className="overflow-x-auto w-full rounded-lg">
       <table className="table w-full">
@@ -43,12 +57,22 @@ const AdminOrderTable = () => {
                   ))}
                 </td>
                 <td className=" flex gap-4 items-center">
-                  {order?.processes?.length ? null : (
-                    <p className=" text-xs">آماده پردازش</p>
-                  )}
+                  {OrderStatusCalculator(order)}
                 </td>
                 <td className=" flex gap-4 items-center">
-                  <MdNextPlan className=" text-success text-lg" />
+                  <MdNextPlan
+                    className={classNames({
+                      " text-success text-lg cursor-pointer":
+                        order.processes.length < 3,
+                      " btn-disabled": order.processes.length > 3,
+                    })}
+                    onClick={() => {
+                      setOrderToNext(order);
+                      (
+                        document.getElementById("next_order") as any
+                      )?.showModal();
+                    }}
+                  />
                   <RiDeleteBin2Line
                     className="text-xl text-error cursor-pointer"
                     onClick={() => {
@@ -80,6 +104,34 @@ const AdminOrderTable = () => {
                   deleteOrder(parseInt(orderToDelete))
                     .unwrap()
                     .catch((err) => {
+                      errorToast(err.originalStatus);
+                    });
+                }}
+              >
+                تایید
+              </button>
+              <button className="btn btn-neutral">نه</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      {/* next window */}
+      <dialog id="next_order" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <p className="py-4">{OrderNextStatusCalculator(orderToNext!)}</p>
+          <div className="modal-action">
+            <form
+              method="dialog"
+              className=" flex flex-row gap-2 ite justify-around w-full"
+            >
+              {/* if there is a button in form, it will close the modal */}
+              <button
+                className="btn btn-error text-error-content"
+                onClick={() => {
+                  nextOrder(parseInt(orderToNext?.id))
+                    .unwrap()
+                    .catch((err) => {
+                      console.log(err);
                       errorToast(err.originalStatus);
                     });
                 }}

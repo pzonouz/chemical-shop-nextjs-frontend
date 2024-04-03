@@ -104,7 +104,7 @@ export default function UserEditForm() {
         placeholder="آدرس"
         className="input input-bordered w-full max-w-xs"
       />
-      {errors.mobile ? (
+      {errors.address ? (
         <p className=" text-xs text-error">آدرس را وارد کنید</p>
       ) : null}
       <LoadingButton isLoading={isLoading} />

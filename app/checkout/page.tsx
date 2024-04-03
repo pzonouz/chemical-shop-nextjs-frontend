@@ -206,14 +206,12 @@ export default function CheckoutPage() {
           </div>
         </div>
         <LoadingButton
+          totalPriceButton={true}
           type="success"
           isLoading={isLoadingOrder}
           text="پرداخت"
           className={`text-white`}
         />
-        {/* <button type="submit" className=" btn btn-success text-white">
-          پرداخت
-        </button> */}
       </form>
     </>
   );

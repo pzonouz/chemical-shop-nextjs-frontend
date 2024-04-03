@@ -7,18 +7,18 @@ const LoadingButton = ({
   type = "primary",
   className = "",
   text = "ثبت",
+  totalPriceButton = false,
 }: {
   isLoading: boolean;
   type?: string;
   className?: string;
   text?: string;
+  totalPriceButton?: boolean;
 }) => {
   const totalPriceZeroError = useAppSelector(
     (state) => state.totalPriceZeroError
   );
-  useEffect(() => {
-    console.log(totalPriceZeroError);
-  }, [totalPriceZeroError]);
+  useEffect(() => {}, [totalPriceZeroError]);
   return (
     <>
       {isLoading ? (
@@ -32,7 +32,9 @@ const LoadingButton = ({
       ) : (
         <button
           className={`btn btn-${type} ${
-            totalPriceZeroError.status ? "btn-disabled" : null
+            totalPriceZeroError.status && totalPriceButton
+              ? "btn-disabled"
+              : null
           } ${className}`}
         >
           {text}
