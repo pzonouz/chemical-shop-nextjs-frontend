@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   useCreateOrderMutation,
-  useEditProductMutation,
   useEditUserProfileMutation,
   useFetchUserQuery,
 } from "@/lib/features/api/api";
@@ -24,10 +23,22 @@ export default function CheckoutPage() {
   const [lastName, setLastName] = useState("");
   const [mobile, setMobile] = useState("");
   const [editStatus, setEditStatus] = useState(false);
+  const [addressError, setAddressError] = useState(false);
   const router = useRouter();
   const [editUser] = useEditUserProfileMutation();
   const [createOrder] = useCreateOrderMutation();
   const onSubmit = (data: any) => {
+    if (
+      user?.profile?.address == null ||
+      user?.profile?.first_name == null ||
+      user?.profile?.last_name == null ||
+      user?.profile?.mobile == null
+    ) {
+      errorToast("اطلاعات آدرس را به صورت کامل پر کنید");
+      setEditStatus(true);
+      setAddressError(true);
+      return;
+    }
     setLoadingOrder(true);
     createOrder(data)
       .unwrap()
@@ -103,7 +114,13 @@ export default function CheckoutPage() {
             </p>
           ) : null}
         </div>
-        <div className=" mx-2 flex px-4 py-2 flex-col gap-4 bg-white rounded-lg text-slate-800">
+        <div
+          className={classNames({
+            "mx-2 flex px-4 py-2 flex-col gap-4 bg-white rounded-lg text-slate-800":
+              true,
+            " border-2 border-error": addressError,
+          })}
+        >
           <div className="border-b-2 py-1 flex items-center justify-between px-2">
             <div>آدرس ارسال</div>
             <div
@@ -167,10 +184,12 @@ export default function CheckoutPage() {
                       setLoadingUser(false);
                       successToast();
                       setEditStatus(false);
+                      setAddressError(false);
                     })
                     .catch((err) => {
                       setLoadingUser(false);
                       errorToast(err.status);
+                      setAddressError(false);
                     });
                 }}
               >

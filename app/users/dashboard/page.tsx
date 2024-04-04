@@ -1,7 +1,9 @@
 "use client";
+import { ToPersianDigit } from "@/app/utils/ToPersianDigit";
 import { useFetchUserQuery } from "@/lib/features/api/api";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useAppDispatch } from "@/lib/hooks";
+import moment from "jalali-moment";
 import Link from "next/link";
 import { useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
@@ -18,7 +20,7 @@ const DashboardPage = () => {
     toast.error((error as any)?.originalStatus);
   }, [error]);
   return (
-    <div className=" p-4 bg-base-200 rounded-xl">
+    <div className=" p-4 bg-base-200 rounded-xl w-full">
       <div className=" flex flex-row text-sm items-center justify-between">
         <p>اطلاعات حساب کاربری</p>
         <Link
@@ -48,7 +50,11 @@ const DashboardPage = () => {
         </div>
         <div className=" flex flex-row gap-2 border-b-2 border-base-content p-1 items-center justify-between">
           <p> تاریخ عضویت:</p>
-          <p> {user?.profile?.created_at?.toString()}</p>
+          <p>
+            {ToPersianDigit(
+              moment(user?.created_at).locale("fa").format("YYYY/MM/DD")
+            )}
+          </p>
         </div>
         <div className=" flex flex-row gap-2 p-1 items-center justify-between">
           <p>آدرس:</p>

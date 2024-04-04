@@ -1,4 +1,4 @@
-import { Cart, Category, Order, Product, User } from "@/app/types";
+import { Cart, Category, Order, Process, Product, User } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -180,12 +180,12 @@ export const apiSlice = createApi({
         },
         invalidatesTags: ["Order", "Cart"],
       }),
-      OrderNext: builder.mutation<Order, Number>({
-        query: (id: Number) => {
+      OrderNext: builder.mutation<Order, Partial<Process>>({
+        query: (process: Process) => {
           return {
             url: `/api/admin/processes/`,
             method: "POST",
-            body: { order_id: id },
+            body: process,
           };
         },
         invalidatesTags: ["Order"],

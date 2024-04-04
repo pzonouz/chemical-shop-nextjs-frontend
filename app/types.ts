@@ -26,15 +26,19 @@ export interface Order {
   cart_items: Cart[];
   user: User;
   processes: any;
+  created_at: string;
 }
-
+export interface Process {
+  order_id: Number;
+  description: string;
+}
 export interface User {
   id: string;
-  // name: string;
   email: string;
   is_staff: boolean;
   is_active: boolean;
   profile?: ProfileUser;
+  created_at: string;
 }
 export interface ProfileUser {
   id?: string;

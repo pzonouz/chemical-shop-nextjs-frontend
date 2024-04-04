@@ -6,7 +6,9 @@
     "Chemicalshop",
     "INPLACE",
     "Insertable",
+    "jalali",
     "kysely",
+    "luxon",
     "Updateable",
     "ورود"
   ],
