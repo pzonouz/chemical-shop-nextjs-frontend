@@ -1,4 +1,5 @@
-export const ToPersianDigit = (number: string) => {
+export const ToPersianDigit = (number: string | number) => {
+  number = String(number);
   number = number.replaceAll("1", "۱");
   number = number.replaceAll("2", "۲");
   number = number.replaceAll("3", "۳");

@@ -1,14 +1,13 @@
 "use client";
 import { GoPackage } from "react-icons/go";
 import { FiUsers } from "react-icons/fi";
-import { MdBorderColor } from "react-icons/md";
+import { LuPackageOpen } from "react-icons/lu";
 import { IoHomeOutline } from "react-icons/io5";
 import { MdOutlineCategory } from "react-icons/md";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAppDispatch } from "@/lib/hooks";
 
 const AdminMenu = () => {
   const [active, setActive] = useState("");
@@ -137,7 +136,7 @@ const AdminMenu = () => {
             setActive("Orders");
           }}
         >
-          <MdBorderColor />
+          <LuPackageOpen />
         </Link>
       </li>
     </ul>

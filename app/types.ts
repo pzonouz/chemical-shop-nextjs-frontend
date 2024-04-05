@@ -5,6 +5,7 @@ export interface Product {
   image: string;
   price: string;
   category: string;
+  favorites: any;
   cart_items?: Cart[];
 }
 

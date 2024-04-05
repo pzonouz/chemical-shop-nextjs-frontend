@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RxDashboard } from "react-icons/rx";
 import { FaUserEdit } from "react-icons/fa";
+import { LuPackageOpen } from "react-icons/lu";
+import { FaHeart } from "react-icons/fa";
 
 const DashboardSideBar = () => {
   const [active, setActive] = useState("");
@@ -15,6 +17,12 @@ const DashboardSideBar = () => {
     }
     if (path.endsWith("/dashboard/user-edit")) {
       setActive("userEdit");
+    }
+    if (path.endsWith("/dashboard/user-orders")) {
+      setActive("userOrders");
+    }
+    if (path.endsWith("/dashboard/user-favorites")) {
+      setActive("userFavorites");
     }
   }, [path]);
   return (
@@ -48,6 +56,36 @@ const DashboardSideBar = () => {
             className={classNames({ active: active === "userEdit" })}
           >
             <FaUserEdit />
+          </Link>
+        </li>
+        <li
+          onClick={(e) => {
+            const elm = document.activeElement as HTMLElement;
+            if (elm) {
+              elm?.blur();
+            }
+          }}
+        >
+          <Link
+            href="/users/dashboard/user-orders"
+            className={classNames({ active: active === "userOrders" })}
+          >
+            <LuPackageOpen />
+          </Link>
+        </li>
+        <li
+          onClick={(e) => {
+            const elm = document.activeElement as HTMLElement;
+            if (elm) {
+              elm?.blur();
+            }
+          }}
+        >
+          <Link
+            href="/users/dashboard/user-favorites"
+            className={classNames({ active: active === "userFavorites" })}
+          >
+            <FaHeart />
           </Link>
         </li>
       </ul>
