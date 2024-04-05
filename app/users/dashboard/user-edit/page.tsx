@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@/app/components/utils/LoadingButton";
+import classNames from "classnames";
 
 export default function UserEditForm() {
   const { data: user, error, isFetching } = useFetchUserQuery();
@@ -72,40 +73,52 @@ export default function UserEditForm() {
         {...register("first_name")}
         type="text"
         placeholder="نام"
-        className="input input-bordered w-full max-w-xs"
+        className={classNames({
+          "input input-bordered w-full max-w-xs": true,
+          " border-2 border-error": errors.first_name,
+        })}
       />
       {errors.first_name ? (
-        <p className=" text-xs text-error">نام را وارد کنید</p>
+        <p className=" text-xs text-error -mt-3">نام را وارد کنید</p>
       ) : null}
 
       <input
         {...register("last_name")}
         type="text"
         placeholder="نام خانوادگی"
-        className="input input-bordered w-full max-w-xs"
+        className={classNames({
+          "input input-bordered w-full max-w-xs": true,
+          " border-2 border-error": errors.last_name,
+        })}
       />
       {errors.last_name ? (
-        <p className=" text-xs text-error">نام خانوادگی را وارد کنید</p>
+        <p className=" text-xs text-error -mt-3">نام خانوادگی را وارد کنید</p>
       ) : null}
 
       <input
         {...register("mobile")}
         type="text"
         placeholder="موبایل"
-        className="input input-bordered w-full max-w-xs"
+        className={classNames({
+          "input input-bordered w-full max-w-xs": true,
+          " border-2 border-error": errors.mobile,
+        })}
       />
       {errors.mobile ? (
-        <p className=" text-xs text-error">موبایل را وارد کنید</p>
+        <p className=" text-xs text-error -mt-3">موبایل را وارد کنید</p>
       ) : null}
 
       <input
         {...register("address")}
         type="text"
         placeholder="آدرس"
-        className="input input-bordered w-full max-w-xs"
+        className={classNames({
+          "input input-bordered w-full max-w-xs": true,
+          " border-2 border-error": errors.address,
+        })}
       />
       {errors.address ? (
-        <p className=" text-xs text-error">آدرس را وارد کنید</p>
+        <p className=" text-xs text-error -mt-3">آدرس را وارد کنید</p>
       ) : null}
       <LoadingButton isLoading={isLoading} />
     </form>
