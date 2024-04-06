@@ -73,7 +73,7 @@ const AdminProductTable = () => {
                     onClick={() => {
                       setProductToDelete(product?.id!);
                       (
-                        document.getElementById("my_modal_5") as any
+                        document.getElementById("product_delete_modal") as any
                       )?.showModal();
                     }}
                   />
@@ -90,14 +90,16 @@ const AdminProductTable = () => {
           ))}
         </tbody>
       </table>
-      {/* delete window */}
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+      <dialog
+        id="product_delete_modal"
+        className="modal modal-bottom sm:modal-middle"
+      >
         <div className="modal-box">
           <p className="py-4">پاک شود؟</p>
           <div className="modal-action">
             <form
               method="dialog"
-              className=" flex flex-row gap-2 ite justify-around w-full"
+              className=" flex flex-row gap-2 items-center justify-around w-full"
             >
               {/* if there is a button in form, it will close the modal */}
               <button

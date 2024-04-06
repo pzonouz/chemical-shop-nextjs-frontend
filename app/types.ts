@@ -41,6 +41,11 @@ export interface User {
   profile?: ProfileUser;
   created_at: string;
 }
+export interface Favorite {
+  id: any;
+  user: any;
+  product: any;
+}
 export interface ProfileUser {
   id?: string;
   first_name?: string;

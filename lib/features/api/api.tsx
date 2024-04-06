@@ -1,4 +1,12 @@
-import { Cart, Category, Order, Process, Product, User } from "@/app/types";
+import {
+  Cart,
+  Category,
+  Favorite,
+  Order,
+  Process,
+  Product,
+  User,
+} from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -9,7 +17,7 @@ export const apiSlice = createApi({
     mode: "same-origin",
     headers: { "Content-Type": "application/json" },
   }),
-  tagTypes: ["User", "Category", "Product", "Cart", "Order"],
+  tagTypes: ["User", "Category", "Product", "Cart", "Order", "Favorite"],
   endpoints(builder) {
     return {
       fetchCategories: builder.query<Category[], number | void>({
@@ -195,6 +203,24 @@ export const apiSlice = createApi({
           return { url: `/api/auth/users/`, method: "POST", body: user };
         },
       }),
+      fetchFavorites: builder.query<Favorite[], void>({
+        query: () => {
+          return {
+            url: `/api/favorites/`,
+          };
+        },
+        providesTags: ["Favorite"],
+      }),
+      toggleFavorite: builder.mutation<void, Number>({
+        query: (id: Number) => {
+          return {
+            url: `/api/favorites/`,
+            method: "POST",
+            body: { product: id },
+          };
+        },
+        invalidatesTags: ["Favorite", "Product"],
+      }),
       activateUser: builder.query<any, any>({
         query: (data) => {
           return {
@@ -268,4 +294,6 @@ export const {
   useFetchAdminOrdersQuery,
   useCreateOrderMutation,
   useDeleteOrderMutation,
+  useFetchFavoritesQuery,
+  useToggleFavoriteMutation,
 } = apiSlice;
