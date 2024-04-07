@@ -1,4 +1,3 @@
-import React from "react";
 // import Rating from "../utils/Rating";
 import { Product } from "@/app/types";
 import AddToCartButton from "./AddToCartButton";

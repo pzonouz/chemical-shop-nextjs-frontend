@@ -6,7 +6,7 @@ import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
 const Favorite = ({ product }: { product: Product }) => {
-  const [active, setActive] = useState<boolean>(product?.favorites.length);
+  const [active, setActive] = useState(product?.favorites.length!);
   return (
     <div
       onClick={() => {
@@ -18,10 +18,10 @@ const Favorite = ({ product }: { product: Product }) => {
           .then((res) => {
             if (res.ok) {
               if (res.status == 201) {
-                setActive(true);
+                setActive(1);
               }
               if (res.status == 204) {
-                setActive(false);
+                setActive(0);
               }
             } else {
               throw new Error(res.statusText);
