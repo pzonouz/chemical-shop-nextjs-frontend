@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import {
   useCreateOrderMutation,
   useEditUserProfileMutation,
-  useFetchUserQuery,
 } from "@/lib/features/api/api";
 import { useRouter } from "next/navigation";
 import errorToast from "../utils/ErrorToast";
@@ -14,9 +13,10 @@ import successToast from "../utils/SuccessToast";
 import LoadingButton from "../components/utils/LoadingButton";
 import classNames from "classnames";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function CheckoutPage() {
-  const { data: user, error } = useFetchUserQuery();
+  const { user, status } = useSelector((state) => (state as any)?.user);
   const [isLoadingUser, setLoadingUser] = useState(false);
   const [isLoadingOrder, setLoadingOrder] = useState(false);
   const [editStatus, setEditStatus] = useState(false);
@@ -54,11 +54,10 @@ export default function CheckoutPage() {
     formState: { errors },
   } = useForm();
   useEffect(() => {
-    if (error != undefined && "status" in error && error.status == 401) {
+    if (status == "UnAuthenticated") {
       router.push("/authentication/login");
     }
-  }, [error, router]);
-  useEffect(() => {}, [user]);
+  }, [router, status]);
 
   return (
     <>

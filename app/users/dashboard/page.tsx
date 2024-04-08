@@ -1,24 +1,13 @@
 "use client";
 import { ToPersianDigit } from "@/app/utils/ToPersianDigit";
-import { useFetchUserQuery } from "@/lib/features/api/api";
-import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useAppDispatch } from "@/lib/hooks";
 import moment from "jalali-moment";
 import Link from "next/link";
-import { useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const DashboardPage = () => {
-  const { data: user, error, isFetching } = useFetchUserQuery();
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    isFetching ? dispatch(setLoading()) : dispatch(unsetLoading());
-  }, [dispatch, isFetching]);
-  useEffect(() => {
-    toast.error((error as any)?.originalStatus);
-  }, [error]);
+  const { user, status } = useSelector((state: any) => state?.user);
   return (
     <div className=" p-4 bg-base-200 rounded-xl w-full">
       <div className=" flex flex-row text-sm items-center justify-between">

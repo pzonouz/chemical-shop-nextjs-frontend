@@ -8,7 +8,6 @@ import StoreProvider from "./StoreProvider";
 import ToastProvider from "./providers/toast.provider";
 import Navbar from "./components/Navigation/Navbar";
 import Loading from "./components/utils/Loading";
-import { CookiesProvider } from "react-cookie";
 
 const IranSans = localFont({
   src: [

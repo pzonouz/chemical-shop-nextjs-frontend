@@ -13,13 +13,13 @@ import { MdNextPlan } from "react-icons/md";
 import errorToast from "@/app/utils/ErrorToast";
 import { FaPlusCircle } from "react-icons/fa";
 import { FaMinusCircle } from "react-icons/fa";
-import {
-  OrderStatusCalculator,
-  OrderNextStatusCalculator,
-} from "@/app/utils/OrderStatusCalculator";
 import classNames from "classnames";
 import moment from "jalali-moment";
 import { ToPersianDigit } from "@/app/utils/ToPersianDigit";
+import {
+  OrderNextStatusCalculator,
+  OrderStatusCalculator,
+} from "../utils/OrderStatusCalculator";
 
 const AdminOrderTable = () => {
   const { data: fetchedOrders, isFetching } = useFetchAdminOrdersQuery();

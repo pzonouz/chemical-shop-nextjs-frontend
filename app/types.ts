@@ -38,7 +38,7 @@ export interface User {
   email: string;
   is_staff: boolean;
   is_active: boolean;
-  profile?: ProfileUser;
+  profile?: UserProfile;
   created_at: string;
 }
 export interface Favorite {
@@ -46,7 +46,7 @@ export interface Favorite {
   user: any;
   product: any;
 }
-export interface ProfileUser {
+export interface UserProfile {
   id?: string;
   first_name?: string;
   last_name?: string;
@@ -54,4 +54,5 @@ export interface ProfileUser {
   mobile?: string;
   address?: string;
   image?: string;
+  user: string;
 }

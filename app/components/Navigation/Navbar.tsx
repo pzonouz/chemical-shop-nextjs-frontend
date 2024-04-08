@@ -4,22 +4,22 @@ import Link from "next/link";
 import { FaBars } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
 import { BsCart } from "react-icons/bs";
-import {
-  useFetchCartItemsQuery,
-  useFetchUserQuery,
-} from "@/lib/features/api/api";
-import { ReactNode, useEffect } from "react";
+import { useFetchCartItemsQuery } from "@/lib/features/api/api";
+import { useEffect } from "react";
 import errorToast from "@/app/utils/ErrorToast";
 import Cart from "../data/Cart";
 import { usePathname, useRouter } from "next/navigation";
 import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useAppDispatch } from "@/lib/hooks";
+import { fetchUser } from "@/lib/features/utils/user";
+import { useSelector } from "react-redux";
+import Image from "next/image";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
-  const { data: user } = useFetchUserQuery();
+  const { user, status } = useSelector((state) => (state as any)?.user);
   const path = usePathname();
-  const { data: cartItems, isError, error } = useFetchCartItemsQuery();
+  const { data: cartItems, error } = useFetchCartItemsQuery();
   const router = useRouter();
 
   useEffect(() => {
@@ -30,6 +30,9 @@ const Navbar = () => {
       router.push("/");
     }
   }, [user, path, router]);
+  useEffect(() => {
+    status == "UnAuthenticated" ? dispatch(fetchUser()) : null;
+  }, [dispatch, status]);
 
   return (
     <div>
@@ -118,14 +121,15 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt="Sample user image"
+                <Image
+                  width={200}
+                  height={200}
                   src={
-                    user
+                    status == "Authenticated"
                       ? user?.profile?.image!
                       : "/images/Sample_User_Icon.png"
                   }
+                  alt="Sample user image"
                 />
               </div>
             </div>

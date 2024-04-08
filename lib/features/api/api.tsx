@@ -6,6 +6,7 @@ import {
   Process,
   Product,
   User,
+  UserProfile,
 } from "@/app/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -236,18 +237,30 @@ export const apiSlice = createApi({
         },
         providesTags: ["User"],
       }),
-      fetchUsers: builder.query<User[], void>({
+      fetchUsers: builder.query<UserProfile[], void>({
         query: () => {
           return { url: `/api/admin/users/` };
         },
         providesTags: ["User"],
       }),
-      editUserProfile: builder.mutation<User, Partial<User>>({
-        query: (user: User) => {
+      adminEditUserProfile: builder.mutation<UserProfile, Partial<UserProfile>>(
+        {
+          query: (profile: UserProfile) => {
+            return {
+              url: `/api/admin/users/${profile.id}/`,
+              method: "PATCH",
+              body: profile,
+            };
+          },
+          invalidatesTags: ["User"],
+        }
+      ),
+      editUserProfile: builder.mutation<UserProfile, Partial<UserProfile>>({
+        query: (profile: UserProfile) => {
           return {
-            url: `/api/admin/users/${user.id}/`,
+            url: `/api/users/${profile.id}/`,
             method: "PATCH",
-            body: user,
+            body: profile,
           };
         },
         invalidatesTags: ["User"],
@@ -280,6 +293,7 @@ export const {
   useFetchUserQuery,
   useFetchUsersQuery,
   useRegisterUserMutation,
+  useAdminEditUserProfileMutation,
   useEditUserProfileMutation,
   useDisableUserMutation,
   useActivateUserQuery,

@@ -1,14 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import InputBox from "@/app/components/data/InputBox";
 import ErrorToast from "@/app/utils/ErrorToast";
 import successToast from "@/app/utils/SuccessToast";
-import {
-  useEditUserProfileMutation,
-  useFetchUserQuery,
-} from "@/lib/features/api/api";
-import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useEditUserProfileMutation } from "@/lib/features/api/api";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -16,11 +11,11 @@ import { ZodSchema, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@/app/components/utils/LoadingButton";
 import classNames from "classnames";
+import { useSelector } from "react-redux";
 
 export default function UserEditForm() {
-  const { data: user, error, isFetching } = useFetchUserQuery();
   const [editUser, { isLoading }] = useEditUserProfileMutation();
-
+  const { user, status } = useSelector((state: any) => state?.user);
   const schema: ZodSchema = z.object({
     first_name: z.string().min(1),
     last_name: z.string().min(1),
@@ -33,27 +28,16 @@ export default function UserEditForm() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
-  useEffect(() => {
-    isFetching ? setLoading() : unsetLoading();
-  }, [isFetching]);
-  useEffect(() => {
-    ErrorToast((error as any)?.originalStatus);
-  }, [error]);
+
   useEffect(() => {
     setValue("first_name", user?.profile?.first_name);
     setValue("last_name", user?.profile?.last_name);
     setValue("address", user?.profile?.address);
     setValue("mobile", user?.profile?.mobile);
-  }, []);
-  useEffect(() => {
-    toast.error((error as any)?.originalStatus);
-  }, [error]);
+  }, [user]);
 
   const userFormSubmit = (data: any) => {
-    const profile = { ...data };
-    const newUserData = { ...user };
-    newUserData.profile = profile;
-    editUser(newUserData)
+    editUser({ id: user?.profile?.id, ...data })
       .then((res: any) => {
         if (res.error) {
           throw new Error(res.error.originalStatus);

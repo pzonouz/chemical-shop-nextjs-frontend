@@ -1,33 +1,54 @@
 "use client";
 
-import { useFetchUserQuery } from "@/lib/features/api/api";
+import Link from "next/link";
 import AdminMenu from "../components/admin/AdminMenu";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
-import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/lib/hooks";
+import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
+import errorToast from "../utils/ErrorToast";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { user, status } = useSelector((state) => (state as any)?.user);
   const dispatch = useAppDispatch();
-  const { data: user, isError, isFetching } = useFetchUserQuery();
-  useEffect(() => {
-    if (isFetching) {
-      dispatch(setLoading());
-    }
-    if (!isFetching) {
-      dispatch(unsetLoading());
-    }
-  }, [dispatch, isFetching]);
 
-  if (isError) {
-    return redirect("/authentication/login");
-  }
   if (!user?.is_staff) {
-    return <div className="p-8">شما مجاز به ورود نیستید</div>;
+    return (
+      <div className="p-8">
+        <div>شما مجاز به ورود نیستید</div>
+        {status == "Authenticated" ? (
+          <a
+            className=" btn btn-primary"
+            onClick={() => {
+              dispatch(setLoading());
+              fetch(`/api/auth/logout`, {
+                cache: "no-store",
+              })
+                .then((res) => {
+                  if (res.ok) {
+                    window.location.href = `/authentication/login`;
+                  } else {
+                    throw new Error(res.statusText);
+                  }
+                })
+                .catch((err) => {
+                  errorToast(err.message);
+                  dispatch(unsetLoading());
+                });
+            }}
+          >
+            خروج
+          </a>
+        ) : (
+          <Link href={"/authentication/login"} className=" btn btn-primary">
+            ورود
+          </Link>
+        )}
+      </div>
+    );
   }
 
   return (

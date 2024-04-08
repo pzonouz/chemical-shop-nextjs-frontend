@@ -5,16 +5,16 @@ import { useEffect, useState } from "react";
 import z, { ZodSchema } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useEditUserProfileMutation } from "@/lib/features/api/api";
+import { useAdminEditUserProfileMutation } from "@/lib/features/api/api";
 import LoadingButton from "../utils/LoadingButton";
 import OneFileUploader from "./OneFileUploader";
-import { User } from "@/app/types";
+import { User, UserProfile } from "@/app/types";
 import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 
-const AdminUserForm = ({ user }: { user: User }) => {
-  const [image, setImage] = useState(user.profile?.image || "");
-  const [editUserProfile] = useEditUserProfileMutation();
+const AdminUserForm = ({ profile }: { profile: UserProfile }) => {
+  const [image, setImage] = useState(profile?.image || "");
+  const [adminEditUserProfile] = useAdminEditUserProfileMutation();
   const [isLoading, setLoading] = useState(false);
 
   const schema: ZodSchema = z.object({
@@ -37,16 +37,14 @@ const AdminUserForm = ({ user }: { user: User }) => {
   }, [image, setValue]);
 
   useEffect(() => {
-    setValue("first_name", user?.profile?.first_name);
-    setValue("last_name", user?.profile?.last_name);
-    setValue("address", user?.profile?.address);
-    setValue("mobile", user?.profile?.mobile);
+    setValue("first_name", profile?.first_name);
+    setValue("last_name", profile?.last_name);
+    setValue("address", profile?.address);
+    setValue("mobile", profile?.mobile);
   }, []);
   const onSubmit = (data: any) => {
     setLoading(true);
-    const newUser = { ...user };
-    newUser.profile = { ...data };
-    editUserProfile(newUser)
+    adminEditUserProfile({ id: profile?.id, ...data })
       .unwrap()
       .then(() => {
         setLoading(false);
@@ -105,7 +103,7 @@ const AdminUserForm = ({ user }: { user: User }) => {
       <input
         type="text"
         disabled={true}
-        value={user.email}
+        value={profile?.user}
         className="input input-bordered w-full max-w-xs"
       />
 
