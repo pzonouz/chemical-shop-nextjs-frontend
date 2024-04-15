@@ -52,7 +52,7 @@ const ProductListByCategory = async () => {
               <div>{category?.name} </div>
               <div className="flex-auto border-t-2 border-b-2 h-[6px] text-center align-middle"></div>
             </div>
-            <div className=" grid grid-cols-1 pt-6">
+            <div className=" grid grid-cols-1 pt-6 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {category?.products?.map((product: Product) => {
                 return <Card key={product?.id} product={product} />;
               })}

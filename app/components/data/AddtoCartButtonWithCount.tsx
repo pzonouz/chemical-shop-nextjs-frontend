@@ -21,7 +21,7 @@ const AddToCartButtonWithCount = ({ product }: { product: Product }) => {
 
   const [addToCartWithCount] = useAddToCartMutation();
   return (
-    <div className=" grid grid-cols-2 grid-rows-2 items-center justify-between w-full gap-2">
+    <div className=" grid grid-cols-2 grid-rows-2 items-center  w-full gap-2 md:gap-6 md:w-full">
       <div className=" ">{ToPersianDigit(product?.price)} تومان</div>
       <div className="flex justify-center gap-2 ">
         <div className=" text-error">

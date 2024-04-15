@@ -239,7 +239,7 @@ export const apiSlice = createApi({
       }),
       fetchUsers: builder.query<UserProfile[], void>({
         query: () => {
-          return { url: `/api/admin/users/` };
+          return { url: `/api/admin/user_profiles/` };
         },
         providesTags: ["User"],
       }),
@@ -247,18 +247,18 @@ export const apiSlice = createApi({
         {
           query: (profile: UserProfile) => {
             return {
-              url: `/api/admin/users/${profile.id}/`,
+              url: `/api/admin/user_profiles/${profile.id}/`,
               method: "PATCH",
               body: profile,
             };
           },
           invalidatesTags: ["User"],
-        }
+        },
       ),
       editUserProfile: builder.mutation<UserProfile, Partial<UserProfile>>({
         query: (profile: UserProfile) => {
           return {
-            url: `/api/users/${profile.id}/`,
+            url: `/api/user_profiles/${profile.id}/`,
             method: "PATCH",
             body: profile,
           };

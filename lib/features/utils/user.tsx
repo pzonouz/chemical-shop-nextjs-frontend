@@ -1,4 +1,3 @@
-import { useAppDispatch } from "@/lib/hooks";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setLoading, unsetLoading } from "./loading";
 
@@ -14,7 +13,7 @@ const fetchUser = createAsyncThunk(
     const data = await response.json();
     dispatch(unsetLoading());
     return data;
-  }
+  },
 );
 const initialState = { user: null, status: "UnAuthenticated" };
 const user = createSlice({

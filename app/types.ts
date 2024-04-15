@@ -2,6 +2,7 @@ export interface Product {
   id: string;
   name: string;
   english_name: any;
+  description: string;
   image: string;
   price: string;
   category: string;
@@ -40,6 +41,7 @@ export interface User {
   is_active: boolean;
   profile?: UserProfile;
   created_at: string;
+  image: string;
 }
 export interface Favorite {
   id: any;

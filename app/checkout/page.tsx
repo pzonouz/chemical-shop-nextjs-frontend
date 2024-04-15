@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  useCreateOrderMutation,
-  useEditUserProfileMutation,
-} from "@/lib/features/api/api";
+import { useCreateOrderMutation } from "@/lib/features/api/api";
 import { useRouter } from "next/navigation";
 import errorToast from "../utils/ErrorToast";
 import Price from "../components/data/Price";
@@ -16,13 +13,10 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 export default function CheckoutPage() {
-  const { user, status } = useSelector((state) => (state as any)?.user);
-  const [isLoadingUser, setLoadingUser] = useState(false);
+  const { user } = useSelector((state) => (state as any)?.user);
   const [isLoadingOrder, setLoadingOrder] = useState(false);
-  const [editStatus, setEditStatus] = useState(false);
-  const [addressError, setAddressError] = useState(false);
+  const [addressError] = useState(false);
   const router = useRouter();
-  const [editUser] = useEditUserProfileMutation();
   const [createOrder] = useCreateOrderMutation();
   const onSubmit = (data: any) => {
     if (
@@ -53,25 +47,20 @@ export default function CheckoutPage() {
     register,
     formState: { errors },
   } = useForm();
-  useEffect(() => {
-    if (status == "UnAuthenticated") {
-      router.push("/authentication/login");
-    }
-  }, [router, status]);
 
   return (
     <>
       <form
-        className=" bg-base-200 p-3 mt-6 flex flex-col gap-4"
+        className=" bg-base-200 p-3 mt-6 grid grid-col-1 sm:grid-col-2 gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className=" mx-2 flex py-2 px-4 flex-row gap-4 bg-white rounded-lg text-primary ">
+        <div className=" mx-2 sm:mx-0 flex py-2 px-4 flex-row gap-4 bg-white rounded-lg text-primary sm:col-start-1 sm:col-end-3 ">
           <p>زمان تامین کالا:</p>
           <p>حداکثر ۶روز کاری</p>
         </div>
         <div
           className={classNames({
-            "mx-2 flex p-2 flex-col gap-1 bg-white rounded-lg text-slate-800":
+            "mx-2 sm:mx-0 flex p-2 flex-col gap-1 bg-white rounded-lg text-slate-800 sm:col-start-1 sm:col-end-2":
               true,
             " border-2 border-error": errors.delivery_method,
           })}
@@ -107,7 +96,7 @@ export default function CheckoutPage() {
         </div>
         <div
           className={classNames({
-            "mx-2 flex px-4 py-2 flex-col gap-4 bg-white rounded-lg text-slate-800":
+            "mx-2 sm:mx-0 flex px-4  py-2 flex-col gap-4 bg-white rounded-lg text-slate-800 sm:col-start-2 sm:col-end-3":
               true,
             " border-2 border-error": addressError,
           })}
@@ -127,29 +116,29 @@ export default function CheckoutPage() {
             {user?.profile?.mobile}
           </div>
         </div>
-        <div className="mx-2 flex px-4 py-2 flex-col gap-4 bg-white rounded-lg text-slate-800">
+        <LoadingButton
+          totalPriceButton={true}
+          type="success"
+          isLoading={isLoadingOrder}
+          text="پرداخت"
+          className={`text-white sm:w-full sm:h-full px-4`}
+        />
+        <div className="mx-3 sm:mx-0 flex px-4 py-2 flex-col gap-4 bg-white rounded-lg text-slate-800">
           <div className=" flex justify-between">
             <>قیمت کل کالاها:</>
-            <div className=" flex gap-1">
+            <div className=" flex gap-2">
               <Price />
               <div>تومان</div>
             </div>
           </div>
           <div className=" flex justify-between">
             <div>مبلغ قابل پرداخت:</div>
-            <div className=" flex gap-1">
+            <div className=" flex gap-2">
               <Price />
               <div>تومان</div>
             </div>
           </div>
         </div>
-        <LoadingButton
-          totalPriceButton={true}
-          type="success"
-          isLoading={isLoadingOrder}
-          text="پرداخت"
-          className={`text-white`}
-        />
       </form>
     </>
   );

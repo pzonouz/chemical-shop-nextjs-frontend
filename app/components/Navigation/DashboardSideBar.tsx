@@ -29,7 +29,7 @@ const DashboardSideBar = () => {
     <aside>
       <ul className="menu bg-base-200 rounded-box w-fit text-2xl m-y-auto flex flex-col gap-1">
         <li
-          onClick={(e) => {
+          onClick={() => {
             const elm = document.activeElement as HTMLElement;
             if (elm) {
               elm?.blur();
@@ -44,7 +44,7 @@ const DashboardSideBar = () => {
           </Link>
         </li>
         <li
-          onClick={(e) => {
+          onClick={() => {
             const elm = document.activeElement as HTMLElement;
             if (elm) {
               elm?.blur();
@@ -59,7 +59,7 @@ const DashboardSideBar = () => {
           </Link>
         </li>
         <li
-          onClick={(e) => {
+          onClick={() => {
             const elm = document.activeElement as HTMLElement;
             if (elm) {
               elm?.blur();
@@ -74,7 +74,7 @@ const DashboardSideBar = () => {
           </Link>
         </li>
         <li
-          onClick={(e) => {
+          onClick={() => {
             const elm = document.activeElement as HTMLElement;
             if (elm) {
               elm?.blur();

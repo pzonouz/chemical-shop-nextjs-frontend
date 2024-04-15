@@ -13,7 +13,6 @@ import successToast from "@/app/utils/SuccessToast";
 import ErrorToast from "@/app/utils/ErrorToast";
 import LoadingButton from "../utils/LoadingButton";
 import { Category } from "@/app/types";
-import { useAppDispatch } from "@/lib/hooks";
 
 const AdminCategoryForm = ({
   category,

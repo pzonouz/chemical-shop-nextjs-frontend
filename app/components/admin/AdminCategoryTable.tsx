@@ -26,7 +26,7 @@ const AdminCategoryTable = () => {
     dispatch(setLoading());
     deleteCategory(categoryToDelete)
       .unwrap()
-      .then((res: any) => {
+      .then(() => {
         successToast();
         dispatch(unsetLoading());
       })
@@ -61,7 +61,7 @@ const AdminCategoryTable = () => {
                 <td className=" w-1/4">
                   <div className="avatar">
                     <div className="mask mask-circle w-12 h-12">
-                      {category.image && (
+                      {category?.image && (
                         <img src={category?.image} alt={category?.name} />
                       )}
                     </div>

@@ -8,15 +8,15 @@ export default function ActivatePage({
 }: {
   params: { uid: string; token: string };
 }) {
-  // TODO: Loading
-  const { isFetching, isSuccess, isError, error } = useActivateUserQuery({
+  const { isSuccess, isError, error } = useActivateUserQuery({
     uid: uid,
     token: token,
   });
   if (isSuccess) {
     successToast();
-    setTimeout((e) => {}, 2000);
+    setTimeout(() => {}, 2000);
   }
+  // TODO
   if (isError) {
     errorToast(JSON.stringify((error as any)?.data));
   }

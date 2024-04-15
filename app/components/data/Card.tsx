@@ -12,13 +12,9 @@ const Card = ({ product }: { product: Product }) => {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.image}
-          alt=""
+          alt={`${product?.name}-${product?.english_name}`}
           className="object-cover w-full mx-auto rounded-md"
         />
-        {/* </a> */}
-        {/* <span className="absolute top-0 right-0 px-4 py-2 m-2 lg:px-2 lg:py-1 text-sm font-semibold text-secondary-content bg-secondary rounded-md">
-          ۱۶٪ تخفیف
-        </span> */}
         <Favorite product={product} />
       </div>
       <div className="p-4 border-b border-gray-200 bg-white  rounded-b-md ">

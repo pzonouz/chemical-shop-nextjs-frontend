@@ -22,15 +22,20 @@ export default function UserFavoritesPage() {
   }, [dispatch, isFetching]);
 
   return (
-    <div className="p-4 bg-base-200 rounded-xl w-full flex flex-col gap-2 items-center ">
-      <div>
+    <div className="p-4 bg-base-200 rounded-xl w-full gap-2">
+      <div>علایق شما</div>
+      <div className=" grid grid-cols-1 md:grid-col-2 grid-flow-col gap-4">
         {favorites?.map((favorite: Favorite) => (
-          <div key={favorite.id} className=" flex flex-row items-center">
+          <div
+            key={favorite.id}
+            className=" flex flex-row items-center bg-base-100 rounded-md p-1 w-full max-w-md"
+          >
             <Link
               href={"/products/" + String(favorite.product).split(",")[1]}
               className="w-1/2 rounded-lg"
             >
               <img
+                className=" max-2-[10px] rounded-md"
                 src={String(favorite.product).split(",")[2]}
                 alt={String(favorite.product).split(",")[0]}
               />
@@ -64,7 +69,7 @@ export default function UserFavoritesPage() {
                     onClick={() => {
                       dispatch(setLoading());
                       toggleFavorite(
-                        parseInt(String(favorite.product).split(",")[1])
+                        parseInt(String(favorite.product).split(",")[1]),
                       )
                         .unwrap()
                         .then(() => {

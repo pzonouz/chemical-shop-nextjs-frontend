@@ -35,6 +35,7 @@ const AdminProductForm = ({
     english_name: z.string().min(1),
     image: z.string().nullish(),
     price: z.string().min(1),
+    description: z.string().nullish(),
     category: z.string().nullish(),
   });
   const {
@@ -87,7 +88,6 @@ const AdminProductForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <input {...register("image")} hidden />
-
       <input
         type="text"
         {...register("name")}
@@ -106,7 +106,6 @@ const AdminProductForm = ({
       {errors?.name && (
         <p className="text-error text-xs">نام انگلیسی محصول را وارد کنید</p>
       )}
-
       <Controller
         name="price"
         control={control}
@@ -125,6 +124,12 @@ const AdminProductForm = ({
       {errors?.price && (
         <p className="text-error text-xs"> قیمت را وارد کنید</p>
       )}
+      <textarea
+        className="textarea textarea-bordered w-full max-w-xs"
+        {...register("description")}
+        id="description"
+        placeholder="توضیحات"
+      ></textarea>
       <select
         defaultValue={"0"}
         className="select select-bordered w-full max-w-xs"

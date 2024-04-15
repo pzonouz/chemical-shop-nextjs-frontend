@@ -40,7 +40,7 @@ const UserRegisterPage = (props: any) => {
       })
       .catch((err: any) => {
         setLoading(false);
-        errorToast(err.status);
+        errorToast(JSON.stringify(err["data"]));
       });
   };
   return (

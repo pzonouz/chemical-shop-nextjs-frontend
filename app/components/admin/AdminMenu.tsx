@@ -35,7 +35,7 @@ const AdminMenu = () => {
   return (
     <ul className="menu bg-base-200 rounded-box w-fit text-2xl p-2 gap-2 flex flex-col my-auto">
       <li
-        onClick={(e) => {
+        onClick={() => {
           const elm = document.activeElement as HTMLElement;
           if (elm) {
             elm?.blur();
@@ -56,7 +56,7 @@ const AdminMenu = () => {
         </Link>
       </li>
       <li
-        onClick={(e) => {
+        onClick={() => {
           const elm = document.activeElement as HTMLElement;
           if (elm) {
             elm?.blur();
@@ -77,7 +77,7 @@ const AdminMenu = () => {
         </Link>
       </li>
       <li
-        onClick={(e) => {
+        onClick={() => {
           const elm = document.activeElement as HTMLElement;
           if (elm) {
             elm?.blur();
@@ -98,7 +98,7 @@ const AdminMenu = () => {
         </Link>
       </li>
       <li
-        onClick={(e) => {
+        onClick={() => {
           const elm = document.activeElement as HTMLElement;
           if (elm) {
             elm?.blur();
@@ -119,7 +119,7 @@ const AdminMenu = () => {
         </Link>
       </li>
       <li
-        onClick={(e) => {
+        onClick={() => {
           const elm = document.activeElement as HTMLElement;
           if (elm) {
             elm?.blur();

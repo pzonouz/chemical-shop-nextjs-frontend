@@ -13,7 +13,6 @@ import { setLoading, unsetLoading } from "@/lib/features/utils/loading";
 import { useAppDispatch } from "@/lib/hooks";
 import { fetchUser } from "@/lib/features/utils/user";
 import { useSelector } from "react-redux";
-import Image from "next/image";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +45,7 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li
-              onClick={(e) => {
+              onClick={() => {
                 const elm = document.activeElement as HTMLElement;
                 if (elm) {
                   elm?.blur();
@@ -56,7 +55,7 @@ const Navbar = () => {
               <a>Homepage</a>
             </li>
             <li
-              onClick={(e) => {
+              onClick={() => {
                 const elm = document.activeElement as HTMLElement;
                 if (elm) {
                   elm?.blur();
@@ -66,7 +65,7 @@ const Navbar = () => {
               <a>Portfolio</a>
             </li>
             <li
-              onClick={(e) => {
+              onClick={() => {
                 const elm = document.activeElement as HTMLElement;
                 if (elm) {
                   elm?.blur();
@@ -121,16 +120,18 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <Image
-                  width={200}
-                  height={200}
-                  src={
-                    status == "Authenticated"
-                      ? user?.profile?.image!
-                      : "/images/Sample_User_Icon.png"
-                  }
-                  alt="Sample user image"
-                />
+                {status == "Authenticated" ? (
+                  <img
+                    src={
+                      user?.profile?.image
+                        ? user?.profile?.image!
+                        : "/images/Sample_User_Icon.png"
+                    }
+                    alt={`${user?.profile?.first_name}`}
+                  />
+                ) : (
+                  <img src="/images/Sample_User_Icon.png" />
+                )}
               </div>
             </div>
             <ul
@@ -140,7 +141,7 @@ const Navbar = () => {
               {user ? (
                 <>
                   <li
-                    onClick={(e) => {
+                    onClick={() => {
                       const elm = document.activeElement as HTMLElement;
                       if (elm) {
                         elm?.blur();
@@ -150,7 +151,7 @@ const Navbar = () => {
                     <a className=" text-primary">{user.email}</a>
                   </li>
                   <li
-                    onClick={(e) => {
+                    onClick={() => {
                       const elm = document.activeElement as HTMLElement;
                       if (elm) {
                         elm?.blur();
@@ -184,7 +185,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <li
-                    onClick={(e) => {
+                    onClick={() => {
                       const elm = document.activeElement as HTMLElement;
                       if (elm) {
                         elm?.blur();
@@ -194,7 +195,7 @@ const Navbar = () => {
                     <Link href={"/authentication/register"}>ثبت نام</Link>
                   </li>
                   <li
-                    onClick={(e) => {
+                    onClick={() => {
                       const elm = document.activeElement as HTMLElement;
                       if (elm) {
                         elm?.blur();
