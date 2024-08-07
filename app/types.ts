@@ -8,6 +8,13 @@ export interface Product {
   category: string;
   favorites: Favorite[];
   cart_items?: Cart[];
+  kind: string;
+  modified_by: string;
+  diameter: string;
+  state: string;
+  analyze: string;
+  unit: string;
+  quantity: string;
 }
 
 export interface Category {

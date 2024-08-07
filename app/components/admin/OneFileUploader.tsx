@@ -8,9 +8,11 @@ import { toast } from "react-toastify";
 const OneFileUploader = ({
   uploadedImageLinkSetter,
   uploadedImageLink,
+  classname,
 }: {
   uploadedImageLinkSetter: any;
   uploadedImageLink: any;
+  classname: string;
 }) => {
   const dispatch = useAppDispatch();
   const [file, setFile] = useState<File>();
@@ -49,7 +51,7 @@ const OneFileUploader = ({
         type="file"
         accept=".jpg, .jpeg, .png"
         data-max-size="1000"
-        className="file-input file-input-bordered max-w-xs w-full"
+        className={`file-input file-input-bordered w-full ${classname}`}
         onChange={(e) => {
           setFile(e.target.files![0]);
         }}

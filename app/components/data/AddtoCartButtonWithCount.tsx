@@ -21,15 +21,15 @@ const AddToCartButtonWithCount = ({ product }: { product: Product }) => {
 
   const [addToCartWithCount] = useAddToCartMutation();
   return (
-    <div className=" grid grid-cols-2 grid-rows-2 items-center  w-full gap-2 md:gap-6 md:w-full">
+    <div className=" grid grid-cols-2 grid-rows-2 items-center justify-between mt-6  w-full gap-2 md:gap-6">
       <div className=" ">{ToPersianDigit(product?.price)} تومان</div>
-      <div className="flex justify-center gap-2 ">
+      <div className="flex justify-end gap-2 ">
         <div className=" text-error">
           {ToPersianDigit(
             textToThousandSeparated(
-              textToNumber(product?.price) * count
-            ) as string
-          )}{" "}
+              textToNumber(product?.price) * count,
+            ) as string,
+          )}
           تومان
         </div>
       </div>
@@ -55,7 +55,7 @@ const AddToCartButtonWithCount = ({ product }: { product: Product }) => {
       >
         افزودن
       </button>
-      <ul className="flex text-lg leading-5 rounded-md col-start-2 col-end-3 justify-center ">
+      <ul className="flex text-lg leading-5 rounded-md col-start-2 col-end-3 justify-end ">
         <li
           className="p-3 cursor-pointer bg-base-300"
           onClick={() => {

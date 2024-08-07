@@ -16,7 +16,7 @@ export default function SignInPage() {
           dispatch(setLoading());
           try {
             const res = await fetch(
-              "/api/auth/o/google-oauth2/?redirect_uri=http://localhost/authentication/google-callback",
+              `/api/auth/o/google-oauth2/?redirect_uri=${process.env.WEBSITE_NAME}/authentication/google-callback`,
               { cache: "no-store" },
             );
             if (!res.ok) {

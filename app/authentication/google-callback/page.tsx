@@ -21,7 +21,7 @@ export default function GoogleCallback() {
         throw new Error(res.statusText);
       }
       dispatch(unsetLoading());
-      window.location.href = "http://localhost";
+      window.location.href = "/";
     } catch (err: any) {
       errorToast(err.message);
       dispatch(unsetLoading());

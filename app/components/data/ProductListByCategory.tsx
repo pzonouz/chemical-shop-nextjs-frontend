@@ -9,26 +9,31 @@ async function GetCategories() {
   const cookiesStore = cookies();
   const access = cookiesStore.get("access");
   try {
-    const token = null;
     if (access) {
-      const res: Response = await fetch("http://localhost/api/categories", {
-        cache: "no-store",
-        headers: {
-          "Content-Type": " application/vnd.api+json",
-          Authorization: `JWT ${access?.value}`,
+      const res: Response = await fetch(
+        `${process.env.BACKEND_URL}/categories`,
+        {
+          cache: "no-store",
+          headers: {
+            "Content-Type": " application/vnd.api+json",
+            Authorization: `JWT ${access?.value}`,
+          },
         },
-      });
+      );
       if (!res.ok) {
         throw new Error(res.statusText);
       }
       return res.json();
     } else {
-      const res: Response = await fetch("http://localhost/api/categories", {
-        cache: "no-store",
-        headers: {
-          "Content-Type": " application/vnd.api+json",
+      const res: Response = await fetch(
+        `${process.env.BACKEND_URL}/categories`,
+        {
+          cache: "no-store",
+          headers: {
+            "Content-Type": " application/vnd.api+json",
+          },
         },
-      });
+      );
       if (!res.ok) {
         throw new Error(res.statusText);
       }
