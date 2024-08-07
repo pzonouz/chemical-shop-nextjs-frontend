@@ -92,6 +92,7 @@ const AdminCategoryForm = ({
       <OneFileUploader
         uploadedImageLink={image}
         uploadedImageLinkSetter={setImage}
+        classname=""
       />
       {/* <button className=" btn btn-primary w-full">تبت</button> */}
       <LoadingButton isLoading={loading} className=" w-full" />
