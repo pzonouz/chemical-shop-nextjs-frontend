@@ -110,6 +110,7 @@ const AdminUserForm = ({ profile }: { profile: UserProfile }) => {
       <OneFileUploader
         uploadedImageLink={image}
         uploadedImageLinkSetter={setImage}
+        classname=""
       />
       {/* <div className="form-control">
         <label className="label cursor-pointer flex gap-1">

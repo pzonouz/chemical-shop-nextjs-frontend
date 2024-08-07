@@ -116,6 +116,7 @@ export default function UserEditForm() {
       <OneFileUploader
         uploadedImageLink={image}
         uploadedImageLinkSetter={setImage}
+        classname=""
       />
       <LoadingButton isLoading={isLoading} />
     </form>
