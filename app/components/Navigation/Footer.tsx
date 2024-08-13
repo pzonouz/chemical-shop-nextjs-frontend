@@ -51,6 +51,19 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <a
+        referrerPolicy="origin"
+        target="_blank"
+        href="https://trustseal.enamad.ir/?id=516284&Code=OvAlmo0gDbclo1PpdIYJRA1VjuYMzQSA"
+      >
+        <img
+          referrerPolicy="origin"
+          src="https://trustseal.enamad.ir/logo.aspx?id=516284&Code=OvAlmo0gDbclo1PpdIYJRA1VjuYMzQSA"
+          alt=""
+          style={{ cursor: "pointer" }}
+          data-code="OvAlmo0gDbclo1PpdIYJRA1VjuYMzQSA"
+        />
+      </a>
     </div>
   );
 };
