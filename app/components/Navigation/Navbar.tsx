@@ -36,46 +36,46 @@ const Navbar = () => {
   return (
     <div>
       <div className="bg-base-100 navbar">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <FaBars className="text-2xl" />
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            <li
-              onClick={() => {
-                const elm = document.activeElement as HTMLElement;
-                if (elm) {
-                  elm?.blur();
-                }
-              }}
-            >
-              <a>Homepage</a>
-            </li>
-            <li
-              onClick={() => {
-                const elm = document.activeElement as HTMLElement;
-                if (elm) {
-                  elm?.blur();
-                }
-              }}
-            >
-              <a>Portfolio</a>
-            </li>
-            <li
-              onClick={() => {
-                const elm = document.activeElement as HTMLElement;
-                if (elm) {
-                  elm?.blur();
-                }
-              }}
-            >
-              <a>About</a>
-            </li>
-          </ul>
-        </div>
+        {/* <div className="dropdown"> */}
+        {/*   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle"> */}
+        {/*     <FaBars className="text-2xl" /> */}
+        {/*   </div> */}
+        {/*   <ul */}
+        {/*     tabIndex={0} */}
+        {/*     className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52" */}
+        {/*   > */}
+        {/*     <li */}
+        {/*       onClick={() => { */}
+        {/*         const elm = document.activeElement as HTMLElement; */}
+        {/*         if (elm) { */}
+        {/*           elm?.blur(); */}
+        {/*         } */}
+        {/*       }} */}
+        {/*     > */}
+        {/*       <a>Homepage</a> */}
+        {/*     </li> */}
+        {/*     <li */}
+        {/*       onClick={() => { */}
+        {/*         const elm = document.activeElement as HTMLElement; */}
+        {/*         if (elm) { */}
+        {/*           elm?.blur(); */}
+        {/*         } */}
+        {/*       }} */}
+        {/*     > */}
+        {/*       <a>Portfolio</a> */}
+        {/*     </li> */}
+        {/*     <li */}
+        {/*       onClick={() => { */}
+        {/*         const elm = document.activeElement as HTMLElement; */}
+        {/*         if (elm) { */}
+        {/*           elm?.blur(); */}
+        {/*         } */}
+        {/*       }} */}
+        {/*     > */}
+        {/*       <a>About</a> */}
+        {/*     </li> */}
+        {/*   </ul> */}
+        {/* </div> */}
         <div className="flex-auto">
           <Link href="/" className="btn btn-ghost text-xl">
             نانو شاپ

@@ -4,6 +4,7 @@ import { FiUsers } from "react-icons/fi";
 import { LuPackageOpen } from "react-icons/lu";
 import { IoHomeOutline } from "react-icons/io5";
 import { MdOutlineCategory } from "react-icons/md";
+import { FaStore } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import Link from "next/link";
@@ -28,6 +29,9 @@ const AdminMenu = () => {
         break;
       case "/admin/orders":
         setActive("Orders");
+        break;
+      case "/admin/store":
+        setActive("store");
         break;
     }
   }, [path]);
@@ -137,6 +141,27 @@ const AdminMenu = () => {
           }}
         >
           <LuPackageOpen />
+        </Link>
+      </li>
+      <li
+        onClick={() => {
+          const elm = document.activeElement as HTMLElement;
+          if (elm) {
+            elm?.blur();
+          }
+        }}
+      >
+        <Link
+          href={"/admin/store"}
+          className={classNames({
+            active: active === "store",
+            "p-3 flex items-center justify-center": true,
+          })}
+          onClick={() => {
+            setActive("store");
+          }}
+        >
+          <FaStore />
         </Link>
       </li>
     </ul>

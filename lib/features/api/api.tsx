@@ -5,6 +5,7 @@ import {
   Order,
   Process,
   Product,
+  Store,
   User,
   UserProfile,
 } from "@/app/types";
@@ -18,7 +19,15 @@ export const apiSlice = createApi({
     mode: "same-origin",
     headers: { "Content-Type": "application/json" },
   }),
-  tagTypes: ["User", "Category", "Product", "Cart", "Order", "Favorite"],
+  tagTypes: [
+    "User",
+    "Category",
+    "Product",
+    "Cart",
+    "Order",
+    "Favorite",
+    "Store",
+  ],
   endpoints(builder) {
     return {
       fetchCategories: builder.query<Category[], number | void>({
@@ -276,6 +285,22 @@ export const apiSlice = createApi({
         },
         invalidatesTags: ["User"],
       }),
+      fetchStore: builder.query<Store[], void>({
+        query: () => {
+          return { url: `/api/store/` };
+        },
+        providesTags: ["Store"],
+      }),
+      editStore: builder.mutation<Store, Partial<Store>>({
+        query: (store: Store) => {
+          return {
+            url: `/api/store/${store.id}/`,
+            method: "PATCH",
+            body: store,
+          };
+        },
+        invalidatesTags: ["Store"],
+      }),
     };
   },
 });
@@ -310,4 +335,6 @@ export const {
   useDeleteOrderMutation,
   useFetchFavoritesQuery,
   useToggleFavoriteMutation,
+  useFetchStoreQuery,
+  useEditStoreMutation,
 } = apiSlice;

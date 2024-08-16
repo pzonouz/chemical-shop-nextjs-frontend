@@ -7,7 +7,7 @@ const ToTop = () => {
       onClick={() => {
         window.scrollTo(0, 0);
       }}
-      className=" p-2 fixed bottom-6 left-6 cursor-pointer bg-accent text-white rounded-full border-2 border-accent"
+      className=" p-2 fixed bottom-6 right-6 cursor-pointer bg-accent text-white rounded-full border-2 border-accent"
     >
       <FaChevronUp className=" text-2xl " />
     </div>

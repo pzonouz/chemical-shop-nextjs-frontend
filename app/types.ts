@@ -65,3 +65,14 @@ export interface UserProfile {
   image?: string;
   user: string;
 }
+
+export interface Store {
+  id?: string;
+  aboutus?: string;
+  supportNumber?: string;
+  telegram?: string;
+  whatsapp?: string;
+  address?: string;
+  phoneNumber?: string;
+  mobileNumber?: string;
+}
